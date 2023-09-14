@@ -1,5 +1,5 @@
 from amaranth import *
-from amaranth.lib import wiring
+from amaranth.lib import wiring, data
 from amaranth.lib.wiring import In, Out
 
 
@@ -16,7 +16,7 @@ class Toplevel(wiring.Component):
 
     video_rgb_clk   : Out(1)
     video_rgb_clk90 : Out(1)
-    video_rgb       : Out(24)
+    video_rgb       : Out(data.StructLayout({"b": 8, "g": 8, "r": 8}))
     video_de        : Out(1)
     video_skip      : Out(1)
     video_vs        : Out(1)
@@ -79,15 +79,14 @@ class Toplevel(wiring.Component):
 
         assert 47 <= (74250000 / 4 / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
-        x_count     = Signal(10)
-        y_count     = Signal(10)
-
         with m.If(video_stb):
+            x_count = Signal(10)
+            y_count = Signal(10)
+
             m.d.sync += [
-                self.video_de.eq(0),
-                self.video_skip.eq(0),
-                self.video_vs.eq(0),
-                self.video_hs.eq(0),
+                self.video_vs.eq((x_count == 0) & (y_count == 0)),
+                # HS must occur at least 3 cycles after VS
+                self.video_hs.eq(x_count == 3),
             ]
 
             m.d.sync += x_count.eq(x_count + 1)
@@ -97,21 +96,19 @@ class Toplevel(wiring.Component):
                 with m.If(y_count == VID_V_TOTAL - 1):
                     m.d.sync += y_count.eq(0)
 
-            with m.If((x_count == 0) & (y_count == 0)):
-                m.d.sync += self.video_vs.eq(1)
-            
-            # HS must occur at least 3 cycles after VS
-            with m.If(x_count == 3):
-                m.d.sync += self.video_hs.eq(1)
-
-            # inactive screen areas must be black
-            m.d.sync += self.video_rgb.eq(0)
+            m.d.sync += [
+                # inactive screen areas must be black
+                self.video_de.eq(0),
+                self.video_rgb.eq(0)
+            ]
 
             with m.If((x_count >= VID_H_BPORCH) & (x_count < VID_H_ACTIVE + VID_H_BPORCH)):
                 with m.If((y_count >= VID_V_BPORCH) & (y_count <= VID_V_ACTIVE + VID_V_BPORCH)):
                     m.d.sync += [
                         self.video_de.eq(1),
-                        self.video_rgb.eq(0xa00080)
+                        self.video_rgb.r.eq(0xa0),
+                        self.video_rgb.g.eq(0x00),
+                        self.video_rgb.b.eq(0x80),
                     ]
 
         return m
@@ -124,3 +121,13 @@ def simulate():
     sim.add_clock(1/74.25e6)
     with sim.write_vcd("dump.vcd"):
         sim.run_until(10e-3, run_passive=True)
+
+
+def generate():
+    from pathlib import Path
+    from amaranth.back import verilog
+    from .platform import IntelPlatform
+
+    toplevel = Toplevel()
+    with open(Path(__file__).parent.parent.parent / "core" / "amaranth_core.v", "w") as f:
+        f.write(verilog.convert(toplevel, platform=IntelPlatform, name="amaranth_core", strip_internal_attrs=True))

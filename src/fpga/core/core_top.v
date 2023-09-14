@@ -571,5 +571,5 @@ amaranth_core ac (
 
 );
 
-    
+
 endmodule

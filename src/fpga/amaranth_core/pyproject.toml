@@ -6,4 +6,4 @@ dependencies = [
 
 [tool.pdm.scripts]
 simulate = {call = "my_amaranth_core.toplevel:simulate"}
-generate = {shell = "python -m my_amaranth_core"}
+generate = {call = "my_amaranth_core.toplevel:generate"}
