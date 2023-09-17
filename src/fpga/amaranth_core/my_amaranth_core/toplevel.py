@@ -70,12 +70,12 @@ class Toplevel(wiring.Component):
             video_stb.eq(~self.video_rgb_clk & ~self.video_rgb_clk90)
         ]
 
-        VID_V_BPORCH = 10
-        VID_V_ACTIVE = 480
-        VID_V_TOTAL  = 495
         VID_H_BPORCH = 10
-        VID_H_ACTIVE = 600
-        VID_H_TOTAL  = 625
+        VID_H_ACTIVE = 800
+        VID_H_TOTAL  = VID_H_ACTIVE + VID_H_BPORCH*2 + 5
+        VID_V_BPORCH = 10
+        VID_V_ACTIVE = 450
+        VID_V_TOTAL  = VID_V_ACTIVE + VID_V_BPORCH*2 + 5
 
         assert 47 <= (74250000 / 4 / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
@@ -103,13 +103,22 @@ class Toplevel(wiring.Component):
             ]
 
             with m.If((x_count >= VID_H_BPORCH) & (x_count < VID_H_ACTIVE + VID_H_BPORCH)):
-                with m.If((y_count >= VID_V_BPORCH) & (y_count <= VID_V_ACTIVE + VID_V_BPORCH)):
-                    m.d.sync += [
-                        self.video_de.eq(1),
-                        self.video_rgb.r.eq(0xa0),
-                        self.video_rgb.g.eq(0x00),
-                        self.video_rgb.b.eq(0x80),
-                    ]
+                with m.If((y_count >= VID_V_BPORCH) & (y_count < VID_V_ACTIVE + VID_V_BPORCH)): 
+                    m.d.sync += self.video_de.eq(1)
+                    def rgb(r,g,b):
+                        return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
+                    with m.If(y_count == VID_V_BPORCH):   # Top row red
+                        m.d.sync += rgb(0xFF, 0, 0)
+                    with m.Elif(y_count == VID_V_ACTIVE + VID_V_BPORCH - 1): # Bottom row yellow
+                        m.d.sync += rgb(0xFF, 0xFF, 0x80)
+                    with m.Elif(x_count == VID_H_BPORCH): # Left column green
+                        m.d.sync += rgb(0, 0xFF, 0)
+                    with m.Elif(x_count == VID_H_ACTIVE + VID_H_BPORCH - 1): # Right column blue
+                        m.d.sync += rgb(0, 0, 0xFF)
+                    with m.Elif(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
+                        m.d.sync += rgb(0, 0, 0)
+                    with m.Else():                        # ...and magenta
+                        m.d.sync += rgb(0xa0, 0x00, 0x80) 
 
         return m
 
