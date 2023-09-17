@@ -132,6 +132,44 @@ def simulate():
         sim.run_until(10e-3, run_passive=True)
 
 
+def capture_frame():
+    import png
+    from amaranth.sim import Simulator
+
+    top = Toplevel()
+    def bench():
+        rows = []
+        while not (yield top.video_vs): yield
+        while (yield top.video_vs): yield
+        # after negedge of vs
+        while True:
+            cols = []
+            while not (yield top.video_hs): yield
+            while not ((yield top.video_vs) or (yield top.video_de)): yield
+            if (yield top.video_vs):
+                break
+            while True:
+                while (yield top.video_rgb_clk90): yield
+                while not (yield top.video_rgb_clk90): yield
+                # at posedge of clk90
+                if (yield top.video_de):
+                    cols.append((yield top.video_rgb.r))
+                    cols.append((yield top.video_rgb.g))
+                    cols.append((yield top.video_rgb.b))
+                else:
+                    break
+            print(f"row {len(rows)}: {len(cols) // 3} cols")
+            rows.append(cols)
+            with open("frame.png", "wb") as file:
+                png.Writer(len(rows[0]) // 3, len(rows), greyscale=False).write(file, rows)
+        print(f"{len(rows)} rows")
+
+    sim = Simulator(top)
+    sim.add_clock(1/74.25e6)
+    sim.add_sync_process(bench)
+    sim.run()
+
+
 def generate():
     from pathlib import Path
     from amaranth.back import verilog

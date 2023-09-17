@@ -114,10 +114,10 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   assign \$13  = \$9  & \$11 ;
   assign \$15  = x_count == 2'h3;
   assign \$18  = x_count + 1'h1;
-  assign \$20  = x_count == 10'h333;
-  assign \$22  = x_count == 10'h333;
+  assign \$20  = x_count == 10'h338;
+  assign \$22  = x_count == 10'h338;
   assign \$25  = y_count + 1'h1;
-  assign \$27  = y_count == 9'h1d5;
+  assign \$27  = y_count == 9'h1da;
   assign \$29  = x_count >= 4'ha;
   assign \$31  = x_count < 10'h32a;
   assign \$33  = \$29  & \$31 ;

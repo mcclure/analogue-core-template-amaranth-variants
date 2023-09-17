@@ -2,18 +2,18 @@
 # It is not intended for manual editing.
 
 [metadata]
-groups = ["default"]
+groups = ["default", "simulation"]
 cross_platform = true
 static_urls = false
 lock_version = "4.3"
-content_hash = "sha256:4a5e5194a5dbef9c3ce2f5dbca0b0a65ab492171eb08c0ac3a8080e859c1c8bf"
+content_hash = "sha256:1bc4d30d838d1bb81c97fc95d7dd5cf914f93250eeecd14fb99025751880ec4c"
 
 [[package]]
 name = "amaranth"
-version = "0.4.dev196+gecba1a1"
+version = "0.4.dev197+g11d5bb1"
 requires_python = "~=3.8"
 git = "https://github.com/amaranth-lang/amaranth.git"
-revision = "ecba1a18636845ef6cf88cc00022a96508352b28"
+revision = "11d5bb19eb34463918c07dc5e2e0eac7dbf822b0"
 summary = "Amaranth hardware definition language"
 dependencies = [
     "Jinja2~=3.0",
@@ -35,11 +35,11 @@ files = [
 
 [[package]]
 name = "amaranth"
-version = "0.4.dev196+gecba1a1"
+version = "0.4.dev197+g11d5bb1"
 extras = ["builtin-yosys"]
 requires_python = "~=3.8"
 git = "https://github.com/amaranth-lang/amaranth.git"
-revision = "ecba1a18636845ef6cf88cc00022a96508352b28"
+revision = "11d5bb19eb34463918c07dc5e2e0eac7dbf822b0"
 summary = "Amaranth hardware definition language"
 dependencies = [
     "amaranth @ git+https://github.com/amaranth-lang/amaranth.git",
@@ -129,6 +129,15 @@ files = [
     {file = "MarkupSafe-2.1.3-cp39-cp39-win32.whl", hash = "sha256:fec21693218efe39aa7f8599346e90c705afa52c5b31ae019b2e57e8f6542bb2"},
     {file = "MarkupSafe-2.1.3-cp39-cp39-win_amd64.whl", hash = "sha256:3fd4abcb888d15a94f32b75d8fd18ee162ca0c064f35b11134be77050296d6ba"},
     {file = "MarkupSafe-2.1.3.tar.gz", hash = "sha256:af598ed32d6ae86f1b747b82783958b1a4ab8f617b06fe68795c7f026abbdcad"},
+]
+
+[[package]]
+name = "pypng"
+version = "0.20220715.0"
+summary = "Pure Python library for saving and loading PNG images"
+files = [
+    {file = "pypng-0.20220715.0-py3-none-any.whl", hash = "sha256:4a43e969b8f5aaafb2a415536c1a8ec7e341cd6a3f957fd5b5f32a4cfeed902c"},
+    {file = "pypng-0.20220715.0.tar.gz", hash = "sha256:739c433ba96f078315de54c0db975aee537cbc3e1d0ae4ed9aab0ca1e427e2c1"},
 ]
 
 [[package]]

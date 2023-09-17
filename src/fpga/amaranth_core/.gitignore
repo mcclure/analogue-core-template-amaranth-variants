@@ -11,3 +11,5 @@ __pycache__/
 # simulation
 *.vcd
 *.gtkw
+# TODO: Make this more specific
+*.png
