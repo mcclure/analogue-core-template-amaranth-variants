@@ -102,7 +102,7 @@ class Toplevel(wiring.Component):
         VID_H_ACTIVE = 600
         VID_H_TOTAL  = 625
 
-        assert 47 <= (74250000 / 4 / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
+        assert 47 <= (74250000 / video_clk_div.ratio / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
         with m.If(video_clk_div.stb):
             x_count = Signal(10)
