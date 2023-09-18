@@ -108,27 +108,27 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   reg [9:0] \y_count$next ;
   assign \$9  = x_count == 2'h3;
   assign \$12  = x_count + 1'h1;
-  assign \$14  = x_count == 10'h270;
-  assign \$16  = x_count == 10'h270;
+  assign \$14  = x_count == 9'h199;
+  assign \$16  = x_count == 9'h199;
   assign \$19  = y_count + 1'h1;
-  assign \$21  = y_count == 9'h1ee;
-  assign \$23  = x_count >= 4'ha;
-  assign \$25  = x_count < 10'h262;
+  assign \$21  = y_count == 9'h179;
+  assign \$23  = x_count >= 3'h5;
+  assign \$25  = x_count < 9'h195;
   assign \$27  = \$23  & \$25 ;
-  assign \$29  = y_count >= 4'ha;
-  assign \$31  = y_count < 9'h1ea;
+  assign \$29  = y_count >= 5'h1d;
+  assign \$31  = y_count < 9'h15d;
   assign \$33  = \$29  & \$31 ;
-  assign \$35  = x_count >= 4'ha;
-  assign \$37  = x_count < 10'h262;
+  assign \$35  = x_count >= 3'h5;
+  assign \$37  = x_count < 9'h195;
   assign \$3  = ! x_count;
   assign \$39  = \$35  & \$37 ;
-  assign \$41  = y_count >= 4'ha;
-  assign \$43  = y_count < 9'h1ea;
+  assign \$41  = y_count >= 5'h1d;
+  assign \$43  = y_count < 9'h15d;
   assign \$45  = \$41  & \$43 ;
-  assign \$47  = y_count == 4'ha;
-  assign \$49  = y_count == 9'h1e9;
-  assign \$51  = x_count == 4'ha;
-  assign \$53  = x_count == 10'h261;
+  assign \$47  = y_count == 5'h1d;
+  assign \$49  = y_count == 9'h15c;
+  assign \$51  = x_count == 3'h5;
+  assign \$53  = x_count == 9'h194;
   assign \$55  = x_count[0] ^ y_count[0];
   always @(posedge boot_clk)
     init_done <= 1'h1;
@@ -320,37 +320,37 @@ module \amaranth_core.video_clk_div (rst, \clk$1 , clk90, stb, clk);
   wire \clk$1 ;
   output clk90;
   wire clk90;
-  reg [3:0] clk_reg = 4'hc;
-  reg [3:0] \clk_reg$next ;
+  reg [7:0] clk_reg = 8'hf0;
+  reg [7:0] \clk_reg$next ;
   input rst;
   wire rst;
   output stb;
   wire stb;
-  reg [3:0] stb_reg = 4'h1;
-  reg [3:0] \stb_reg$next ;
+  reg [7:0] stb_reg = 8'h01;
+  reg [7:0] \stb_reg$next ;
   always @(posedge clk, posedge rst)
-    if (rst) clk_reg <= 4'hc;
+    if (rst) clk_reg <= 8'hf0;
     else clk_reg <= \clk_reg$next ;
   always @(posedge clk, posedge rst)
-    if (rst) stb_reg <= 4'h1;
+    if (rst) stb_reg <= 8'h01;
     else stb_reg <= \stb_reg$next ;
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$2 ) begin end
-    \clk_reg$next  = { clk_reg[2:0], clk_reg[3] };
+    \clk_reg$next  = { clk_reg[6:0], clk_reg[7] };
     casez (rst)
       1'h1:
-          \clk_reg$next  = 4'hc;
+          \clk_reg$next  = 8'hf0;
     endcase
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$2 ) begin end
-    \stb_reg$next  = { stb_reg[2:0], stb_reg[3] };
+    \stb_reg$next  = { stb_reg[6:0], stb_reg[7] };
     casez (rst)
       1'h1:
-          \stb_reg$next  = 4'h1;
+          \stb_reg$next  = 8'h01;
     endcase
   end
   assign stb = stb_reg[0];
-  assign clk90 = clk_reg[1];
+  assign clk90 = clk_reg[2];
   assign \clk$1  = clk_reg[0];
 endmodule

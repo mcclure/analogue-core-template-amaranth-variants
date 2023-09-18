@@ -89,18 +89,19 @@ class Toplevel(wiring.Component):
 
         # ------------------------------ user code below this line --------------------------------
 
-        m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=4)
+        m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=8)
         m.d.comb += [
             self.video_rgb_clk.eq(video_clk_div.clk),
             self.video_rgb_clk90.eq(video_clk_div.clk90),
         ]
 
-        VID_V_BPORCH = 10
-        VID_V_ACTIVE = 480
-        VID_V_TOTAL  = 495
-        VID_H_BPORCH = 10
-        VID_H_ACTIVE = 600
-        VID_H_TOTAL  = 625
+        # 9.281 mhz clock; 59.991 fps
+        VID_H_BPORCH = 2
+        VID_H_ACTIVE = 400
+        VID_H_TOTAL  = 405
+        VID_V_BPORCH = 31
+        VID_V_ACTIVE = 320
+        VID_V_TOTAL  = 382
 
         assert 47 <= (74250000 / video_clk_div.ratio / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 

@@ -19,8 +19,8 @@ RES_Y_MAX = 720
 # Speed of source clock. In Amaranth, we use the default clock for this.
 REFERENCE_MHZ = 74.25
 
-# Minimum size for porches
-PORCH_MIN = 3
+# Minimum combined size for porches
+PORCH_MIN = 10
 
 # Assume neither axis should exceed this with porch size. 100% arbitrary
 PORCHED_MAX = 1024
@@ -42,13 +42,13 @@ assert display_hz >= FRAMERATE_HZ_MIN, "Minimum framerate {FRAMERATE_HZ_MIN}hz"
 assert display_hz <= FRAMERATE_HZ_MAX, "Maximum framerate {FRAMERATE_HZ_MAX}hz"
 
 # Organize options in a duct-taped priority queue
-QUEUE_MAX = 6
+QUEUE_MAX = 10
 found_queue = []
 
 # Brute force
 for candidate_x in range(display_x + PORCH_MIN, PORCHED_MAX):
 	for candidate_y in range(display_y + PORCH_MIN, PORCHED_MAX):
-		for candidate_divisor in range(2, 64, 2):
+		for candidate_divisor in range(4, 64, 4):
 			clock_hz = REFERENCE_MHZ * MHZ / (candidate_divisor*candidate_y*candidate_x)
 			if clock_hz < FRAMERATE_HZ_MIN or clock_hz > FRAMERATE_HZ_MAX:
 				continue
@@ -83,6 +83,7 @@ m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio={divisor})
 
 # Amaranth sizes
 
+# {REFERENCE_MHZ/divisor:0.3f} mhz clock; {hz:0.3f} fps
 VID_H_BPORCH = {porch_x}
 VID_H_ACTIVE = {display_x}
 VID_H_TOTAL  = {x}
