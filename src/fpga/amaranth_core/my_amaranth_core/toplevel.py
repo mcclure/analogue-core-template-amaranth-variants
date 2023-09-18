@@ -3,6 +3,40 @@ from amaranth.lib import wiring, data
 from amaranth.lib.wiring import In, Out
 
 
+class PixelClockDiv(wiring.Component):
+    clk90   : Out(1) # Pixel clock, 90 deg trailing
+    clk     : Out(1) # Pixel clock
+    stb     : Out(1) # Single cycle strobe at rising edge of `clk`
+
+    def __init__(self, ratio=2):
+        super().__init__()
+
+        assert ratio >= 4 and ratio % 4 == 0, "Ratio must be at least 4 and divisible by 4"
+        self.ratio = ratio
+
+    def elaborate(self, platform):
+        m = Module()
+
+        # clk90  __/¯¯¯\_
+        # clk    /¯¯¯\___
+        # rgb    X--------
+
+        clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2))
+        m.d.sync += clk_reg.eq(clk_reg.rotate_left(1))
+        m.d.comb += [
+            self.clk.eq(clk_reg[0]),
+            self.clk90.eq(clk_reg[self.ratio // 4]),
+        ]
+
+        stb_reg = Signal(self.ratio, reset=1)
+        m.d.sync += stb_reg.eq(stb_reg.rotate_left(1))
+        m.d.comb += [
+            self.stb.eq(stb_reg[0])
+        ]
+
+        return m
+
+
 class Toplevel(wiring.Component):
     clk             : In(1)
     rst             : In(1)
@@ -55,31 +89,22 @@ class Toplevel(wiring.Component):
 
         # ------------------------------ user code below this line --------------------------------
 
-        video_rgb_r = Signal(4, reset=0b1100)
-        m.d.sync += video_rgb_r.eq(Cat(video_rgb_r[3], video_rgb_r[:3]))
+        m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=4)
         m.d.comb += [
-            self.video_rgb_clk.eq(video_rgb_r[0]),
-            self.video_rgb_clk90.eq(video_rgb_r[1]),
+            self.video_rgb_clk.eq(video_clk_div.clk),
+            self.video_rgb_clk90.eq(video_clk_div.clk90),
         ]
 
-        # clk90  __/¯¯¯\_
-        # clk    /¯¯¯\___
-        # rgb    X--------
-        video_stb = Signal()
-        m.d.comb += [
-            video_stb.eq(~self.video_rgb_clk & ~self.video_rgb_clk90)
-        ]
-
-        VID_H_BPORCH = 10
-        VID_H_ACTIVE = 800
-        VID_H_TOTAL  = VID_H_ACTIVE + VID_H_BPORCH*2 + 5
         VID_V_BPORCH = 10
-        VID_V_ACTIVE = 450
-        VID_V_TOTAL  = VID_V_ACTIVE + VID_V_BPORCH*2 + 5
+        VID_V_ACTIVE = 480
+        VID_V_TOTAL  = 495
+        VID_H_BPORCH = 10
+        VID_H_ACTIVE = 600
+        VID_H_TOTAL  = 625
 
         assert 47 <= (74250000 / 4 / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
-        with m.If(video_stb):
+        with m.If(video_clk_div.stb):
             x_count = Signal(10)
             y_count = Signal(10)
 

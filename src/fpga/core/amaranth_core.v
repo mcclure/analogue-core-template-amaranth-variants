@@ -3,15 +3,15 @@
 module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key, cont1_trig, cont2_joy, cont2_key, cont2_trig, cont3_joy, cont3_key, cont3_trig, cont4_joy, cont4_key, cont4_trig, dbg_rx, dbg_tx, init_done, rst, user1
 , user2, video_de, video_hs, video_rgb, video_rgb_clk, video_rgb_clk90, video_skip, video_vs, audio_adc);
   reg \$auto$verilog_backend.cc:2083:dump_module$1  = 0;
-  wire \$11 ;
-  wire \$13 ;
-  wire \$15 ;
-  wire [10:0] \$17 ;
+  wire [10:0] \$11 ;
+  wire [10:0] \$12 ;
+  wire \$14 ;
+  wire \$16 ;
   wire [10:0] \$18 ;
-  wire \$20 ;
-  wire \$22 ;
-  wire [10:0] \$24 ;
-  wire [10:0] \$25 ;
+  wire [10:0] \$19 ;
+  wire \$21 ;
+  wire \$23 ;
+  wire \$25 ;
   wire \$27 ;
   wire \$29 ;
   wire \$3 ;
@@ -29,9 +29,6 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   wire \$51 ;
   wire \$53 ;
   wire \$55 ;
-  wire \$57 ;
-  wire \$59 ;
-  wire \$61 ;
   wire \$7 ;
   wire \$9 ;
   input audio_adc;
@@ -84,6 +81,9 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   wire user1;
   input user2;
   wire user2;
+  wire video_clk_div_clk;
+  wire video_clk_div_clk90;
+  wire video_clk_div_stb;
   output video_de;
   reg video_de = 1'h0;
   reg \video_de$next ;
@@ -97,11 +97,8 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   wire video_rgb_clk;
   output video_rgb_clk90;
   wire video_rgb_clk90;
-  reg [3:0] video_rgb_r = 4'hc;
-  reg [3:0] \video_rgb_r$next ;
   input video_skip;
   wire video_skip;
-  wire video_stb;
   output video_vs;
   reg video_vs = 1'h0;
   reg \video_vs$next ;
@@ -109,45 +106,39 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   reg [9:0] \x_count$next ;
   reg [9:0] y_count = 10'h000;
   reg [9:0] \y_count$next ;
-  assign \$9  = ! x_count;
-  assign \$11  = ! y_count;
-  assign \$13  = \$9  & \$11 ;
-  assign \$15  = x_count == 2'h3;
-  assign \$18  = x_count + 1'h1;
-  assign \$20  = x_count == 10'h338;
-  assign \$22  = x_count == 10'h338;
-  assign \$25  = y_count + 1'h1;
-  assign \$27  = y_count == 9'h1da;
-  assign \$29  = x_count >= 4'ha;
-  assign \$31  = x_count < 10'h32a;
+  assign \$9  = x_count == 2'h3;
+  assign \$12  = x_count + 1'h1;
+  assign \$14  = x_count == 10'h270;
+  assign \$16  = x_count == 10'h270;
+  assign \$19  = y_count + 1'h1;
+  assign \$21  = y_count == 9'h1ee;
+  assign \$23  = x_count >= 4'ha;
+  assign \$25  = x_count < 10'h262;
+  assign \$27  = \$23  & \$25 ;
+  assign \$29  = y_count >= 4'ha;
+  assign \$31  = y_count < 9'h1ea;
   assign \$33  = \$29  & \$31 ;
-  assign \$35  = y_count >= 4'ha;
-  assign \$37  = y_count < 9'h1cc;
-  assign \$3  = ~ video_rgb_clk;
+  assign \$35  = x_count >= 4'ha;
+  assign \$37  = x_count < 10'h262;
+  assign \$3  = ! x_count;
   assign \$39  = \$35  & \$37 ;
-  assign \$41  = x_count >= 4'ha;
-  assign \$43  = x_count < 10'h32a;
+  assign \$41  = y_count >= 4'ha;
+  assign \$43  = y_count < 9'h1ea;
   assign \$45  = \$41  & \$43 ;
-  assign \$47  = y_count >= 4'ha;
-  assign \$49  = y_count < 9'h1cc;
-  assign \$51  = \$47  & \$49 ;
-  assign \$53  = y_count == 4'ha;
-  assign \$55  = y_count == 9'h1cb;
-  assign \$57  = x_count == 4'ha;
-  assign \$5  = ~ video_rgb_clk90;
-  assign \$59  = x_count == 10'h329;
-  assign \$61  = x_count[0] ^ y_count[0];
+  assign \$47  = y_count == 4'ha;
+  assign \$49  = y_count == 9'h1e9;
+  assign \$51  = x_count == 4'ha;
+  assign \$53  = x_count == 10'h261;
+  assign \$55  = x_count[0] ^ y_count[0];
   always @(posedge boot_clk)
     init_done <= 1'h1;
-  always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) video_rgb_r <= 4'hc;
-    else video_rgb_r <= \video_rgb_r$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_vs <= 1'h0;
     else video_vs <= \video_vs$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_hs <= 1'h0;
     else video_hs <= \video_hs$next ;
+  assign \$5  = ! y_count;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) x_count <= 10'h000;
     else x_count <= \x_count$next ;
@@ -161,55 +152,23 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     if (\rst$2 ) video_rgb <= 24'h000000;
     else video_rgb <= \video_rgb$next ;
   assign \$7  = \$3  & \$5 ;
-  always @* begin
-    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    \x_count$next  = x_count;
-    casez (video_stb)
-      1'h1:
-        begin
-          \x_count$next  = \$18 [9:0];
-          casez (\$20 )
-            1'h1:
-                \x_count$next  = 10'h000;
-          endcase
-        end
-    endcase
-    casez (\rst$2 )
-      1'h1:
-          \x_count$next  = 10'h000;
-    endcase
-  end
-  always @* begin
-    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    \y_count$next  = y_count;
-    casez (video_stb)
-      1'h1:
-          casez (\$22 )
-            1'h1:
-              begin
-                \y_count$next  = \$25 [9:0];
-                casez (\$27 )
-                  1'h1:
-                      \y_count$next  = 10'h000;
-                endcase
-              end
-          endcase
-    endcase
-    casez (\rst$2 )
-      1'h1:
-          \y_count$next  = 10'h000;
-    endcase
-  end
+  \amaranth_core.video_clk_div  video_clk_div (
+    .clk(\clk$1 ),
+    .\clk$1 (video_clk_div_clk),
+    .clk90(video_clk_div_clk90),
+    .rst(\rst$2 ),
+    .stb(video_clk_div_stb)
+  );
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     \video_de$next  = video_de;
-    casez (video_stb)
+    casez (video_clk_div_stb)
       1'h1:
         begin
           \video_de$next  = 1'h0;
-          casez (\$33 )
+          casez (\$27 )
             1'h1:
-                casez (\$39 )
+                casez (\$33 )
                   1'h1:
                       \video_de$next  = 1'h1;
                 endcase
@@ -224,16 +183,16 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     \video_rgb$next  = video_rgb;
-    casez (video_stb)
+    casez (video_clk_div_stb)
       1'h1:
         begin
           \video_rgb$next  = 24'h000000;
-          casez (\$45 )
+          casez (\$39 )
             1'h1:
-                casez (\$51 )
+                casez (\$45 )
                   1'h1:
                       (* full_case = 32'd1 *)
-                      casez ({ \$61 , \$59 , \$57 , \$55 , \$53  })
+                      casez ({ \$55 , \$53 , \$51 , \$49 , \$47  })
                         5'b????1:
                           begin
                             \video_rgb$next [23:16] = 8'hff;
@@ -282,18 +241,10 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    \video_rgb_r$next  = { video_rgb_r[2:0], video_rgb_r[3] };
-    casez (\rst$2 )
-      1'h1:
-          \video_rgb_r$next  = 4'hc;
-    endcase
-  end
-  always @* begin
-    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     \video_vs$next  = video_vs;
-    casez (video_stb)
+    casez (video_clk_div_stb)
       1'h1:
-          \video_vs$next  = \$13 ;
+          \video_vs$next  = \$7 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -303,22 +254,103 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     \video_hs$next  = video_hs;
-    casez (video_stb)
+    casez (video_clk_div_stb)
       1'h1:
-          \video_hs$next  = \$15 ;
+          \video_hs$next  = \$9 ;
     endcase
     casez (\rst$2 )
       1'h1:
           \video_hs$next  = 1'h0;
     endcase
   end
-  assign \$17  = \$18 ;
-  assign \$24  = \$25 ;
-  assign video_stb = \$7 ;
-  assign video_rgb_clk90 = video_rgb_r[1];
-  assign video_rgb_clk = video_rgb_r[0];
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
+    \x_count$next  = x_count;
+    casez (video_clk_div_stb)
+      1'h1:
+        begin
+          \x_count$next  = \$12 [9:0];
+          casez (\$14 )
+            1'h1:
+                \x_count$next  = 10'h000;
+          endcase
+        end
+    endcase
+    casez (\rst$2 )
+      1'h1:
+          \x_count$next  = 10'h000;
+    endcase
+  end
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
+    \y_count$next  = y_count;
+    casez (video_clk_div_stb)
+      1'h1:
+          casez (\$16 )
+            1'h1:
+              begin
+                \y_count$next  = \$19 [9:0];
+                casez (\$21 )
+                  1'h1:
+                      \y_count$next  = 10'h000;
+                endcase
+              end
+          endcase
+    endcase
+    casez (\rst$2 )
+      1'h1:
+          \y_count$next  = 10'h000;
+    endcase
+  end
+  assign \$11  = \$12 ;
+  assign \$18  = \$19 ;
+  assign video_rgb_clk90 = video_clk_div_clk90;
+  assign video_rgb_clk = video_clk_div_clk;
   assign \init_done$next  = 1'h1;
   assign \rst$2  = rst;
   assign \clk$1  = clk;
   assign boot_clk = clk;
+endmodule
+
+module \amaranth_core.video_clk_div (rst, \clk$1 , clk90, stb, clk);
+  reg \$auto$verilog_backend.cc:2083:dump_module$2  = 0;
+  input clk;
+  wire clk;
+  output \clk$1 ;
+  wire \clk$1 ;
+  output clk90;
+  wire clk90;
+  reg [3:0] clk_reg = 4'hc;
+  reg [3:0] \clk_reg$next ;
+  input rst;
+  wire rst;
+  output stb;
+  wire stb;
+  reg [3:0] stb_reg = 4'h1;
+  reg [3:0] \stb_reg$next ;
+  always @(posedge clk, posedge rst)
+    if (rst) clk_reg <= 4'hc;
+    else clk_reg <= \clk_reg$next ;
+  always @(posedge clk, posedge rst)
+    if (rst) stb_reg <= 4'h1;
+    else stb_reg <= \stb_reg$next ;
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$2 ) begin end
+    \clk_reg$next  = { clk_reg[2:0], clk_reg[3] };
+    casez (rst)
+      1'h1:
+          \clk_reg$next  = 4'hc;
+    endcase
+  end
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$2 ) begin end
+    \stb_reg$next  = { stb_reg[2:0], stb_reg[3] };
+    casez (rst)
+      1'h1:
+          \stb_reg$next  = 4'h1;
+    endcase
+  end
+  assign stb = stb_reg[0];
+  assign clk90 = clk_reg[1];
+  assign \clk$1  = clk_reg[0];
 endmodule
