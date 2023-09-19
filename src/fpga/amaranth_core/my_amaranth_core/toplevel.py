@@ -130,21 +130,12 @@ class Toplevel(wiring.Component):
 
             with m.If((x_count >= VID_H_BPORCH) & (x_count < VID_H_ACTIVE + VID_H_BPORCH)):
                 with m.If((y_count >= VID_V_BPORCH) & (y_count < VID_V_ACTIVE + VID_V_BPORCH)):
-                    m.d.sync += self.video_de.eq(1)
-                    def rgb(r,g,b):
-                        return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
-                    with m.If(y_count == VID_V_BPORCH):   # Top row red
-                        m.d.sync += rgb(0xFF, 0, 0)
-                    with m.Elif(y_count == VID_V_ACTIVE + VID_V_BPORCH - 1): # Bottom row yellow
-                        m.d.sync += rgb(0xFF, 0xFF, 0x80)
-                    with m.Elif(x_count == VID_H_BPORCH): # Left column green
-                        m.d.sync += rgb(0, 0xFF, 0)
-                    with m.Elif(x_count == VID_H_ACTIVE + VID_H_BPORCH - 1): # Right column blue
-                        m.d.sync += rgb(0, 0, 0xFF)
-                    with m.Elif(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
-                        m.d.sync += rgb(0, 0, 0)
-                    with m.Else():                        # ...and magenta
-                        m.d.sync += rgb(0xa0, 0x00, 0x80)
+                    m.d.sync += [
+                        self.video_de.eq(1),
+                        self.video_rgb.r.eq(0xFF),
+                        self.video_rgb.g.eq(0xFF),
+                        self.video_rgb.b.eq(0xFF),
+                    ]
 
         return m
 

@@ -23,12 +23,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   wire \$41 ;
   wire \$43 ;
   wire \$45 ;
-  wire \$47 ;
-  wire \$49 ;
   wire \$5 ;
-  wire \$51 ;
-  wire \$53 ;
-  wire \$55 ;
   wire \$7 ;
   wire \$9 ;
   input audio_adc;
@@ -108,28 +103,23 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   reg [9:0] \y_count$next ;
   assign \$9  = x_count == 2'h3;
   assign \$12  = x_count + 1'h1;
-  assign \$14  = x_count == 9'h199;
-  assign \$16  = x_count == 9'h199;
+  assign \$14  = x_count == 9'h194;
+  assign \$16  = x_count == 9'h194;
   assign \$19  = y_count + 1'h1;
-  assign \$21  = y_count == 9'h179;
-  assign \$23  = x_count >= 3'h5;
-  assign \$25  = x_count < 9'h195;
+  assign \$21  = y_count == 9'h17d;
+  assign \$23  = x_count >= 2'h2;
+  assign \$25  = x_count < 9'h192;
   assign \$27  = \$23  & \$25 ;
-  assign \$29  = y_count >= 5'h1d;
-  assign \$31  = y_count < 9'h15d;
+  assign \$29  = y_count >= 5'h1f;
+  assign \$31  = y_count < 9'h15f;
   assign \$33  = \$29  & \$31 ;
-  assign \$35  = x_count >= 3'h5;
-  assign \$37  = x_count < 9'h195;
+  assign \$35  = x_count >= 2'h2;
+  assign \$37  = x_count < 9'h192;
   assign \$3  = ! x_count;
   assign \$39  = \$35  & \$37 ;
-  assign \$41  = y_count >= 5'h1d;
-  assign \$43  = y_count < 9'h15d;
+  assign \$41  = y_count >= 5'h1f;
+  assign \$43  = y_count < 9'h15f;
   assign \$45  = \$41  & \$43 ;
-  assign \$47  = y_count == 5'h1d;
-  assign \$49  = y_count == 9'h15c;
-  assign \$51  = x_count == 3'h5;
-  assign \$53  = x_count == 9'h194;
-  assign \$55  = x_count[0] ^ y_count[0];
   always @(posedge boot_clk)
     init_done <= 1'h1;
   always @(posedge \clk$1 , posedge \rst$2 )
@@ -138,7 +128,6 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_hs <= 1'h0;
     else video_hs <= \video_hs$next ;
-  assign \$5  = ! y_count;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) x_count <= 10'h000;
     else x_count <= \x_count$next ;
@@ -151,6 +140,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_rgb <= 24'h000000;
     else video_rgb <= \video_rgb$next ;
+  assign \$5  = ! y_count;
   assign \$7  = \$3  & \$5 ;
   \amaranth_core.video_clk_div  video_clk_div (
     .clk(\clk$1 ),
@@ -191,45 +181,11 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
             1'h1:
                 casez (\$45 )
                   1'h1:
-                      (* full_case = 32'd1 *)
-                      casez ({ \$55 , \$53 , \$51 , \$49 , \$47  })
-                        5'b????1:
-                          begin
-                            \video_rgb$next [23:16] = 8'hff;
-                            \video_rgb$next [15:8] = 8'h00;
-                            \video_rgb$next [7:0] = 8'h00;
-                          end
-                        5'b???1?:
-                          begin
-                            \video_rgb$next [23:16] = 8'hff;
-                            \video_rgb$next [15:8] = 8'hff;
-                            \video_rgb$next [7:0] = 8'h80;
-                          end
-                        5'b??1??:
-                          begin
-                            \video_rgb$next [23:16] = 8'h00;
-                            \video_rgb$next [15:8] = 8'hff;
-                            \video_rgb$next [7:0] = 8'h00;
-                          end
-                        5'b?1???:
-                          begin
-                            \video_rgb$next [23:16] = 8'h00;
-                            \video_rgb$next [15:8] = 8'h00;
-                            \video_rgb$next [7:0] = 8'hff;
-                          end
-                        5'h1?:
-                          begin
-                            \video_rgb$next [23:16] = 8'h00;
-                            \video_rgb$next [15:8] = 8'h00;
-                            \video_rgb$next [7:0] = 8'h00;
-                          end
-                        default:
-                          begin
-                            \video_rgb$next [23:16] = 8'ha0;
-                            \video_rgb$next [15:8] = 8'h00;
-                            \video_rgb$next [7:0] = 8'h80;
-                          end
-                      endcase
+                    begin
+                      \video_rgb$next [23:16] = 8'hff;
+                      \video_rgb$next [15:8] = 8'hff;
+                      \video_rgb$next [7:0] = 8'hff;
+                    end
                 endcase
           endcase
         end
