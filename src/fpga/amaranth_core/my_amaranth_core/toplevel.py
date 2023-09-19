@@ -36,12 +36,6 @@ class PixelClockDiv(wiring.Component):
             self.stb.eq(stb_reg[0])
         ]
 
-        prep_reg = Signal(self.ratio, reset=1)
-        m.d.sync += stb_reg.eq(stb_reg.rotate_left(1))
-        m.d.comb += [
-            self.stb.eq(stb_reg[0])
-        ]
-
         return m
 
 
@@ -53,6 +47,15 @@ class RenderState(enum.Enum):
     CURRENT = 4
     NEXT = 5
 
+class RenderMode(enum.Enum):
+    PLAIN = 0
+    VERT = 1
+    HORIZ = 2
+    CHECKER = 3
+
+ANIMATION_COUNTER_SIZE = 64
+ANIMATION_COUNTER_MAX = 63
+ROTATE_COUNTER_MAX = 3
 
 class Toplevel(wiring.Component):
     clk             : In(1)
@@ -91,10 +94,11 @@ class Toplevel(wiring.Component):
     cont3_trig      : In(16)
     cont4_trig      : In(16)
 
-    render_state      : Out(Shape.cast(RenderState))
-    animation_counter : Out(6) # 0..63 counter
-    rotate1_counter : Out(2) # 0..3 counter
-    rotate2_counter : Out(2) # 0..3 counter
+    def __init__(self, *args):
+        self.animation_counter = Signal(6) # 0..63 counter
+        self.rotate1_counter   = Signal(2) # 0..3 counter
+        self.rotate2_counter   = Signal(2) # 0..3 counter
+        super().__init__(*args)
 
     def elaborate(self, platform):
         m = Module()
@@ -130,19 +134,53 @@ class Toplevel(wiring.Component):
         x_count = Signal(10)
         y_count = Signal(10)
 
+        # Partial results for colors
+        render_state = Signal(Shape.cast(RenderState))
+        current_color_id = Signal(Shape.cast(RenderMode))
+        next_color_id = Signal(Shape.cast(RenderMode))
+        flash_color = Signal(24)
+        current_flash_on = Signal(1)
+        next_flash_on = Signal(1)
+
+        def rgb(r,g,b):
+            return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
+
         with m.If(y_count == VID_V_BPORCH):   # Top row red
-            m.d.comb += self.render_state.eq(RenderState.TOP)
+            m.d.comb += render_state.eq(RenderState.TOP)
         with m.Elif(y_count == VID_V_ACTIVE + VID_V_BPORCH - 1): # Bottom row yellow
-            m.d.comb += self.render_state.eq(RenderState.BOTTOM)
+            m.d.comb += render_state.eq(RenderState.BOTTOM)
         with m.Elif(x_count == VID_H_BPORCH): # Left column green
-            m.d.comb += self.render_state.eq(RenderState.LEFT)
+            m.d.comb += render_state.eq(RenderState.LEFT)
         with m.Elif(x_count == VID_H_ACTIVE + VID_H_BPORCH - 1): # Right column blue
-            m.d.comb += self.render_state.eq(RenderState.RIGHT)
-        with m.Elif(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
-            m.d.comb += self.render_state.eq(RenderState.CURRENT)
+            m.d.comb += render_state.eq(RenderState.RIGHT)
+        with m.Elif(y_count - VID_V_BPORCH > self.animation_counter * (VID_V_ACTIVE // ANIMATION_COUNTER_SIZE)):
+            m.d.comb += render_state.eq(RenderState.NEXT)
+        with m.Else(): # Remaining pixels, alternate black
+            m.d.comb += render_state.eq(RenderState.CURRENT)
+
+        m.d.comb += [
+            current_color_id.eq(self.rotate1_counter+1),
+            next_color_id.eq(self.rotate1_counter)
+        ]
+
+        with m.If((self.rotate1_counter[1]+1) ^ self.rotate2_counter[1]):
+            m.d.comb += flash_color.eq(0x0)
+        with m.Else():
+            m.d.comb += flash_color.eq(0xFFFFFF)
+
+        for [flash_on, id] in [[current_flash_on, current_color_id], [next_flash_on, next_color_id]]:
+            with m.Switch(id):
+                with m.Case(RenderMode.PLAIN):
+                    m.d.comb += flash_on.eq(0)
+                with m.Case(RenderMode.VERT):
+                    m.d.comb += flash_on.eq(x_count[0])
+                with m.Case(RenderMode.HORIZ):
+                    m.d.comb += flash_on.eq(y_count[0])
+                with m.Case(RenderMode.CHECKER):
+                    m.d.comb += flash_on.eq(x_count[0] ^ y_count[0])
 
         with m.If(video_clk_div.stb):
-
+            # Decide color for next pixel
             m.d.sync += [
                 self.video_vs.eq((x_count == 0) & (y_count == 0)),
                 # HS must occur at least 3 cycles after VS
@@ -156,6 +194,14 @@ class Toplevel(wiring.Component):
                 with m.If(y_count == VID_V_TOTAL - 1):
                     m.d.sync += y_count.eq(0)
 
+                    # NEW FRAME LOGIC
+                    m.d.sync += self.animation_counter.eq(self.animation_counter + 1)
+
+                    with m.If(self.animation_counter == ANIMATION_COUNTER_MAX):                    
+                        m.d.sync += self.rotate1_counter.eq(self.rotate1_counter + 1)
+                        with m.If(self.rotate1_counter == ROTATE_COUNTER_MAX):
+                            m.d.sync += self.rotate2_counter.eq(self.rotate2_counter + 1)
+
             m.d.sync += [
                 # inactive screen areas must be black
                 self.video_de.eq(0),
@@ -165,9 +211,7 @@ class Toplevel(wiring.Component):
             with m.If((x_count >= VID_H_BPORCH) & (x_count < VID_H_ACTIVE + VID_H_BPORCH)):
                 with m.If((y_count >= VID_V_BPORCH) & (y_count < VID_V_ACTIVE + VID_V_BPORCH)):
                     m.d.sync += self.video_de.eq(1)
-                    def rgb(r,g,b):
-                        return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
-                    with m.Switch(self.render_state):
+                    with m.Switch(render_state):
                         with m.Case(RenderState.TOP): # Red
                             m.d.sync += rgb(0xFF, 0, 0)
                         with m.Case(RenderState.BOTTOM): # Yellow
@@ -176,11 +220,12 @@ class Toplevel(wiring.Component):
                             m.d.sync += rgb(0, 0xFF, 0)
                         with m.Case(RenderState.TOP): # Blue
                             m.d.sync += rgb(0, 0, 0xFF)
-                        with m.Case(RenderState.BOTTOM):
-                            with m.If(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
-                                m.d.sync += rgb(0, 0, 0)
-                            with m.Else():                        # ...and magenta
-                                m.d.sync += rgb(0xa0, 0x00, 0x80)
+                        for [case, flash_on, invert] in [[RenderState.CURRENT, current_flash_on, 0x0], [RenderState.NEXT, next_flash_on, 0xFFFFFF]]:
+                            with m.Case(case):
+                                with m.If(flash_on): # Remaining pixels, alternate black
+                                    m.d.sync += self.video_rgb.eq(flash_color^invert)
+                                with m.Else():
+                                    m.d.sync += rgb(0xa0, 0x00, 0x80) # Magenta
 
         return m
 
