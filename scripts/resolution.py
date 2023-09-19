@@ -20,7 +20,7 @@ RES_Y_MAX = 720
 REFERENCE_MHZ = 74.25
 
 # Minimum combined size for porches
-PORCH_MIN = 20
+PORCH_MIN = 8
 
 # Assume neither axis should exceed this with porch size. 100% arbitrary
 PORCHED_MAX = 1024
@@ -83,7 +83,7 @@ m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio={divisor})
 
 # Amaranth sizes
 
-# {REFERENCE_MHZ/divisor:0.3f} mhz clock; {hz:0.3f} fps
+# ~{REFERENCE_MHZ/divisor:0.3f} mhz clock; {hz:0.3f} fps
 VID_H_BPORCH = {porch_x}
 VID_H_ACTIVE = {display_x}
 VID_H_TOTAL  = {x}

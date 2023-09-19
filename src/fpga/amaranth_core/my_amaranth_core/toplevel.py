@@ -96,13 +96,13 @@ class Toplevel(wiring.Component):
             self.video_rgb_clk90.eq(video_clk_div.clk90),
         ]
 
-        # 9.281 mhz clock; 59.887 fps
-        VID_H_BPORCH = 10
+        # ~9.281 mhz clock; 60.022 fps
+        VID_H_BPORCH = 4
         VID_H_ACTIVE = 400
-        VID_H_TOTAL  = 420
-        VID_V_BPORCH = 24
+        VID_H_TOTAL  = 408
+        VID_V_BPORCH = 29
         VID_V_ACTIVE = 320
-        VID_V_TOTAL  = 369
+        VID_V_TOTAL  = 379
 
         assert 47 <= (74250000 / video_clk_div.ratio / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
