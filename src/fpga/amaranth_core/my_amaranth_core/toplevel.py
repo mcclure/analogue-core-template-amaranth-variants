@@ -1,6 +1,7 @@
 from amaranth import *
 from amaranth.lib import wiring, data
 from amaranth.lib.wiring import In, Out
+import enum
 
 
 class PixelClockDiv(wiring.Component):
@@ -35,7 +36,22 @@ class PixelClockDiv(wiring.Component):
             self.stb.eq(stb_reg[0])
         ]
 
+        prep_reg = Signal(self.ratio, reset=1)
+        m.d.sync += stb_reg.eq(stb_reg.rotate_left(1))
+        m.d.comb += [
+            self.stb.eq(stb_reg[0])
+        ]
+
         return m
+
+
+class RenderState(enum.Enum):
+    TOP    = 0
+    LEFT   = 1
+    BOTTOM = 2
+    RIGHT  = 3
+    CURRENT = 4
+    NEXT = 5
 
 
 class Toplevel(wiring.Component):
@@ -75,6 +91,11 @@ class Toplevel(wiring.Component):
     cont3_trig      : In(16)
     cont4_trig      : In(16)
 
+    render_state      : Out(Shape.cast(RenderState))
+    animation_counter : Out(6) # 0..63 counter
+    rotate1_counter : Out(2) # 0..3 counter
+    rotate2_counter : Out(2) # 0..3 counter
+
     def elaborate(self, platform):
         m = Module()
 
@@ -106,9 +127,21 @@ class Toplevel(wiring.Component):
 
         assert 47 <= (74250000 / video_clk_div.ratio / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
+        x_count = Signal(10)
+        y_count = Signal(10)
+
+        with m.If(y_count == VID_V_BPORCH):   # Top row red
+            m.d.comb += self.render_state.eq(RenderState.TOP)
+        with m.Elif(y_count == VID_V_ACTIVE + VID_V_BPORCH - 1): # Bottom row yellow
+            m.d.comb += self.render_state.eq(RenderState.BOTTOM)
+        with m.Elif(x_count == VID_H_BPORCH): # Left column green
+            m.d.comb += self.render_state.eq(RenderState.LEFT)
+        with m.Elif(x_count == VID_H_ACTIVE + VID_H_BPORCH - 1): # Right column blue
+            m.d.comb += self.render_state.eq(RenderState.RIGHT)
+        with m.Elif(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
+            m.d.comb += self.render_state.eq(RenderState.CURRENT)
+
         with m.If(video_clk_div.stb):
-            x_count = Signal(10)
-            y_count = Signal(10)
 
             m.d.sync += [
                 self.video_vs.eq((x_count == 0) & (y_count == 0)),
@@ -134,18 +167,20 @@ class Toplevel(wiring.Component):
                     m.d.sync += self.video_de.eq(1)
                     def rgb(r,g,b):
                         return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
-                    with m.If(y_count == VID_V_BPORCH):   # Top row red
-                        m.d.sync += rgb(0xFF, 0, 0)
-                    with m.Elif(y_count == VID_V_ACTIVE + VID_V_BPORCH - 1): # Bottom row yellow
-                        m.d.sync += rgb(0xFF, 0xFF, 0x80)
-                    with m.Elif(x_count == VID_H_BPORCH): # Left column green
-                        m.d.sync += rgb(0, 0xFF, 0)
-                    with m.Elif(x_count == VID_H_ACTIVE + VID_H_BPORCH - 1): # Right column blue
-                        m.d.sync += rgb(0, 0, 0xFF)
-                    with m.Elif(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
-                        m.d.sync += rgb(0, 0, 0)
-                    with m.Else():                        # ...and magenta
-                        m.d.sync += rgb(0xa0, 0x00, 0x80)
+                    with m.Switch(self.render_state):
+                        with m.Case(RenderState.TOP): # Red
+                            m.d.sync += rgb(0xFF, 0, 0)
+                        with m.Case(RenderState.BOTTOM): # Yellow
+                            m.d.sync += rgb(0xFF, 0xFF, 0x80)
+                        with m.Case(RenderState.LEFT): # Green
+                            m.d.sync += rgb(0, 0xFF, 0)
+                        with m.Case(RenderState.TOP): # Blue
+                            m.d.sync += rgb(0, 0, 0xFF)
+                        with m.Case(RenderState.BOTTOM):
+                            with m.If(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
+                                m.d.sync += rgb(0, 0, 0)
+                            with m.Else():                        # ...and magenta
+                                m.d.sync += rgb(0xa0, 0x00, 0x80)
 
         return m
 
