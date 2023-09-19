@@ -20,7 +20,7 @@ RES_Y_MAX = 720
 REFERENCE_MHZ = 74.25
 
 # Minimum combined size for porches
-PORCH_MIN = 10
+PORCH_MIN = 20
 
 # Assume neither axis should exceed this with porch size. 100% arbitrary
 PORCHED_MAX = 1024

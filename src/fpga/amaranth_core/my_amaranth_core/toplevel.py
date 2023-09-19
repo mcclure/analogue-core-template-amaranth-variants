@@ -21,11 +21,12 @@ class PixelClockDiv(wiring.Component):
         # clk    /¯¯¯\___
         # rgb    X--------
 
+        # Generate bitmap with ratio/2 0s (low order) followed by ratio/2 1s (high order)
         clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2))
         m.d.sync += clk_reg.eq(clk_reg.rotate_left(1))
         m.d.comb += [
-            self.clk.eq(clk_reg[0]),
-            self.clk90.eq(clk_reg[self.ratio // 4]),
+            self.clk.eq(clk_reg[self.ratio - 1]),
+            self.clk90.eq(clk_reg[self.ratio // 4 - 1]),
         ]
 
         stb_reg = Signal(self.ratio, reset=1)
@@ -95,13 +96,13 @@ class Toplevel(wiring.Component):
             self.video_rgb_clk90.eq(video_clk_div.clk90),
         ]
 
-        # 9.281 mhz clock; 59.991 fps
-        VID_H_BPORCH = 2
+        # 9.281 mhz clock; 59.887 fps
+        VID_H_BPORCH = 10
         VID_H_ACTIVE = 400
-        VID_H_TOTAL  = 405
-        VID_V_BPORCH = 31
+        VID_H_TOTAL  = 420
+        VID_V_BPORCH = 24
         VID_V_ACTIVE = 320
-        VID_V_TOTAL  = 382
+        VID_V_TOTAL  = 369
 
         assert 47 <= (74250000 / video_clk_div.ratio / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
@@ -130,12 +131,21 @@ class Toplevel(wiring.Component):
 
             with m.If((x_count >= VID_H_BPORCH) & (x_count < VID_H_ACTIVE + VID_H_BPORCH)):
                 with m.If((y_count >= VID_V_BPORCH) & (y_count < VID_V_ACTIVE + VID_V_BPORCH)):
-                    m.d.sync += [
-                        self.video_de.eq(1),
-                        self.video_rgb.r.eq(0xFF),
-                        self.video_rgb.g.eq(0xFF),
-                        self.video_rgb.b.eq(0xFF),
-                    ]
+                    m.d.sync += self.video_de.eq(1)
+                    def rgb(r,g,b):
+                        return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
+                    with m.If(y_count == VID_V_BPORCH):   # Top row red
+                        m.d.sync += rgb(0xFF, 0, 0)
+                    with m.Elif(y_count == VID_V_ACTIVE + VID_V_BPORCH - 1): # Bottom row yellow
+                        m.d.sync += rgb(0xFF, 0xFF, 0x80)
+                    with m.Elif(x_count == VID_H_BPORCH): # Left column green
+                        m.d.sync += rgb(0, 0xFF, 0)
+                    with m.Elif(x_count == VID_H_ACTIVE + VID_H_BPORCH - 1): # Right column blue
+                        m.d.sync += rgb(0, 0, 0xFF)
+                    with m.Elif(x_count[0] ^ y_count[0]): # Remaining pixels, alternate black
+                        m.d.sync += rgb(0, 0, 0)
+                    with m.Else():                        # ...and magenta
+                        m.d.sync += rgb(0xa0, 0x00, 0x80)
 
         return m
 
