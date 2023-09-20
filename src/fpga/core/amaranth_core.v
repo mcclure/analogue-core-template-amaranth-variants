@@ -3,58 +3,72 @@
 module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key, cont1_trig, cont2_joy, cont2_key, cont2_trig, cont3_joy, cont3_key, cont3_trig, cont4_joy, cont4_key, cont4_trig, dbg_rx, dbg_tx, init_done, rst, user1
 , user2, video_de, video_hs, video_rgb, video_rgb_clk, video_rgb_clk90, video_skip, video_vs, audio_adc);
   reg \$auto$verilog_backend.cc:2083:dump_module$1  = 0;
+  wire \$10 ;
   wire \$101 ;
-  wire [23:0] \$103 ;
-  wire [23:0] \$105 ;
-  wire [10:0] \$11 ;
-  wire [10:0] \$13 ;
-  wire [8:0] \$14 ;
-  wire \$17 ;
-  wire [2:0] \$19 ;
-  wire [2:0] \$20 ;
+  wire [2:0] \$103 ;
+  wire [2:0] \$104 ;
+  wire \$106 ;
+  wire \$108 ;
+  wire \$110 ;
+  wire \$112 ;
+  wire \$114 ;
+  wire \$116 ;
+  wire \$118 ;
+  wire \$12 ;
+  wire \$120 ;
+  wire \$122 ;
+  wire \$124 ;
+  wire \$126 ;
+  wire \$128 ;
+  wire [23:0] \$130 ;
+  wire [23:0] \$132 ;
+  wire \$14 ;
+  wire [10:0] \$16 ;
+  wire [10:0] \$18 ;
+  wire \$20 ;
   wire \$22 ;
-  wire [1:0] \$23 ;
-  wire [1:0] \$25 ;
+  wire \$24 ;
+  wire [10:0] \$26 ;
   wire \$28 ;
-  wire \$3 ;
+  wire [2:0] \$3 ;
   wire \$30 ;
   wire \$32 ;
-  wire \$34 ;
-  wire \$36 ;
+  wire [10:0] \$34 ;
+  wire [10:0] \$36 ;
   wire \$38 ;
-  wire [10:0] \$40 ;
-  wire [10:0] \$41 ;
-  wire \$43 ;
-  wire \$45 ;
-  wire [10:0] \$47 ;
-  wire [10:0] \$48 ;
-  wire \$5 ;
-  wire \$50 ;
-  wire \$52 ;
-  wire \$54 ;
-  wire [6:0] \$56 ;
-  wire [6:0] \$57 ;
+  wire [2:0] \$4 ;
+  wire \$40 ;
+  wire [10:0] \$42 ;
+  wire [10:0] \$44 ;
+  wire [8:0] \$45 ;
+  wire \$48 ;
+  wire [2:0] \$50 ;
+  wire [2:0] \$51 ;
+  wire \$53 ;
+  wire \$55 ;
+  wire \$57 ;
   wire \$59 ;
+  wire \$6 ;
   wire \$61 ;
   wire \$63 ;
-  wire [2:0] \$65 ;
-  wire [2:0] \$66 ;
-  wire \$68 ;
-  wire \$7 ;
+  wire \$65 ;
+  wire [10:0] \$67 ;
+  wire [10:0] \$68 ;
   wire \$70 ;
   wire \$72 ;
-  wire \$74 ;
-  wire [2:0] \$76 ;
-  wire [2:0] \$77 ;
+  wire [10:0] \$74 ;
+  wire [10:0] \$75 ;
+  wire \$77 ;
   wire \$79 ;
+  wire [10:0] \$8 ;
   wire \$81 ;
-  wire \$83 ;
-  wire \$85 ;
-  wire \$87 ;
-  wire \$89 ;
-  wire \$9 ;
-  wire \$91 ;
-  wire \$93 ;
+  wire [6:0] \$83 ;
+  wire [6:0] \$84 ;
+  wire \$86 ;
+  wire \$88 ;
+  wire \$90 ;
+  wire [2:0] \$92 ;
+  wire [2:0] \$93 ;
   wire \$95 ;
   wire \$97 ;
   wire \$99 ;
@@ -113,6 +127,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   reg [1:0] \rotate1_counter$next ;
   reg [1:0] rotate2_counter = 2'h0;
   reg [1:0] \rotate2_counter$next ;
+  wire [1:0] rotate2_counter_anti;
   input rst;
   wire rst;
   wire \rst$2 ;
@@ -145,11 +160,25 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   reg [9:0] \x_count$next ;
   reg [9:0] y_count = 10'h000;
   reg [9:0] \y_count$next ;
-  assign \$9  = x_count == 9'h193;
-  assign \$99  = y_count < 9'h15d;
-  assign \$101  = \$97  & \$99 ;
-  assign \$103  = flash_color ^ 1'h0;
-  assign \$105  = flash_color ^ 24'hffffff;
+  assign \$99  = animation_counter == 6'h3f;
+  assign \$101  = rotate1_counter == 2'h3;
+  assign \$104  = rotate2_counter + 1'h1;
+  assign \$106  = x_count >= 3'h4;
+  assign \$108  = x_count < 9'h194;
+  assign \$10  = y_count <= \$8 ;
+  assign \$110  = \$106  & \$108 ;
+  assign \$112  = y_count >= 5'h1d;
+  assign \$114  = y_count < 9'h15d;
+  assign \$116  = \$112  & \$114 ;
+  assign \$118  = x_count >= 3'h4;
+  assign \$120  = x_count < 9'h194;
+  assign \$122  = \$118  & \$120 ;
+  assign \$124  = y_count >= 5'h1d;
+  assign \$126  = y_count < 9'h15d;
+  assign \$128  = \$124  & \$126 ;
+  assign \$12  = \$6  & \$10 ;
+  assign \$130  = flash_color ^ 1'h0;
+  assign \$132  = flash_color ^ 24'hffffff;
   always @(posedge boot_clk)
     init_done <= 1'h1;
   always @(posedge \clk$1 , posedge \rst$2 )
@@ -179,50 +208,49 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_rgb <= 24'h000000;
     else video_rgb <= \video_rgb$next ;
-  assign \$11  = y_count - 5'h1d;
-  assign \$14  = animation_counter * 3'h5;
-  assign \$13  = + \$14 ;
-  assign \$17  = $signed(\$11 ) > $signed(\$13 );
-  assign \$20  = rotate1_counter + 1'h1;
-  assign \$23  = rotate1_counter[1] + 1'h1;
-  assign \$25  = \$23  ^ rotate2_counter[1];
-  assign \$22  = | \$25 ;
-  assign \$28  = x_count[0] ^ y_count[0];
-  assign \$30  = x_count[0] ^ y_count[0];
-  assign \$32  = ! x_count;
-  assign \$34  = ! y_count;
-  assign \$36  = \$32  & \$34 ;
-  assign \$38  = x_count == 2'h3;
-  assign \$3  = y_count == 5'h1d;
-  assign \$41  = x_count + 1'h1;
-  assign \$43  = x_count == 9'h197;
-  assign \$45  = x_count == 9'h197;
-  assign \$48  = y_count + 1'h1;
-  assign \$50  = y_count == 9'h17a;
-  assign \$52  = x_count == 9'h197;
-  assign \$54  = y_count == 9'h17a;
-  assign \$57  = animation_counter + 1'h1;
-  assign \$5  = y_count == 9'h15c;
-  assign \$59  = x_count == 9'h197;
-  assign \$61  = y_count == 9'h17a;
-  assign \$63  = animation_counter == 6'h3f;
-  assign \$66  = rotate1_counter + 1'h1;
-  assign \$68  = x_count == 9'h197;
-  assign \$70  = y_count == 9'h17a;
-  assign \$72  = animation_counter == 6'h3f;
-  assign \$74  = rotate1_counter == 2'h3;
-  assign \$77  = rotate2_counter + 1'h1;
-  assign \$7  = x_count == 3'h4;
-  assign \$79  = x_count >= 3'h4;
-  assign \$81  = x_count < 9'h194;
-  assign \$83  = \$79  & \$81 ;
-  assign \$85  = y_count >= 5'h1d;
-  assign \$87  = y_count < 9'h15d;
-  assign \$89  = \$85  & \$87 ;
-  assign \$91  = x_count >= 3'h4;
-  assign \$93  = x_count < 9'h194;
-  assign \$95  = \$91  & \$93 ;
-  assign \$97  = y_count >= 5'h1d;
+  assign \$14  = y_count <= 10'h15c;
+  assign \$16  = + y_count;
+  assign \$18  = 10'h15c - rotate2_counter_anti;
+  assign \$20  = $signed(\$16 ) >= $signed(\$18 );
+  assign \$22  = \$14  & \$20 ;
+  assign \$24  = x_count >= 10'h004;
+  assign \$26  = 10'h004 + rotate2_counter_anti;
+  assign \$28  = x_count <= \$26 ;
+  assign \$30  = \$24  & \$28 ;
+  assign \$32  = x_count <= 10'h193;
+  assign \$34  = + x_count;
+  assign \$36  = 10'h193 - rotate2_counter_anti;
+  assign \$38  = $signed(\$34 ) >= $signed(\$36 );
+  assign \$40  = \$32  & \$38 ;
+  assign \$42  = y_count - 5'h1d;
+  assign \$45  = animation_counter * 3'h5;
+  assign \$44  = + \$45 ;
+  assign \$48  = $signed(\$42 ) > $signed(\$44 );
+  assign \$4  = 2'h3 - rotate2_counter;
+  assign \$51  = rotate1_counter + 1'h1;
+  assign \$53  = rotate1_counter[0] ^ rotate2_counter[0];
+  assign \$55  = x_count[0] ^ y_count[0];
+  assign \$57  = x_count[0] ^ y_count[0];
+  assign \$59  = ! x_count;
+  assign \$61  = ! y_count;
+  assign \$63  = \$59  & \$61 ;
+  assign \$65  = x_count == 2'h3;
+  assign \$68  = x_count + 1'h1;
+  assign \$6  = y_count >= 10'h01d;
+  assign \$70  = x_count == 9'h197;
+  assign \$72  = x_count == 9'h197;
+  assign \$75  = y_count + 1'h1;
+  assign \$77  = y_count == 9'h17a;
+  assign \$79  = x_count == 9'h197;
+  assign \$81  = y_count == 9'h17a;
+  assign \$84  = animation_counter + 1'h1;
+  assign \$86  = x_count == 9'h197;
+  assign \$88  = y_count == 9'h17a;
+  assign \$8  = 10'h01d + rotate2_counter_anti;
+  assign \$90  = animation_counter == 6'h3f;
+  assign \$93  = rotate1_counter + 1'h1;
+  assign \$95  = x_count == 9'h197;
+  assign \$97  = y_count == 9'h17a;
   \amaranth_core.video_clk_div  video_clk_div (
     .clk(\clk$1 ),
     .\clk$1 (video_clk_div_clk),
@@ -230,6 +258,16 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     .rst(\rst$2 ),
     .stb(video_clk_div_stb)
   );
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
+    (* full_case = 32'd1 *)
+    casez (\$53 )
+      1'h1:
+          flash_color = 24'h000000;
+      default:
+          flash_color = 24'hffffff;
+    endcase
+  end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     (* full_case = 32'd1 *)
@@ -241,7 +279,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
       2'h2:
           current_flash_on = y_count[0];
       2'h3:
-          current_flash_on = \$28 ;
+          current_flash_on = \$55 ;
     endcase
   end
   always @* begin
@@ -255,7 +293,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
       2'h2:
           next_flash_on = y_count[0];
       2'h3:
-          next_flash_on = \$30 ;
+          next_flash_on = \$57 ;
     endcase
   end
   always @* begin
@@ -263,7 +301,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     \video_vs$next  = video_vs;
     casez (video_clk_div_stb)
       1'h1:
-          \video_vs$next  = \$36 ;
+          \video_vs$next  = \$63 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -275,7 +313,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     \video_hs$next  = video_hs;
     casez (video_clk_div_stb)
       1'h1:
-          \video_hs$next  = \$38 ;
+          \video_hs$next  = \$65 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -288,8 +326,8 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     casez (video_clk_div_stb)
       1'h1:
         begin
-          \x_count$next  = \$41 [9:0];
-          casez (\$43 )
+          \x_count$next  = \$68 [9:0];
+          casez (\$70 )
             1'h1:
                 \x_count$next  = 10'h000;
           endcase
@@ -305,11 +343,11 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     \y_count$next  = y_count;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$45 )
+          casez (\$72 )
             1'h1:
               begin
-                \y_count$next  = \$48 [9:0];
-                casez (\$50 )
+                \y_count$next  = \$75 [9:0];
+                casez (\$77 )
                   1'h1:
                       \y_count$next  = 10'h000;
                 endcase
@@ -326,11 +364,11 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     \animation_counter$next  = animation_counter;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$52 )
+          casez (\$79 )
             1'h1:
-                casez (\$54 )
+                casez (\$81 )
                   1'h1:
-                      \animation_counter$next  = \$57 [5:0];
+                      \animation_counter$next  = \$84 [5:0];
                 endcase
           endcase
     endcase
@@ -344,13 +382,13 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     \rotate1_counter$next  = rotate1_counter;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$59 )
+          casez (\$86 )
             1'h1:
-                casez (\$61 )
+                casez (\$88 )
                   1'h1:
-                      casez (\$63 )
+                      casez (\$90 )
                         1'h1:
-                            \rotate1_counter$next  = \$66 [1:0];
+                            \rotate1_counter$next  = \$93 [1:0];
                       endcase
                 endcase
           endcase
@@ -365,15 +403,15 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     \rotate2_counter$next  = rotate2_counter;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$68 )
+          casez (\$95 )
             1'h1:
-                casez (\$70 )
+                casez (\$97 )
                   1'h1:
-                      casez (\$72 )
+                      casez (\$99 )
                         1'h1:
-                            casez (\$74 )
+                            casez (\$101 )
                               1'h1:
-                                  \rotate2_counter$next  = \$77 [1:0];
+                                  \rotate2_counter$next  = \$104 [1:0];
                             endcase
                       endcase
                 endcase
@@ -391,9 +429,9 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
       1'h1:
         begin
           \video_de$next  = 1'h0;
-          casez (\$83 )
+          casez (\$110 )
             1'h1:
-                casez (\$89 )
+                casez (\$116 )
                   1'h1:
                       \video_de$next  = 1'h1;
                 endcase
@@ -412,16 +450,16 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
       1'h1:
         begin
           \video_rgb$next  = 24'h000000;
-          casez (\$95 )
+          casez (\$122 )
             1'h1:
-                casez (\$101 )
+                casez (\$128 )
                   1'h1:
                       casez (render_state)
                         3'h0:
                           begin
-                            \video_rgb$next [23:16] = 8'h00;
+                            \video_rgb$next [23:16] = 8'hff;
                             \video_rgb$next [15:8] = 8'h00;
-                            \video_rgb$next [7:0] = 8'hff;
+                            \video_rgb$next [7:0] = 8'h00;
                           end
                         3'h2:
                           begin
@@ -435,11 +473,17 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
                             \video_rgb$next [15:8] = 8'hff;
                             \video_rgb$next [7:0] = 8'h00;
                           end
+                        3'h3:
+                          begin
+                            \video_rgb$next [23:16] = 8'h00;
+                            \video_rgb$next [15:8] = 8'h00;
+                            \video_rgb$next [7:0] = 8'hff;
+                          end
                         3'h4:
                             (* full_case = 32'd1 *)
                             casez (current_flash_on)
                               1'h1:
-                                  \video_rgb$next  = \$103 ;
+                                  \video_rgb$next  = \$130 ;
                               default:
                                 begin
                                   \video_rgb$next [23:16] = 8'ha0;
@@ -451,7 +495,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
                             (* full_case = 32'd1 *)
                             casez (next_flash_on)
                               1'h1:
-                                  \video_rgb$next  = \$105 ;
+                                  \video_rgb$next  = \$132 ;
                               default:
                                 begin
                                   \video_rgb$next [23:16] = 8'ha0;
@@ -472,7 +516,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     (* full_case = 32'd1 *)
-    casez ({ \$17 , \$9 , \$7 , \$5 , \$3  })
+    casez ({ \$48 , \$40 , \$30 , \$22 , \$12  })
       5'b????1:
           render_state = 3'h0;
       5'b???1?:
@@ -487,24 +531,16 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
           render_state = 3'h4;
     endcase
   end
-  always @* begin
-    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    (* full_case = 32'd1 *)
-    casez (\$22 )
-      1'h1:
-          flash_color = 24'h000000;
-      default:
-          flash_color = 24'hffffff;
-    endcase
-  end
-  assign \$19  = \$20 ;
-  assign \$40  = \$41 ;
-  assign \$47  = \$48 ;
-  assign \$56  = \$57 ;
-  assign \$65  = \$66 ;
-  assign \$76  = \$77 ;
+  assign \$3  = \$4 ;
+  assign \$50  = \$51 ;
+  assign \$67  = \$68 ;
+  assign \$74  = \$75 ;
+  assign \$83  = \$84 ;
+  assign \$92  = \$93 ;
+  assign \$103  = \$104 ;
   assign next_color_id = rotate1_counter;
-  assign current_color_id = \$20 [1:0];
+  assign current_color_id = \$51 [1:0];
+  assign rotate2_counter_anti = \$4 [1:0];
   assign video_rgb_clk90 = video_clk_div_clk90;
   assign video_rgb_clk = video_clk_div_clk;
   assign \init_done$next  = 1'h1;

@@ -141,18 +141,29 @@ class Toplevel(wiring.Component):
         flash_color = Signal(24)
         current_flash_on = Signal(1)
         next_flash_on = Signal(1)
+        rotate2_counter_anti = Signal(2)
+
+        m.d.comb += rotate2_counter_anti.eq(ROTATE_COUNTER_MAX - self.rotate2_counter)
 
         def rgb(r,g,b):
             return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
 
-        with m.If(y_count == VID_V_BPORCH):   # Top row red
+        val = Const(VID_V_BPORCH, y_count.shape())
+        with m.If((y_count >= val) & (y_count <= val + rotate2_counter_anti)):   # Top row red
             m.d.comb += render_state.eq(RenderState.TOP)
-        with m.Elif(y_count == VID_V_ACTIVE + VID_V_BPORCH - 1): # Bottom row yellow
+        
+        val = Const(VID_V_ACTIVE + VID_V_BPORCH - 1, y_count.shape())
+        with m.Elif((y_count <= val) & (y_count >= val - rotate2_counter_anti)): # Bottom row yellow
             m.d.comb += render_state.eq(RenderState.BOTTOM)
-        with m.Elif(x_count == VID_H_BPORCH): # Left column green
+
+        val = Const(VID_H_BPORCH, x_count.shape())
+        with m.Elif((x_count >= val) & (x_count <= val + rotate2_counter_anti)): # Left column green
             m.d.comb += render_state.eq(RenderState.LEFT)
-        with m.Elif(x_count == VID_H_ACTIVE + VID_H_BPORCH - 1): # Right column blue
+
+        val = Const(VID_H_ACTIVE + VID_H_BPORCH - 1, x_count.shape())
+        with m.Elif((x_count <= val) & (x_count >= val - rotate2_counter_anti)): # Right column blue
             m.d.comb += render_state.eq(RenderState.RIGHT)
+
         with m.Elif(y_count - VID_V_BPORCH > self.animation_counter * (VID_V_ACTIVE // ANIMATION_COUNTER_SIZE)):
             m.d.comb += render_state.eq(RenderState.NEXT)
         with m.Else(): # Remaining pixels, alternate black
@@ -163,7 +174,7 @@ class Toplevel(wiring.Component):
             next_color_id.eq(self.rotate1_counter)
         ]
 
-        with m.If((self.rotate1_counter[1]+1) ^ self.rotate2_counter[1]):
+        with m.If(self.rotate1_counter[0] ^ self.rotate2_counter[0]):
             m.d.comb += flash_color.eq(0x0)
         with m.Else():
             m.d.comb += flash_color.eq(0xFFFFFF)
@@ -218,7 +229,7 @@ class Toplevel(wiring.Component):
                             m.d.sync += rgb(0xFF, 0xFF, 0x80)
                         with m.Case(RenderState.LEFT): # Green
                             m.d.sync += rgb(0, 0xFF, 0)
-                        with m.Case(RenderState.TOP): # Blue
+                        with m.Case(RenderState.RIGHT): # Blue
                             m.d.sync += rgb(0, 0, 0xFF)
                         for [case, flash_on, invert] in [[RenderState.CURRENT, current_flash_on, 0x0], [RenderState.NEXT, next_flash_on, 0xFFFFFF]]:
                             with m.Case(case):
