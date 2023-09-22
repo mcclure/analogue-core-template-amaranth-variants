@@ -9,7 +9,7 @@ class PixelClockDiv(wiring.Component):
     clk     : Out(1) # Pixel clock
     stb     : Out(1) # Single cycle strobe at rising edge of `clk`
 
-    def __init__(self, ratio=2):
+    def __init__(self, ratio=4):
         super().__init__()
 
         assert ratio >= 4 and ratio % 4 == 0, "Ratio must be at least 4 and divisible by 4"
@@ -21,17 +21,45 @@ class PixelClockDiv(wiring.Component):
         # clk90  __/¯¯¯\_
         # clk    /¯¯¯\___
         # rgb    X--------
+        # Note clock rises one cycle AFTER rgb strobe
 
         # Generate bitmap with ratio/2 0s (low order) followed by ratio/2 1s (high order)
         clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2))
         m.d.sync += clk_reg.eq(clk_reg.rotate_left(1))
         m.d.comb += [
-            self.clk.eq(clk_reg[self.ratio - 1]),
-            self.clk90.eq(clk_reg[self.ratio // 4 - 1]),
+            self.clk.eq(clk_reg[0]),
+            self.clk90.eq(clk_reg[self.ratio // 4]),
         ]
 
         stb_reg = Signal(self.ratio, reset=1)
         m.d.sync += stb_reg.eq(stb_reg.rotate_left(1))
+        m.d.comb += [
+            self.stb.eq(stb_reg[0])
+        ]
+
+        return m
+
+class AudioClockDiv(wiring.Component):
+    stb_update     : Out(1) # Single cycle strobe
+    stb            : Out(1)        # Single cycle strobe delayed by 1 cycle
+
+    def __init__(self, ratio=2):
+        super().__init__()
+
+        assert ratio >= 2 and ratio % 2 == 0, "Ratio must be at least 2 and divisible by 2"
+        self.ratio = ratio
+
+    def elaborate(self, platform):
+        m = Module()
+
+        stb_reg_update = Signal(self.ratio, reset=1)
+        m.d.sync += stb_reg_update.eq(stb_reg_update.rotate_right(1)) # Rotates right where pixel rotates left
+        m.d.comb += [
+            self.stb_update.eq(stb_reg_update[0])
+        ]
+
+        stb_reg = Signal(self.ratio, reset=2)
+        m.d.sync += stb_reg.eq(stb_reg.rotate_right(1))
         m.d.comb += [
             self.stb.eq(stb_reg[0])
         ]
@@ -244,10 +272,10 @@ class Toplevel(wiring.Component):
 
         # Recreate Analogue i2s protocol from core_top.v
 
-        m.submodules.i2s_clk_div = i2s_clock_div = PixelClockDiv(ratio=4)
+        m.submodules.i2s_clk_div = i2s_clock_div = AudioClockDiv(ratio=4)
 
         audgen_accum = Signal(22)
-        audgen_mclk = Signal(22)
+        audgen_mclk = Signal(1)
         CYCLE_48KHZ = Const(122880 * 2, Shape(width=22))
         CYCLE_OVERFLOW = Const(742500, Shape(width=22))
 
@@ -258,34 +286,46 @@ class Toplevel(wiring.Component):
                 audgen_accum.eq(audgen_accum - CYCLE_OVERFLOW + CYCLE_48KHZ)
             ]
 
+        audgen_sclk_stb_update = Signal(1)
         audgen_sclk_stb = Signal(1)
-        m.d.comb += audgen_sclk_stb.eq(i2s_clock_div.stb)
+        m.d.comb += [
+            audgen_sclk_stb.eq(i2s_clock_div.stb),
+            audgen_sclk_stb_update.eq(i2s_clock_div.stb_update)
+        ]
 
         audgen_lrck_cnt = Signal(5)
-        audgen_lrck = Signal(1)
-        audgen_dac = Signal(1)
+        audgen_lrck = Signal(1)     # Serial clock
+        audgen_dac = Signal(1)      # Output value
 
         # User logic
-        audgen_osc = Signal(8)
-        audgen_high = Signal(1)
+        audgen_osc = Signal(8)      # Counter for square wave
+        audgen_high = Signal(1)     # High when square wave high
 
-        with m.If(audgen_sclk_stb): # Negative clock edge of 1/2 clock?
-            m.d.comb += audgen_dac.eq( Mux(audgen_lrck_cnt < 4, 1, audgen_high) )
+        with m.If(audgen_sclk_stb_update): # Update late as possible (could do so as early as implied falling edge...)
+            m.d.sync += audgen_dac.eq( Mux(audgen_lrck_cnt < 4, 0, audgen_high) )
 
-        # 48khz * 64
-        m.d.sync += audgen_lrck_cnt.eq( audgen_lrck_cnt + 1 )
+            # 48khz * 64
+            m.d.sync += audgen_lrck_cnt.eq( audgen_lrck_cnt + 1 )
 
-        with m.If(audgen_lrck_cnt == 31):
-            m.d.sync += audgen_lrck.eq( ~audgen_lrck )
+            
+            with m.If(audgen_lrck_cnt == 31): # Audio logic on final lrck tick before rise (1 cycle before stb_update)
+                m.d.sync += audgen_lrck.eq( ~audgen_lrck )
 
-            # User logic
-            with m.If(audgen_osc < 109):
-                m.d.sync += audgen_osc.eq( audgen_osc + 1 )
-            with m.Else():
-                m.d.sync += [
-                    audgen_osc.eq( 1 ), # note audgen_osc is currently EQUAL to 109
-                    audgen_high.eq( ~audgen_high )
-                ]
+                # User logic
+                with m.If(audgen_osc < 109): # Alternating every 109 stereo samples gets us on average a wave-cycle every 109 audio frames = 440hz
+                    m.d.sync += audgen_osc.eq( audgen_osc + 1 )
+                with m.Else():
+                    m.d.sync += [
+                        audgen_osc.eq( 1 ), # note audgen_osc is currently EQUAL to 109
+                        audgen_high.eq( ~audgen_high )
+                    ]
+
+        # Module output
+        m.d.comb += [
+            self.audio_clk.eq(audgen_mclk),  # Clock
+            self.audio_dac.eq(audgen_dac),   # Output
+            self.audio_sync.eq(audgen_lrck), # Word select ("Active")
+        ]
 
         return m
 

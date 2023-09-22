@@ -30,7 +30,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   wire [22:0] \$140 ;
   wire [23:0] \$142 ;
   wire \$144 ;
-  wire [21:0] \$146 ;
+  wire \$146 ;
   wire \$148 ;
   wire \$149 ;
   wire [5:0] \$152 ;
@@ -97,25 +97,27 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   reg [5:0] \animation_counter$next ;
   reg [21:0] audgen_accum = 22'h000000;
   reg [21:0] \audgen_accum$next ;
-  reg audgen_dac;
+  reg audgen_dac = 1'h0;
+  reg \audgen_dac$next ;
   reg audgen_high = 1'h0;
   reg \audgen_high$next ;
   reg audgen_lrck = 1'h0;
   reg \audgen_lrck$next ;
   reg [4:0] audgen_lrck_cnt = 5'h00;
   reg [4:0] \audgen_lrck_cnt$next ;
-  reg [21:0] audgen_mclk = 22'h000000;
-  reg [21:0] \audgen_mclk$next ;
+  reg audgen_mclk = 1'h0;
+  reg \audgen_mclk$next ;
   reg [7:0] audgen_osc = 8'h00;
   reg [7:0] \audgen_osc$next ;
   wire audgen_sclk_stb;
+  wire audgen_sclk_stb_update;
   input audio_adc;
   wire audio_adc;
-  input audio_clk;
+  output audio_clk;
   wire audio_clk;
-  input audio_dac;
+  output audio_dac;
   wire audio_dac;
-  input audio_sync;
+  output audio_sync;
   wire audio_sync;
   wire boot_clk;
   input clk;
@@ -153,6 +155,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   wire dbg_tx;
   reg [23:0] flash_color;
   wire i2s_clk_div_stb;
+  wire i2s_clk_div_stb_update;
   output init_done;
   reg init_done = 1'h0;
   wire \init_done$next ;
@@ -223,7 +226,7 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   assign \$146  = ~ audgen_mclk;
   assign \$14  = y_count <= 10'h15c;
   assign \$149  = audgen_lrck_cnt < 3'h4;
-  assign \$148  = \$149  ? 1'h1 : audgen_high;
+  assign \$148  = \$149  ? 1'h0 : audgen_high;
   assign \$153  = audgen_lrck_cnt + 1'h1;
   assign \$155  = audgen_lrck_cnt == 5'h1f;
   assign \$157  = ~ audgen_lrck;
@@ -267,8 +270,11 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     if (\rst$2 ) audgen_accum <= 22'h000000;
     else audgen_accum <= \audgen_accum$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) audgen_mclk <= 22'h000000;
+    if (\rst$2 ) audgen_mclk <= 1'h0;
     else audgen_mclk <= \audgen_mclk$next ;
+  always @(posedge \clk$1 , posedge \rst$2 )
+    if (\rst$2 ) audgen_dac <= 1'h0;
+    else audgen_dac <= \audgen_dac$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_lrck_cnt <= 5'h00;
     else audgen_lrck_cnt <= \audgen_lrck_cnt$next ;
@@ -325,7 +331,8 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   \amaranth_core.i2s_clk_div  i2s_clk_div (
     .clk(\clk$1 ),
     .rst(\rst$2 ),
-    .stb(i2s_clk_div_stb)
+    .stb(i2s_clk_div_stb),
+    .stb_update(i2s_clk_div_stb_update)
   );
   \amaranth_core.video_clk_div  video_clk_div (
     .clk(\clk$1 ),
@@ -610,15 +617,19 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
     endcase
     casez (\rst$2 )
       1'h1:
-          \audgen_mclk$next  = 22'h000000;
+          \audgen_mclk$next  = 1'h0;
     endcase
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    audgen_dac = 1'h0;
-    casez (audgen_sclk_stb)
+    \audgen_dac$next  = audgen_dac;
+    casez (audgen_sclk_stb_update)
       1'h1:
-          audgen_dac = \$148 ;
+          \audgen_dac$next  = \$148 ;
+    endcase
+    casez (\rst$2 )
+      1'h1:
+          \audgen_dac$next  = 1'h0;
     endcase
   end
   always @* begin
@@ -706,6 +717,10 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   assign \$139  = \$142 ;
   assign \$152  = \$153 ;
   assign \$163  = \$164 ;
+  assign audio_sync = audgen_lrck;
+  assign audio_dac = audgen_dac;
+  assign audio_clk = audgen_mclk;
+  assign audgen_sclk_stb_update = i2s_clk_div_stb_update;
   assign audgen_sclk_stb = i2s_clk_div_stb;
   assign next_color_id = rotate1_counter;
   assign current_color_id = \$51 [1:0];
@@ -718,45 +733,44 @@ module amaranth_core(audio_clk, audio_dac, audio_sync, clk, cont1_joy, cont1_key
   assign boot_clk = clk;
 endmodule
 
-module \amaranth_core.i2s_clk_div (rst, stb, clk);
+module \amaranth_core.i2s_clk_div (rst, stb, stb_update, clk);
   reg \$auto$verilog_backend.cc:2083:dump_module$2  = 0;
   input clk;
   wire clk;
-  wire \clk$1 ;
-  wire clk90;
-  reg [3:0] clk_reg = 4'hc;
-  reg [3:0] \clk_reg$next ;
   input rst;
   wire rst;
   output stb;
   wire stb;
-  reg [3:0] stb_reg = 4'h1;
+  reg [3:0] stb_reg = 4'h2;
   reg [3:0] \stb_reg$next ;
+  reg [3:0] stb_reg_update = 4'h1;
+  reg [3:0] \stb_reg_update$next ;
+  output stb_update;
+  wire stb_update;
   always @(posedge clk, posedge rst)
-    if (rst) clk_reg <= 4'hc;
-    else clk_reg <= \clk_reg$next ;
+    if (rst) stb_reg_update <= 4'h1;
+    else stb_reg_update <= \stb_reg_update$next ;
   always @(posedge clk, posedge rst)
-    if (rst) stb_reg <= 4'h1;
+    if (rst) stb_reg <= 4'h2;
     else stb_reg <= \stb_reg$next ;
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$2 ) begin end
-    \clk_reg$next  = { clk_reg[2:0], clk_reg[3] };
+    \stb_reg_update$next  = { stb_reg_update[0], stb_reg_update[3:1] };
     casez (rst)
       1'h1:
-          \clk_reg$next  = 4'hc;
+          \stb_reg_update$next  = 4'h1;
     endcase
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$2 ) begin end
-    \stb_reg$next  = { stb_reg[2:0], stb_reg[3] };
+    \stb_reg$next  = { stb_reg[0], stb_reg[3:1] };
     casez (rst)
       1'h1:
-          \stb_reg$next  = 4'h1;
+          \stb_reg$next  = 4'h2;
     endcase
   end
   assign stb = stb_reg[0];
-  assign clk90 = clk_reg[0];
-  assign \clk$1  = clk_reg[3];
+  assign stb_update = stb_reg_update[0];
 endmodule
 
 module \amaranth_core.video_clk_div (rst, \clk$1 , clk90, stb, clk);
@@ -798,6 +812,6 @@ module \amaranth_core.video_clk_div (rst, \clk$1 , clk90, stb, clk);
     endcase
   end
   assign stb = stb_reg[0];
-  assign clk90 = clk_reg[1];
-  assign \clk$1  = clk_reg[7];
+  assign clk90 = clk_reg[2];
+  assign \clk$1  = clk_reg[0];
 endmodule
