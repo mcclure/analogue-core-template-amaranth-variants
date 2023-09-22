@@ -115,6 +115,8 @@ class Toplevel(wiring.Component):
 
         # ------------------------------ user code below this line --------------------------------
 
+        # Video
+
         m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=8)
         m.d.comb += [
             self.video_rgb_clk.eq(video_clk_div.clk),
@@ -237,6 +239,53 @@ class Toplevel(wiring.Component):
                                     m.d.sync += self.video_rgb.eq(flash_color^invert)
                                 with m.Else():
                                     m.d.sync += rgb(0xa0, 0x00, 0x80) # Magenta
+
+        # Audio
+
+        # Recreate Analogue i2s protocol from core_top.v
+
+        m.submodules.i2s_clk_div = i2s_clock_div = PixelClockDiv(ratio=4)
+
+        audgen_accum = Signal(22)
+        audgen_mclk = Signal(22)
+        CYCLE_48KHZ = Const(122880 * 2, Shape(width=22))
+        CYCLE_OVERFLOW = Const(742500, Shape(width=22))
+
+        m.d.sync += audgen_accum.eq(audgen_accum + CYCLE_48KHZ)
+        with m.If(audgen_accum >= CYCLE_OVERFLOW):
+            m.d.sync += [
+                audgen_mclk.eq(~audgen_mclk),
+                audgen_accum.eq(audgen_accum - CYCLE_OVERFLOW + CYCLE_48KHZ)
+            ]
+
+        audgen_sclk_stb = Signal(1)
+        m.d.comb += audgen_sclk_stb.eq(i2s_clock_div.stb)
+
+        audgen_lrck_cnt = Signal(5)
+        audgen_lrck = Signal(1)
+        audgen_dac = Signal(1)
+
+        # User logic
+        audgen_osc = Signal(8)
+        audgen_high = Signal(1)
+
+        with m.If(audgen_sclk_stb): # Negative clock edge of 1/2 clock?
+            m.d.comb += audgen_dac.eq( Mux(audgen_lrck_cnt < 4, 1, audgen_high) )
+
+        # 48khz * 64
+        m.d.sync += audgen_lrck_cnt.eq( audgen_lrck_cnt + 1 )
+
+        with m.If(audgen_lrck_cnt == 31):
+            m.d.sync += audgen_lrck.eq( ~audgen_lrck )
+
+            # User logic
+            with m.If(audgen_osc < 109):
+                m.d.sync += audgen_osc.eq( audgen_osc + 1 )
+            with m.Else():
+                m.d.sync += [
+                    audgen_osc.eq( 1 ), # note audgen_osc is currently EQUAL to 109
+                    audgen_high.eq( ~audgen_high )
+                ]
 
         return m
 
