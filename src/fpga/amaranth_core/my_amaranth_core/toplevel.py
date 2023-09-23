@@ -304,9 +304,10 @@ class Toplevel(wiring.Component):
 
         # User logic
         audgen_osc_phase = Signal(7)  # Counter for square wave
-        audgen_osc_wave = Signal(5)   # Counter for square waves on octaves C2 through C6 inclusive
+        audgen_osc_wave = Signal(5)   # Counter for square waves on octaves C2 through C6 inclusive (msb is C2, lsb is C6)
         audgen_output_word_bit = Signal(1) # As audgen_channel_internal increments scrolls through bits 0b0000011111111111, MSB first
         audgen_high = Signal(1)       # High when square wave high
+        audgen_osc_wave_select = Signal(4) # Which bit in audgen_osc_wave to output?
 
         # Bits of audgen_lrck_count: ABCCCCDD
         # D: audgen_slck_count equivalent; C: audgen_channel_internal; B: audgen_silenced; A: audgen_lrck
@@ -319,7 +320,10 @@ class Toplevel(wiring.Component):
             audgen_lrck_internal.eq(audgen_lrck_count[2:7]) # BCCCC (audgen_channel_internal + audgen_silenced)
         ]
 
-        m.d.comb += audgen_output_word_bit.eq(audgen_channel_internal <= 5)
+        m.d.comb += [
+            audgen_output_word_bit.eq(audgen_channel_internal <= 5),
+            audgen_osc_wave_select.eq( 4-(self.rotate1_counter + (self.rotate2_counter == 3)) )
+        ]
         with m.If(audgen_slck_update): # Update late as possible (could do so as early as implied falling edge...)
             # Convert audgen user logic to a waveform—- alternate 0b0000011111111111 and 0b1111100000000000 words
             m.d.sync += audgen_dac.eq( Mux(audgen_silenced, 0, audgen_output_word_bit ^ audgen_high) )
@@ -331,10 +335,14 @@ class Toplevel(wiring.Component):
                 with m.Else():
                     m.d.sync += [
                         audgen_osc_phase.eq( 1 ), # note audgen_osc_phase is currently EQUAL to 46
-                        audgen_osc_wave.eq( audgen_osc_wave + 1 )
-                    ]
+                        audgen_osc_wave.eq( audgen_osc_wave + 1 ),
 
-        m.d.comb += audgen_high.eq( audgen_osc_wave[0] )
+                        # Set square wave high or low by selecting an octave from the osc_wave bitstring
+                        # Pattern is C2 C3 C4 C5, C2 C3 C4 C5, C2 C3 C4 C5, C3 C4 C5 C6
+                        # Notice crossing streams: Which octave we select is based on the *graphics* state
+                        # Also notice msb is lowest frequency so we want to count from msb to lsb 
+                        audgen_high.eq( audgen_osc_wave.bit_select( audgen_osc_wave_select , 1 ) )
+                    ]
 
         # Module output
         m.d.comb += [
