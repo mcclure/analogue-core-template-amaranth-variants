@@ -44,16 +44,17 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   wire [8:0] \$165 ;
   wire [8:0] \$166 ;
   wire \$168 ;
-  wire \$169 ;
-  wire \$171 ;
+  wire \$170 ;
+  wire \$172 ;
   wire \$174 ;
   wire \$176 ;
-  wire [8:0] \$178 ;
-  wire [8:0] \$179 ;
+  wire [7:0] \$178 ;
+  wire [7:0] \$179 ;
   wire [10:0] \$18 ;
   wire \$181 ;
   wire \$183 ;
-  wire \$185 ;
+  wire [5:0] \$185 ;
+  wire [5:0] \$186 ;
   wire \$20 ;
   wire \$22 ;
   wire \$24 ;
@@ -108,8 +109,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   wire [3:0] audgen_channel_internal;
   reg audgen_dac = 1'h0;
   reg \audgen_dac$next ;
-  reg audgen_high = 1'h0;
-  reg \audgen_high$next ;
+  wire audgen_high;
   wire audgen_lrck;
   reg [7:0] audgen_lrck_count = 8'h00;
   reg [7:0] \audgen_lrck_count$next ;
@@ -117,8 +117,11 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   reg audgen_mclk = 1'h0;
   reg \audgen_mclk$next ;
   wire audgen_mclk_stb;
-  reg [7:0] audgen_osc = 8'h00;
-  reg [7:0] \audgen_osc$next ;
+  reg [6:0] audgen_osc_phase = 7'h00;
+  reg [6:0] \audgen_osc_phase$next ;
+  reg [4:0] audgen_osc_wave = 5'h00;
+  reg [4:0] \audgen_osc_wave$next ;
+  wire audgen_output_word_bit;
   wire audgen_silenced;
   wire audgen_slck;
   reg [1:0] audgen_slck_count = 2'h3;
@@ -246,25 +249,25 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   assign \$161  = ~ audgen_mclk;
   assign \$163  = audgen_mclk_stb & \$161 ;
   assign \$166  = audgen_lrck_count + 1'h1;
+  assign \$168  = audgen_channel_internal <= 3'h5;
   assign \$16  = + y_count;
-  assign \$169  = audgen_channel_internal < 3'h4;
-  assign \$171  = audgen_silenced | \$169 ;
-  assign \$168  = \$171  ? 1'h0 : audgen_high;
+  assign \$170  = audgen_output_word_bit ^ audgen_high;
+  assign \$172  = audgen_silenced ? 1'h0 : \$170 ;
   assign \$174  = audgen_lrck_internal == 5'h17;
-  assign \$176  = audgen_osc < 7'h6d;
-  assign \$179  = audgen_osc + 1'h1;
+  assign \$176  = audgen_osc_phase < 6'h2e;
+  assign \$179  = audgen_osc_phase + 1'h1;
   assign \$181  = audgen_lrck_internal == 5'h17;
-  assign \$183  = audgen_osc < 7'h6d;
-  assign \$185  = ~ audgen_high;
+  assign \$183  = audgen_osc_phase < 6'h2e;
+  assign \$186  = audgen_osc_wave + 1'h1;
   always @(posedge boot_clk)
     init_done <= 1'h1;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_vs <= 1'h0;
     else video_vs <= \video_vs$next ;
+  assign \$18  = 10'h15c - rotate2_counter_anti;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_hs <= 1'h0;
     else video_hs <= \video_hs$next ;
-  assign \$18  = 10'h15c - rotate2_counter_anti;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) x_count <= 10'h000;
     else x_count <= \x_count$next ;
@@ -305,11 +308,11 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     if (\rst$2 ) audgen_dac <= 1'h0;
     else audgen_dac <= \audgen_dac$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) audgen_osc <= 8'h00;
-    else audgen_osc <= \audgen_osc$next ;
+    if (\rst$2 ) audgen_osc_phase <= 7'h00;
+    else audgen_osc_phase <= \audgen_osc_phase$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) audgen_high <= 1'h0;
-    else audgen_high <= \audgen_high$next ;
+    if (\rst$2 ) audgen_osc_wave <= 5'h00;
+    else audgen_osc_wave <= \audgen_osc_wave$next ;
   assign \$20  = $signed(\$16 ) >= $signed(\$18 );
   assign \$22  = \$14  & \$20 ;
   assign \$24  = x_count >= 10'h004;
@@ -680,7 +683,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \audgen_dac$next  = audgen_dac;
     casez (audgen_slck_update)
       1'h1:
-          \audgen_dac$next  = \$168 ;
+          \audgen_dac$next  = \$172 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -689,7 +692,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    \audgen_osc$next  = audgen_osc;
+    \audgen_osc_phase$next  = audgen_osc_phase;
     casez (audgen_slck_update)
       1'h1:
           casez (\$174 )
@@ -697,20 +700,20 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
                 (* full_case = 32'd1 *)
                 casez (\$176 )
                   1'h1:
-                      \audgen_osc$next  = \$179 [7:0];
+                      \audgen_osc_phase$next  = \$179 [6:0];
                   default:
-                      \audgen_osc$next  = 8'h01;
+                      \audgen_osc_phase$next  = 7'h01;
                 endcase
           endcase
     endcase
     casez (\rst$2 )
       1'h1:
-          \audgen_osc$next  = 8'h00;
+          \audgen_osc_phase$next  = 7'h00;
     endcase
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    \audgen_high$next  = audgen_high;
+    \audgen_osc_wave$next  = audgen_osc_wave;
     casez (audgen_slck_update)
       1'h1:
           casez (\$181 )
@@ -720,13 +723,13 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
                   1'h1:
                       /* empty */;
                   default:
-                      \audgen_high$next  = \$185 ;
+                      \audgen_osc_wave$next  = \$186 [4:0];
                 endcase
           endcase
     endcase
     casez (\rst$2 )
       1'h1:
-          \audgen_high$next  = 1'h0;
+          \audgen_osc_wave$next  = 5'h00;
     endcase
   end
   always @* begin
@@ -759,9 +762,12 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   assign \$158  = \$159 ;
   assign \$165  = \$166 ;
   assign \$178  = \$179 ;
+  assign \$185  = \$186 ;
   assign audio_lrck = audgen_lrck;
   assign audio_dac = audgen_dac;
   assign audio_mclk = audgen_mclk;
+  assign audgen_high = audgen_osc_wave[0];
+  assign audgen_output_word_bit = \$168 ;
   assign audgen_lrck_internal = audgen_lrck_count[6:2];
   assign audgen_silenced = audgen_lrck_count[6];
   assign audgen_channel_internal = audgen_lrck_count[5:2];

@@ -303,8 +303,10 @@ class Toplevel(wiring.Component):
         audgen_dac = Signal(1)      # Output value
 
         # User logic
-        audgen_osc = Signal(8)      # Counter for square wave
-        audgen_high = Signal(1)     # High when square wave high
+        audgen_osc_phase = Signal(7)  # Counter for square wave
+        audgen_osc_wave = Signal(5)   # Counter for square waves on octaves C2 through C6 inclusive
+        audgen_output_word_bit = Signal(1) # As audgen_channel_internal increments scrolls through bits 0b0000011111111111, MSB first
+        audgen_high = Signal(1)       # High when square wave high
 
         # Bits of audgen_lrck_count: ABCCCCDD
         # D: audgen_slck_count equivalent; C: audgen_channel_internal; B: audgen_silenced; A: audgen_lrck
@@ -317,19 +319,22 @@ class Toplevel(wiring.Component):
             audgen_lrck_internal.eq(audgen_lrck_count[2:7]) # BCCCC (audgen_channel_internal + audgen_silenced)
         ]
 
+        m.d.comb += audgen_output_word_bit.eq(audgen_channel_internal <= 5)
         with m.If(audgen_slck_update): # Update late as possible (could do so as early as implied falling edge...)
-            # Convert audgen user logic to a waveform—- alternate 0x0 and 0x1111 bytes
-            m.d.sync += audgen_dac.eq( Mux((audgen_silenced) | (audgen_channel_internal < 4), 0, audgen_high) )
+            # Convert audgen user logic to a waveform—- alternate 0b0000011111111111 and 0b1111100000000000 words
+            m.d.sync += audgen_dac.eq( Mux(audgen_silenced, 0, audgen_output_word_bit ^ audgen_high) )
 
             with m.If(audgen_lrck_internal == 23): # Audio logic halfway through "silenced" period (FIXME could move forward or back-- Analogue sample code did this on lrck falling edge)
                 # Audio generation user logic
-                with m.If(audgen_osc < 109): # Alternating every 109 stereo samples gets us on average a wave-cycle every 109 audio frames = 440hz
-                    m.d.sync += audgen_osc.eq( audgen_osc + 1 )
+                with m.If(audgen_osc_phase < 46): # Alternating every 46 stereo samples gets us on average a wave-cycle every 46 audio frames ~= 1046.5hz = C6
+                    m.d.sync += audgen_osc_phase.eq( audgen_osc_phase + 1 )
                 with m.Else():
                     m.d.sync += [
-                        audgen_osc.eq( 1 ), # note audgen_osc is currently EQUAL to 109
-                        audgen_high.eq( ~audgen_high )
+                        audgen_osc_phase.eq( 1 ), # note audgen_osc_phase is currently EQUAL to 46
+                        audgen_osc_wave.eq( audgen_osc_wave + 1 )
                     ]
+
+        m.d.comb += audgen_high.eq( audgen_osc_wave[0] )
 
         # Module output
         m.d.comb += [
