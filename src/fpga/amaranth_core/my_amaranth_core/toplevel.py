@@ -39,33 +39,6 @@ class PixelClockDiv(wiring.Component):
 
         return m
 
-class AudioClockDiv(wiring.Component):
-    stb_update     : Out(1) # Single cycle strobe
-    stb            : Out(1)        # Single cycle strobe delayed by 1 cycle
-
-    def __init__(self, ratio=2):
-        super().__init__()
-
-        assert ratio >= 2 and ratio % 2 == 0, "Ratio must be at least 2 and divisible by 2"
-        self.ratio = ratio
-
-    def elaborate(self, platform):
-        m = Module()
-
-        stb_reg_update = Signal(self.ratio, reset=1)
-        m.d.sync += stb_reg_update.eq(stb_reg_update.rotate_right(1)) # Rotates right where pixel rotates left
-        m.d.comb += [
-            self.stb_update.eq(stb_reg_update[0])
-        ]
-
-        stb_reg = Signal(self.ratio, reset=2)
-        m.d.sync += stb_reg.eq(stb_reg.rotate_right(1))
-        m.d.comb += [
-            self.stb.eq(stb_reg[0])
-        ]
-
-        return m
-
 
 class RenderState(enum.Enum):
     TOP    = 0
@@ -104,9 +77,9 @@ class Toplevel(wiring.Component):
     video_vs        : Out(1)
     video_hs        : Out(1)
 
-    audio_clk       : Out(1) # aka audio_mclk
-    audio_sync      : Out(1) # aka audio_lrck
-    audio_adc       : In(1)
+    audio_mclk      : Out(1)
+    audio_select    : Out(1) # AKA audio_lrck
+    audio_adc       : In(1)  # Unused
     audio_dac       : Out(1)
 
     cont1_key       : In(32)
@@ -181,7 +154,7 @@ class Toplevel(wiring.Component):
         val = Const(VID_V_BPORCH, y_count.shape())
         with m.If((y_count >= val) & (y_count <= val + rotate2_counter_anti)):   # Top row red
             m.d.comb += render_state.eq(RenderState.TOP)
-        
+
         val = Const(VID_V_ACTIVE + VID_V_BPORCH - 1, y_count.shape())
         with m.Elif((y_count <= val) & (y_count >= val - rotate2_counter_anti)): # Bottom row yellow
             m.d.comb += render_state.eq(RenderState.BOTTOM)
@@ -220,14 +193,16 @@ class Toplevel(wiring.Component):
                 with m.Case(RenderMode.CHECKER):
                     m.d.comb += flash_on.eq(x_count[0] ^ y_count[0])
 
+        # Draw
         with m.If(video_clk_div.stb):
-            # Decide color for next pixel
+            # Vertical and horizontal sync
             m.d.sync += [
                 self.video_vs.eq((x_count == 0) & (y_count == 0)),
                 # HS must occur at least 3 cycles after VS
                 self.video_hs.eq(x_count == 3),
             ]
 
+            # Iterate screen "beam"
             m.d.sync += x_count.eq(x_count + 1)
             with m.If(x_count == VID_H_TOTAL - 1):
                 m.d.sync += x_count.eq(0)
@@ -238,17 +213,18 @@ class Toplevel(wiring.Component):
                     # NEW FRAME LOGIC
                     m.d.sync += self.animation_counter.eq(self.animation_counter + 1)
 
-                    with m.If(self.animation_counter == ANIMATION_COUNTER_MAX):                    
+                    with m.If(self.animation_counter == ANIMATION_COUNTER_MAX):
                         m.d.sync += self.rotate1_counter.eq(self.rotate1_counter + 1)
                         with m.If(self.rotate1_counter == ROTATE_COUNTER_MAX):
                             m.d.sync += self.rotate2_counter.eq(self.rotate2_counter + 1)
 
+            # inactive screen areas must be black
             m.d.sync += [
-                # inactive screen areas must be black
                 self.video_de.eq(0),
                 self.video_rgb.eq(0)
             ]
 
+            # Color selection for live pixels
             with m.If((x_count >= VID_H_BPORCH) & (x_count < VID_H_ACTIVE + VID_H_BPORCH)):
                 with m.If((y_count >= VID_V_BPORCH) & (y_count < VID_V_ACTIVE + VID_V_BPORCH)):
                     m.d.sync += self.video_de.eq(1)
@@ -272,46 +248,77 @@ class Toplevel(wiring.Component):
 
         # Recreate Analogue i2s protocol from core_top.v
 
-        m.submodules.i2s_clk_div = i2s_clock_div = AudioClockDiv(ratio=4)
+        # Clocks
 
-        audgen_accum = Signal(22)
+        audgen_accum = Signal(22)   # Master clock
         audgen_mclk = Signal(1)
+        audgen_mclk_stb = Signal(1)
+
+        audgen_slck_count = Signal(2) # Serial clock # TODO: Collapse slck_count into lrck_count?
+        audgen_slck = Signal(1)
+        audgen_slck_update = Signal(1, reset=1) # Trigger on first cycle
+
+        audgen_lrck_count = Signal(8) # Left-right select
+        audgen_lrck = Signal(1)
+
         CYCLE_48KHZ = Const(122880 * 2, Shape(width=22))
         CYCLE_OVERFLOW = Const(742500, Shape(width=22))
 
+        # "Master clock"
+        # This produces a cycle of 1/48000/256 seconds
         m.d.sync += audgen_accum.eq(audgen_accum + CYCLE_48KHZ)
-        with m.If(audgen_accum >= CYCLE_OVERFLOW):
+        m.d.comb += audgen_mclk_stb.eq(audgen_accum >= CYCLE_OVERFLOW)
+        with m.If(audgen_mclk_stb):
             m.d.sync += [
                 audgen_mclk.eq(~audgen_mclk),
                 audgen_accum.eq(audgen_accum - CYCLE_OVERFLOW + CYCLE_48KHZ)
             ]
 
-        audgen_sclk_stb_update = Signal(1)
-        audgen_sclk_stb = Signal(1)
-        m.d.comb += [
-            audgen_sclk_stb.eq(i2s_clock_div.stb),
-            audgen_sclk_stb_update.eq(i2s_clock_div.stb_update)
-        ]
+        # "Serial clock"
+        # 4x period master clock, produces a cycle of 1/48000/64 seconds
+        m.d.comb += audgen_slck.eq( audgen_slck_count[1] ) # Use counter bit as clock
+        m.d.sync += audgen_slck_update.eq(0) # Update strobe is usually 0
 
-        audgen_lrck_cnt = Signal(5)
-        audgen_lrck = Signal(1)     # Serial clock
+        with m.If(audgen_mclk_stb):
+            m.d.sync += [
+                audgen_slck_count.eq( audgen_slck_count + 1 )
+            ]
+            with m.If(audgen_slck_count == 2): # We are halfway through slck low, so this is a good time to run updates.
+                m.d.sync += [ # FIXME: Would probably be ok to move this forward or backward?
+                    audgen_slck_update.eq(1)
+                ]
+
+        # "Left-right clock" (channel select)
+        # 256x period master clock / 64x period serial clock, cycle is audio-rate 48khz
+        m.d.comb += audgen_lrck.eq(audgen_lrck_count[7]) # Use counter bit as clock
+        with m.If(audgen_mclk_stb):
+            m.d.sync += [
+                audgen_lrck_count.eq( audgen_lrck_count + 1 )
+            ]
+
+        # Audio generate
+
         audgen_dac = Signal(1)      # Output value
 
         # User logic
         audgen_osc = Signal(8)      # Counter for square wave
         audgen_high = Signal(1)     # High when square wave high
 
-        with m.If(audgen_sclk_stb_update): # Update late as possible (could do so as early as implied falling edge...)
-            m.d.sync += audgen_dac.eq( Mux(audgen_lrck_cnt < 4, 0, audgen_high) )
+        # Bits of audgen_lrck_count: ABCCCCDD
+        # D: audgen_slck_count equivalent; C: audgen_channel_internal; B: audgen_silenced; A: audgen_lrck
+        audgen_silenced = Signal(1)
+        audgen_channel_internal = Signal(4)
+        m.d.comb += [
+            audgen_channel_internal.eq(audgen_lrck_count[2:5]),
+            audgen_silenced.eq(audgen_lrck_count[6])
+        ]
 
-            # 48khz * 64
-            m.d.sync += audgen_lrck_cnt.eq( audgen_lrck_cnt + 1 )
+        with m.If(audgen_slck_update): # Update late as possible (could do so as early as implied falling edge...)
+            # Convert audgen user logic to a waveform—- alternate 0x0 and 0x1111 bytes
+            m.d.sync += audgen_dac.eq( Mux((~audgen_silenced) & (audgen_channel_internal < 4), 0, audgen_high) )
 
-            
-            with m.If(audgen_lrck_cnt == 31): # Audio logic on final lrck tick before rise (1 cycle before stb_update)
-                m.d.sync += audgen_lrck.eq( ~audgen_lrck )
-
-                # User logic
+            with m.If(audgen_lrck_count[2:6] == 23): # Audio logic halfway through "silenced" period (FIXME could move forward or back)
+                # Audio generation user logic
                 with m.If(audgen_osc < 109): # Alternating every 109 stereo samples gets us on average a wave-cycle every 109 audio frames = 440hz
                     m.d.sync += audgen_osc.eq( audgen_osc + 1 )
                 with m.Else():
@@ -322,9 +329,9 @@ class Toplevel(wiring.Component):
 
         # Module output
         m.d.comb += [
-            self.audio_clk.eq(audgen_mclk),  # Clock
-            self.audio_dac.eq(audgen_dac),   # Output
-            self.audio_sync.eq(audgen_lrck), # Word select ("Active")
+            self.audio_mclk.eq(audgen_mclk),     # Master clock-- 4x the serial clock or 256x select
+            self.audio_dac.eq(audgen_dac),       # Output
+            self.audio_lrck.eq(audgen_lrck),     # Word select (channel)
         ]
 
         return m

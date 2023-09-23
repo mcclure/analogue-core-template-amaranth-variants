@@ -538,10 +538,10 @@ amaranth_core ac (
 // input   wire            audio_adc,
 // output  wire            audio_dac,
 
-    .audio_clk          ( audio_mclk ),
-    .audio_sync         ( audio_lrck ),
-    .audio_adc          ( audio_adc ),
-    .audio_dac          ( audio_dac ),
+    .audio_mclk        ( audio_mclk ), // Master clock
+    .audio_lrck        ( audio_lrck ), // Left-right channel select
+    .audio_adc         ( audio_adc ),  // Unused
+    .audio_dac         ( audio_dac ),  // Audio data
 
 // input   wire    [31:0]  cont1_key,
 // input   wire    [31:0]  cont2_key,
