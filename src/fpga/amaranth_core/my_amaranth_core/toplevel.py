@@ -78,7 +78,7 @@ class Toplevel(wiring.Component):
     video_hs        : Out(1)
 
     audio_mclk      : Out(1)
-    audio_select    : Out(1) # AKA audio_lrck
+    audio_lrck      : Out(1) # A better name would be audio_select but this is what the i2s standard calls it
     audio_adc       : In(1)  # Unused
     audio_dac       : Out(1)
 
@@ -247,22 +247,24 @@ class Toplevel(wiring.Component):
         # Audio
 
         # Recreate Analogue i2s protocol from core_top.v
+        # FIXME: This could be done more elegantly with Amaranth builtins instead of logic
 
         # Clocks
 
-        audgen_accum = Signal(22)   # Master clock
-        audgen_mclk = Signal(1)
-        audgen_mclk_stb = Signal(1)
+        CYCLE_48KHZ = Const(122880 * 2, Shape(width=22))
+        CYCLE_OVERFLOW_VALUE = 742500
+        CYCLE_OVERFLOW = Const(CYCLE_OVERFLOW_VALUE, Shape(width=22))
 
-        audgen_slck_count = Signal(2) # Serial clock # TODO: Collapse slck_count into lrck_count?
+        audgen_accum = Signal(22, reset=CYCLE_OVERFLOW_VALUE) # Master clock
+        audgen_mclk = Signal(1)
+        audgen_mclk_stb = Signal(1) # Trigger on first cycle (because of accum value)
+
+        audgen_slck_count = Signal(2, reset=3) # Serial clock # TODO: Collapse slck_count into lrck_count?
         audgen_slck = Signal(1)
         audgen_slck_update = Signal(1, reset=1) # Trigger on first cycle
 
         audgen_lrck_count = Signal(8) # Left-right select
         audgen_lrck = Signal(1)
-
-        CYCLE_48KHZ = Const(122880 * 2, Shape(width=22))
-        CYCLE_OVERFLOW = Const(742500, Shape(width=22))
 
         # "Master clock"
         # This produces a cycle of 1/48000/256 seconds
@@ -276,10 +278,10 @@ class Toplevel(wiring.Component):
 
         # "Serial clock"
         # 4x period master clock, produces a cycle of 1/48000/64 seconds
-        m.d.comb += audgen_slck.eq( audgen_slck_count[1] ) # Use counter bit as clock
+        m.d.comb += audgen_slck.eq( ~audgen_slck_count[1] ) # Use counter bit as clock
         m.d.sync += audgen_slck_update.eq(0) # Update strobe is usually 0
 
-        with m.If(audgen_mclk_stb):
+        with m.If(audgen_mclk_stb & (~audgen_mclk)):
             m.d.sync += [
                 audgen_slck_count.eq( audgen_slck_count + 1 )
             ]
@@ -291,7 +293,7 @@ class Toplevel(wiring.Component):
         # "Left-right clock" (channel select)
         # 256x period master clock / 64x period serial clock, cycle is audio-rate 48khz
         m.d.comb += audgen_lrck.eq(audgen_lrck_count[7]) # Use counter bit as clock
-        with m.If(audgen_mclk_stb):
+        with m.If(audgen_mclk_stb & (~audgen_mclk)):
             m.d.sync += [
                 audgen_lrck_count.eq( audgen_lrck_count + 1 )
             ]
@@ -308,16 +310,18 @@ class Toplevel(wiring.Component):
         # D: audgen_slck_count equivalent; C: audgen_channel_internal; B: audgen_silenced; A: audgen_lrck
         audgen_silenced = Signal(1)
         audgen_channel_internal = Signal(4)
+        audgen_lrck_internal = Signal(5)
         m.d.comb += [
-            audgen_channel_internal.eq(audgen_lrck_count[2:5]),
-            audgen_silenced.eq(audgen_lrck_count[6])
+            audgen_channel_internal.eq(audgen_lrck_count[2:6]),
+            audgen_silenced.eq(audgen_lrck_count[6]),
+            audgen_lrck_internal.eq(audgen_lrck_count[2:7]) # BCCCC (audgen_channel_internal + audgen_silenced)
         ]
 
         with m.If(audgen_slck_update): # Update late as possible (could do so as early as implied falling edge...)
             # Convert audgen user logic to a waveform—- alternate 0x0 and 0x1111 bytes
-            m.d.sync += audgen_dac.eq( Mux((~audgen_silenced) & (audgen_channel_internal < 4), 0, audgen_high) )
+            m.d.sync += audgen_dac.eq( Mux((audgen_silenced) | (audgen_channel_internal < 4), 0, audgen_high) )
 
-            with m.If(audgen_lrck_count[2:6] == 23): # Audio logic halfway through "silenced" period (FIXME could move forward or back)
+            with m.If(audgen_lrck_internal == 23): # Audio logic halfway through "silenced" period (FIXME could move forward or back-- Analogue sample code did this on lrck falling edge)
                 # Audio generation user logic
                 with m.If(audgen_osc < 109): # Alternating every 109 stereo samples gets us on average a wave-cycle every 109 audio frames = 440hz
                     m.d.sync += audgen_osc.eq( audgen_osc + 1 )
