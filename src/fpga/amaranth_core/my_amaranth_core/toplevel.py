@@ -364,15 +364,12 @@ def simulate():
 
 
 def capture_frame():
-    import png
+    import soundfile
     from amaranth.sim import Simulator
 
     top = Toplevel()
     def bench():
-        rows = []
-        while not (yield top.video_vs): yield
-        while (yield top.video_vs): yield
-        # after negedge of vs
+        written = 0
         while True:
             cols = []
             while not (yield top.video_hs): yield
@@ -394,6 +391,71 @@ def capture_frame():
             with open("frame.png", "wb") as file:
                 png.Writer(len(rows[0]) // 3, len(rows), greyscale=False).write(file, rows)
         print(f"{len(rows)} rows")
+
+    sim = Simulator(top)
+    sim.add_clock(1/74.25e6)
+    sim.add_sync_process(bench)
+    sim.run()
+
+
+def capture_wav():
+    import soundfile as sf
+    from amaranth.sim import Simulator
+
+    FILE_NAME = "log.wav"
+    SAMPLE_RATE = 48000
+    CHUNK_SIZE = SAMPLE_RATE//1000
+    SHRT_MAX = 32767 # No python library source for this?
+    USHRT_CONVERT = 1<<16
+
+    top = Toplevel()
+    def bench():
+        written = 0
+        last_printed = 0
+
+        while not (yield top.audio_mclk): yield
+
+        while True:
+            frames = []
+
+            # Do i2s from the speaker end
+            for _ in range(CHUNK_SIZE):
+                for channel in range(2):
+                    sample = 0
+
+                    for _ in range(16):
+                        sample <<= 1
+                        sample |= yield top.audio_dac
+                        lrck = yield top.audio_lrck
+                        assert lrck == channel, f"Unexpected lrck [channel select] value (wanted {channel}, got {lrck})"
+                        for _ in range(4): # Serial step
+                            while (yield top.audio_mclk): yield
+                            while not (yield top.audio_mclk): yield
+
+                    if sample > SHRT_MAX: # Reinterpret unsigned as signed
+                        sample -= USHRT_CONVERT
+                    frames.append(sample)
+
+                    for _ in range(16): # Blank space
+                        for _ in range(4): # Serial step
+                            while (yield top.audio_mclk): yield
+                            while not (yield top.audio_mclk): yield
+
+            # If this is first byte open write to truncate, otherwise open readwrite...
+            with sf.SoundFile(FILE_NAME, mode = 'w', samplerate=SAMPLE_RATE, channels=2, subtype='PCM_16') \
+                    if written == 0 \
+                    else sf.SoundFile(FILE_NAME, mode = 'r+') \
+                    as outfile:
+                if written > 0: # ... then seek to end to append
+                    outfile.seek(0,sf.SEEK_END)
+                print(frames)
+                print(type(frames[0]))
+                outfile.write(frames)
+
+            written += CHUNKSIZE
+            if writen >= last_printed+SAMPLE_RATE:
+                print(f"{written//SAMPLE_RATE} seconds written")
+                last_printed = written
 
     sim = Simulator(top)
     sim.add_clock(1/74.25e6)
