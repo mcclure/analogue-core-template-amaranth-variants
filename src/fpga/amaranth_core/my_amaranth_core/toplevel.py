@@ -399,6 +399,7 @@ def capture_frame():
 
 
 def capture_wav():
+    import numpy as np
     import soundfile as sf
     from amaranth.sim import Simulator
 
@@ -441,7 +442,6 @@ def capture_wav():
                         for _ in range(4): # Serial step
                             while (yield top.audio_mclk): yield
                             while not (yield top.audio_mclk): yield
-                print(frame)
                 frames.append(frame)
 
             # If this is first byte open write to truncate, otherwise open readwrite...
@@ -451,7 +451,7 @@ def capture_wav():
                     as outfile:
                 if written > 0: # ... then seek to end to append
                     outfile.seek(0,sf.SEEK_END)
-                outfile.write(frames)
+                outfile.write(np.array(frames, dtype=np.int16))
 
             written += CHUNK_SIZE
             if written >= last_printed+SAMPLE_RATE:
