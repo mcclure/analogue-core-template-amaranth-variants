@@ -1,6 +1,7 @@
 The license below applies to the files in this folder only.
 
 Copyright (C)  whitequark@whitequark.org
+Copyright (C)  andi.m.mcclure@gmail.com
 
 Permission to use, copy, modify, and/or distribute this software for
 any purpose with or without fee is hereby granted.

@@ -6,9 +6,11 @@ This is a screen test with synchronized video animation and audio, written by An
 (cd src/fpga/amaranth_core/ && python.exe -m pdm generate) && (cd src/fpga && /mnt/d/intelFPGA_lite/22.1std/quartus/bin64/quartus_sh.exe --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cmd.exe /c copy bitstream.rbf_r "E:\Cores\test.andi amaranth\bitstream.rbf_r") && (cmd.exe /c copy video.json "E:\Cores\test.andi amaranth\video.json")
 ```
 
-This assumes JSON files besides video.json have already been configured per the Analogue documentation.
+This assumes JSON files besides video.json have already been configured per the Analogue documentation. Clearer build instructions are forthcoming.
 
-Clearer build instructions and a license are forthcoming.
+## License
+
+Other than Analogue code (see below), this repo contains Amaranth support code by Whitequark with some additions by andi mcc. This is covered by the BSD0 (public domain like) license [here](src/fpga/amaranth_core/LICENSE.txt). You may want to edit this LICENSE.txt before redistributing your own changes. 
 
 # Analogue Core Template README
 This is a template repository for a core which contains all of the core definition JSON files and FPGA starter code.
