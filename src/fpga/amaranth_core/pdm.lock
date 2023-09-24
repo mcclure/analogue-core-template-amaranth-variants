@@ -6,14 +6,14 @@ groups = ["default", "simulation"]
 cross_platform = true
 static_urls = false
 lock_version = "4.3"
-content_hash = "sha256:93d3612f4198d5b59522b0a2c3b622c0427c47676fe7c9444daf3e8e2fabf095"
+content_hash = "sha256:6d2a129dfd62e46d8da88ce236a36805adae41059f918ed3446a056f0884f930"
 
 [[package]]
 name = "amaranth"
-version = "0.4.dev197+g11d5bb1"
+version = "0.4.dev198+g05cb82b"
 requires_python = "~=3.8"
 git = "https://github.com/amaranth-lang/amaranth.git"
-revision = "11d5bb19eb34463918c07dc5e2e0eac7dbf822b0"
+revision = "05cb82b8fc3ac53518d5bd07c5d474ae21522099"
 summary = "Amaranth hardware definition language"
 dependencies = [
     "Jinja2~=3.0",
@@ -23,26 +23,26 @@ dependencies = [
 
 [[package]]
 name = "amaranth-yosys"
-version = "0.25.0.0.post75"
+version = "0.25.0.0.post77"
 summary = "Specialized WebAssembly build of Yosys used by Amaranth HDL"
 dependencies = [
     "importlib-resources>=1.4; python_version < \"3.9\"",
-    "wasmtime<13,>=1",
+    "wasmtime<14,>=1",
 ]
 files = [
-    {file = "amaranth_yosys-0.25.0.0.post75-py3-none-any.whl", hash = "sha256:97f2f32e8bd47f96e8646a25c6bc67abb6123641c907f2bbdcdf709559ea1f94"},
+    {file = "amaranth_yosys-0.25.0.0.post77-py3-none-any.whl", hash = "sha256:52d31f64de72cb813d2f621f6687790d3141b79de8dcf2cd9b52300aad06447c"},
 ]
 
 [[package]]
 name = "amaranth"
-version = "0.4.dev197+g11d5bb1"
+version = "0.4.dev198+g05cb82b"
 extras = ["builtin-yosys"]
 requires_python = "~=3.8"
 git = "https://github.com/amaranth-lang/amaranth.git"
-revision = "11d5bb19eb34463918c07dc5e2e0eac7dbf822b0"
+revision = "05cb82b8fc3ac53518d5bd07c5d474ae21522099"
 summary = "Amaranth hardware definition language"
 dependencies = [
-    "amaranth @ git+https://github.com/amaranth-lang/amaranth.git@11d5bb19eb34463918c07dc5e2e0eac7dbf822b0",
+    "amaranth @ git+https://github.com/amaranth-lang/amaranth.git@05cb82b8fc3ac53518d5bd07c5d474ae21522099",
     "amaranth-yosys>=0.10",
 ]
 
@@ -99,15 +99,15 @@ files = [
 
 [[package]]
 name = "importlib-resources"
-version = "6.0.1"
+version = "6.1.0"
 requires_python = ">=3.8"
 summary = "Read resources from Python packages"
 dependencies = [
     "zipp>=3.1.0; python_version < \"3.10\"",
 ]
 files = [
-    {file = "importlib_resources-6.0.1-py3-none-any.whl", hash = "sha256:134832a506243891221b88b4ae1213327eea96ceb4e407a00d790bb0626f45cf"},
-    {file = "importlib_resources-6.0.1.tar.gz", hash = "sha256:4359457e42708462b9626a04657c6208ad799ceb41e5c58c57ffa0e6a098a5d4"},
+    {file = "importlib_resources-6.1.0-py3-none-any.whl", hash = "sha256:aa50258bbfa56d4e33fbd8aa3ef48ded10d1735f11532b8df95388cc6bdb7e83"},
+    {file = "importlib_resources-6.1.0.tar.gz", hash = "sha256:9d48dcccc213325e810fd723e7fbb45ccb39f6cf5c31f00cf2b965f5f10f3cb9"},
 ]
 
 [[package]]
@@ -238,21 +238,6 @@ files = [
 ]
 
 [[package]]
-name = "pysoundfile"
-version = "0.9.0.post1"
-summary = "An audio library based on libsndfile, CFFI and NumPy"
-dependencies = [
-    "cffi>=0.6",
-]
-files = [
-    {file = "PySoundFile-0.9.0.post1-py2.py3-none-any.whl", hash = "sha256:db14f84f4af1910f54766cf0c0f19d52414fa80aa0e11cb338b5614946f39947"},
-    {file = "PySoundFile-0.9.0.post1-py2.py3.cp26.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp32.pp33-none-macosx_10_5_x86_64.macosx_10_6_intel.macosx_10_9_intel.macosx_10_9_x86_64.whl", hash = "sha256:5889138553f4e675158054f8f41c212ca76ac0e2d949e38d1dd8ded4ca3f0ce0"},
-    {file = "PySoundFile-0.9.0.post1-py2.py3.cp26.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp32.pp33-none-win32.whl", hash = "sha256:c5c5cc8e5f3793a4b9f405c0c77e116e859ac16e065bb6b7f78f2a59484fd7a8"},
-    {file = "PySoundFile-0.9.0.post1-py2.py3.cp26.cp27.cp32.cp33.cp34.cp35.cp36.pp27.pp32.pp33-none-win_amd64.whl", hash = "sha256:d92afd505d395523200d5b7f217e409bae4639c90cc61e90832a57a5a0fb484a"},
-    {file = "PySoundFile-0.9.0.post1.tar.gz", hash = "sha256:43dd46a2afc0484c26930a7e59eef9365cee81bce7a4aadc5699f788f60d32c3"},
-]
-
-[[package]]
 name = "pyvcd"
 version = "0.4.0"
 requires_python = ">=3.7"
@@ -263,17 +248,35 @@ files = [
 ]
 
 [[package]]
+name = "soundfile"
+version = "0.12.1"
+summary = "An audio library based on libsndfile, CFFI and NumPy"
+dependencies = [
+    "cffi>=1.0",
+]
+files = [
+    {file = "soundfile-0.12.1-py2.py3-none-any.whl", hash = "sha256:828a79c2e75abab5359f780c81dccd4953c45a2c4cd4f05ba3e233ddf984b882"},
+    {file = "soundfile-0.12.1-py2.py3-none-macosx_10_9_x86_64.whl", hash = "sha256:d922be1563ce17a69582a352a86f28ed8c9f6a8bc951df63476ffc310c064bfa"},
+    {file = "soundfile-0.12.1-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:bceaab5c4febb11ea0554566784bcf4bc2e3977b53946dda2b12804b4fe524a8"},
+    {file = "soundfile-0.12.1-py2.py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:2dc3685bed7187c072a46ab4ffddd38cef7de9ae5eb05c03df2ad569cf4dacbc"},
+    {file = "soundfile-0.12.1-py2.py3-none-manylinux_2_31_x86_64.whl", hash = "sha256:074247b771a181859d2bc1f98b5ebf6d5153d2c397b86ee9e29ba602a8dfe2a6"},
+    {file = "soundfile-0.12.1-py2.py3-none-win32.whl", hash = "sha256:59dfd88c79b48f441bbf6994142a19ab1de3b9bb7c12863402c2bc621e49091a"},
+    {file = "soundfile-0.12.1-py2.py3-none-win_amd64.whl", hash = "sha256:0d86924c00b62552b650ddd28af426e3ff2d4dc2e9047dae5b3d8452e0a49a77"},
+    {file = "soundfile-0.12.1.tar.gz", hash = "sha256:e8e1017b2cf1dda767aef19d2fd9ee5ebe07e050d430f77a0a7c66ba08b8cdae"},
+]
+
+[[package]]
 name = "wasmtime"
-version = "12.0.0"
+version = "13.0.1"
 requires_python = ">=3.6"
 summary = "A WebAssembly runtime powered by Wasmtime"
 files = [
-    {file = "wasmtime-12.0.0-py3-none-any.whl", hash = "sha256:1fee5ac11726cad1f69611779e44ffcb60e912479d1a3c7c77099c3c2f068c36"},
-    {file = "wasmtime-12.0.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:d5e284b37204535a2817f3563102ce8a41451a5f4203db059b051640bda8bcb8"},
-    {file = "wasmtime-12.0.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:2a931214e62aa3d23c61b5f5d2cc47ce10d708f4d8d02e12ea87004c0837e650"},
-    {file = "wasmtime-12.0.0-py3-none-manylinux1_x86_64.whl", hash = "sha256:fa5372d8f3e2bfcaaf7cfffb0d5efc640351889d7aed6d34711f32a85fe9b5ff"},
-    {file = "wasmtime-12.0.0-py3-none-manylinux2014_aarch64.whl", hash = "sha256:c72d1f9b253b97aff19375d6980e3e6380929424fe07b56364413bf54fd80049"},
-    {file = "wasmtime-12.0.0-py3-none-win_amd64.whl", hash = "sha256:7eee12e6bb72123b3beec757d6b48f90b09a1097b1c6dadff7013ffbc46df2fe"},
+    {file = "wasmtime-13.0.1-py3-none-any.whl", hash = "sha256:ae3a1d92193acf519284bfef52d1ee7639cc58e2aede9f2433ba2f1a8a8ebacc"},
+    {file = "wasmtime-13.0.1-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:0e6af59b1ef70551d5adda56f14ab68e66429035c327b52cbb0f6f848d7e1e29"},
+    {file = "wasmtime-13.0.1-py3-none-macosx_11_0_arm64.whl", hash = "sha256:bf2ceffc05f1df4bf3018f6c1de2df30729f055a59ac7a1c3129769132be30c6"},
+    {file = "wasmtime-13.0.1-py3-none-manylinux1_x86_64.whl", hash = "sha256:7b5b8900712455f673bfd0be5c03129ce4b03693d419e638bb7c7aefabdfbf67"},
+    {file = "wasmtime-13.0.1-py3-none-manylinux2014_aarch64.whl", hash = "sha256:86b0d5ad59daab70b3e519b9df93580a017331073de3206d5e8a82f89cff2e2c"},
+    {file = "wasmtime-13.0.1-py3-none-win_amd64.whl", hash = "sha256:f5f6248f921d52c2634a6e350486f8f575b2bc9d2601c1abab82c6064fe2c0a5"},
 ]
 
 [[package]]

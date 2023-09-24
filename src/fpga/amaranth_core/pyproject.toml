@@ -9,7 +9,7 @@ simulation = [
     "pypng",
 
     "numpy",
-    "PySoundFile"
+    "soundfile"
 ]
 
 [tool.pdm.scripts]

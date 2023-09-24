@@ -404,7 +404,7 @@ def capture_wav():
 
     FILE_NAME = "log.wav"
     SAMPLE_RATE = 48000
-    CHUNK_SIZE = SAMPLE_RATE//1000
+    CHUNK_SIZE = SAMPLE_RATE//200
     SHRT_MAX = 32767 # No python library source for this?
     USHRT_CONVERT = 1<<16
 
@@ -420,6 +420,7 @@ def capture_wav():
 
             # Do i2s from the speaker end
             for _ in range(CHUNK_SIZE):
+                frame = []
                 for channel in range(2):
                     sample = 0
 
@@ -434,12 +435,14 @@ def capture_wav():
 
                     if sample > SHRT_MAX: # Reinterpret unsigned as signed
                         sample -= USHRT_CONVERT
-                    frames.append(sample)
+                    frame.append(sample)
 
                     for _ in range(16): # Blank space
                         for _ in range(4): # Serial step
                             while (yield top.audio_mclk): yield
                             while not (yield top.audio_mclk): yield
+                print(frame)
+                frames.append(frame)
 
             # If this is first byte open write to truncate, otherwise open readwrite...
             with sf.SoundFile(FILE_NAME, mode = 'w', samplerate=SAMPLE_RATE, channels=2, subtype='PCM_16') \
@@ -448,12 +451,10 @@ def capture_wav():
                     as outfile:
                 if written > 0: # ... then seek to end to append
                     outfile.seek(0,sf.SEEK_END)
-                print(frames)
-                print(type(frames[0]))
                 outfile.write(frames)
 
-            written += CHUNKSIZE
-            if writen >= last_printed+SAMPLE_RATE:
+            written += CHUNK_SIZE
+            if written >= last_printed+SAMPLE_RATE:
                 print(f"{written//SAMPLE_RATE} seconds written")
                 last_printed = written
 
