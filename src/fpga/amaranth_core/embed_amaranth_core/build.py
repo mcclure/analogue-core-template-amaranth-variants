@@ -18,10 +18,11 @@ def simulate():
 
 
 def capture_frame():
-    import soundfile
+    import png
     from amaranth.sim import Simulator
 
     top = AppToplevel()
+    rows = []
     def bench():
         written = 0
         while True:
