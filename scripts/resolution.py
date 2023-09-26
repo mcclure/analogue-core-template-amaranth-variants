@@ -2,6 +2,7 @@
 # Takes X pixel, Y pixel and (optional, assumes 60) hz framerate as arguments
 # Then takes 1 line of interactive input
 # Written by andi mcc with help from agg23 and whitequark
+# Covered by BSD0 license in src/fpga/amaranth_core/LICENSE.txt
 
 FRAMERATE_HZ_DEFAULT = 60
 MHZ = 1_000_000

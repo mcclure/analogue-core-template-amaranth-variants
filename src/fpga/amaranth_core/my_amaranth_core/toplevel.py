@@ -175,7 +175,7 @@ class Toplevel(wiring.Component):
 
             # inactive screen areas must be black
             m.d.sync += [
-                self.video_de.eq(0)
+                self.video_de.eq(video_active)
             ]
 
         # Audio
@@ -250,7 +250,7 @@ class Toplevel(wiring.Component):
         ]
 
         with m.If(audgen_slck_update): # Update late as possible (could do so as early as implied falling edge...)
-            audgen_bit_update_stb.eq(1)
+            m.d.comb += audgen_bit_update_stb.eq(1)
 
             with m.If(audgen_lrck_internal == 23): # Audio logic halfway through "silenced" period (FIXME could move forward or back-- Analogue sample code did this on lrck falling edge)
                 m.d.comb += audgen_word_update_stb.eq(1)

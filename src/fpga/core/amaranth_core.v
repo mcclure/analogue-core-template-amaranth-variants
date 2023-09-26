@@ -105,7 +105,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   reg [5:0] \animation_counter$next ;
   reg [21:0] audgen_accum = 22'h0b5464;
   reg [21:0] \audgen_accum$next ;
-  wire audgen_bit_update_stb;
+  reg audgen_bit_update_stb;
   wire [3:0] audgen_channel_internal;
   wire audgen_channel_select;
   reg audgen_dac = 1'h0;
@@ -671,7 +671,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \video_de$next  = video_de;
     casez (video_clk_div_stb)
       1'h1:
-          \video_de$next  = 1'h0;
+          \video_de$next  = video_active;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -752,6 +752,14 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
           endcase
     endcase
   end
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
+    audgen_bit_update_stb = 1'h0;
+    casez (audgen_slck_update)
+      1'h1:
+          audgen_bit_update_stb = 1'h1;
+    endcase
+  end
   assign \$29  = \$30 ;
   assign \$76  = \$77 ;
   assign \$85  = \$86 ;
@@ -771,7 +779,6 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   assign audgen_lrck_internal = audgen_lrck_count[6:2];
   assign audgen_silenced = audgen_lrck_count[6];
   assign audgen_channel_internal = audgen_lrck_count[5:2];
-  assign audgen_bit_update_stb = 1'h0;
   assign audgen_channel_select = audgen_lrck;
   assign audgen_lrck = audgen_lrck_count[7];
   assign audgen_slck = \$162 ;
