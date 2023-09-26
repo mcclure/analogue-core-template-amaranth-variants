@@ -13,7 +13,7 @@ simulation = [
 ]
 
 [tool.pdm.scripts]
-simulate = {call = "embed_amaranth_core.toplevel:simulate"}
-capture_frame = {call = "embed_amaranth_core.toplevel:capture_frame"}
-capture_wav = {call = "embed_amaranth_core.toplevel:capture_wav"}
-generate = {call = "embed_amaranth_core.toplevel:generate"}
+simulate = {call = "embed_amaranth_core.build:simulate"}
+capture_frame = {call = "embed_amaranth_core.build:capture_frame"}
+capture_wav = {call = "embed_amaranth_core.build:capture_wav"}
+generate = {call = "embed_amaranth_core.build:generate"}

@@ -8,6 +8,15 @@ This is a screen test with synchronized video animation and audio, written by An
 
 This assumes JSON files besides video.json have already been configured per the Analogue documentation. Clearer build instructions are forthcoming.
 
+## Editing
+
+The only important files in this tree are in `src/fpga/amaranth_core/embed_amaranth_core`.
+
+* [app_toplevel.py](src/fpga/amaranth_core/embed_amaranth_core/app_toplevel.py) - Put your "app logic" here, based on the given input and output signals
+* [toplevel.py](src/fpga/amaranth_core/embed_amaranth_core/toplevel.py) - This is the amaranth fake toplevel which gets embedded into the verilog fake toplevel (which gets embedded into apf). Edit it (and possibly also [core_top.v](src/fpga/core/core_top.v)) if you need to add additional input and output signals
+* [resolution.py](src/fpga/amaranth_core/embed_amaranth_core/resolution.py) - This determines the screen size and refresh rate. Create it with [scripts/resolution.py](scripts/resolution.py).
+* [pyproject.toml](src/fpga/amaranth_core/pyproject.toml) - Documents the invocable pdm commands, which are implemented in [build.py](src/fpga/amaranth_core/embed_amaranth_core/build.py)
+
 ## License
 
 Other than Analogue code (see below), this repo contains Amaranth support code by Whitequark with some additions by andi mcc. This is covered by the BSD0 (public domain like) license [here](src/fpga/amaranth_core/LICENSE.txt). You may want to edit this LICENSE.txt before redistributing your own changes. 
