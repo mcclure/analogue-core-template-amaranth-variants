@@ -6,10 +6,14 @@ dependencies = [
 
 [tool.pdm.dev-dependencies]
 simulation = [
-    "pypng"
+    "pypng",
+
+    "numpy",
+    "soundfile"
 ]
 
 [tool.pdm.scripts]
 simulate = {call = "embed_amaranth_core.toplevel:simulate"}
 capture_frame = {call = "embed_amaranth_core.toplevel:capture_frame"}
+capture_wav = {call = "embed_amaranth_core.toplevel:capture_wav"}
 generate = {call = "embed_amaranth_core.toplevel:generate"}
