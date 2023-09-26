@@ -11,6 +11,7 @@ from .toplevel import Toplevel
 
 DEBUG_NO_OPENING_PAUSE = False
 
+AUDIO_DIVISOR_BITS = 2
 
 class AppToplevel(Toplevel):
     def app_elaborate(self, platform, m,
@@ -28,6 +29,9 @@ class AppToplevel(Toplevel):
 
         countdown_timer = Signal(6, reset=0 if DEBUG_NO_OPENING_PAUSE else ((1<<6)-1))
         frozen = Signal(1, reset=0 if DEBUG_NO_OPENING_PAUSE else 1)
+
+        audio_divide_counter = Signal(AUDIO_DIVISOR_BITS, reset = AUDIO_DIVISOR_BITS and ((1<<AUDIO_DIVISOR_BITS)-1))
+        audio_divide_stb = Signal(1)
 
         reset_value = None # Take me unto thine arms, GC
 
@@ -123,6 +127,7 @@ class AppToplevel(Toplevel):
 
         m.d.comb += audio_output_word_bit.eq(audio_channel_internal <= 5) # 1 bit dac state
 
+        m.d.comb += audio_divide_stb.eq(audio_divide_counter == 0)
         m.d.comb += audio_high.eq( audgen_state[0] )  # Audio play is always lowest bit of audio state
 
         with m.If(audio_bit_update_stb):
@@ -132,4 +137,8 @@ class AppToplevel(Toplevel):
         with m.If(audio_word_update_stb):
             # Audio generation app logic
             with m.If(~(video_pixel_stb & video_vsync_stb)): # Don't collide with end-of-screen copy
-                m.d.sync += audgen_state.eq( audgen_state.rotate_right(1) ) # After playing a bit, move to the next bit
+                with m.If(audio_divide_stb):
+                    m.d.sync += audgen_state.eq( audgen_state.rotate_right(1) ) # After playing a bit, move to the next bit
+
+                if AUDIO_DIVISOR_BITS>0:
+                    m.d.sync += audio_divide_counter.eq( audio_divide_counter+1 )
