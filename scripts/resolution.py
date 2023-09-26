@@ -77,13 +77,10 @@ porch_y = (y-display_y) // 2
 aspect = fractions.Fraction(display_x, display_y)
 
 print(f"""
-# Amaranth clock
-
-m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio={divisor})
-
-# Amaranth sizes
+# Top of toplevel.py
 
 # ~{REFERENCE_MHZ/divisor:0.3f} mhz clock; {hz:0.3f} fps
+VID_DIV_RATIO = {divisor}
 VID_H_BPORCH = {porch_x}
 VID_H_ACTIVE = {display_x}
 VID_H_TOTAL  = {x}

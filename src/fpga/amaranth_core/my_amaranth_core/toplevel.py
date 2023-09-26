@@ -3,6 +3,16 @@ from amaranth.lib import wiring, data
 from amaranth.lib.wiring import In, Out
 import enum
 
+# ~9.281 mhz clock; 60.022 fps
+VID_DIV_RATIO = 8
+VID_H_BPORCH = 4
+VID_H_ACTIVE = 400
+VID_H_TOTAL  = 408
+VID_V_BPORCH = 29
+VID_V_ACTIVE = 320
+VID_V_TOTAL  = 379
+
+assert 47 <= (74250000 / VID_DIV_RATIO / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
 class PixelClockDiv(wiring.Component):
     clk90   : Out(1) # Pixel clock, 90 deg trailing
@@ -95,12 +105,6 @@ class Toplevel(wiring.Component):
     cont3_trig      : In(16)
     cont4_trig      : In(16)
 
-    def __init__(self, *args):
-        self.animation_counter = Signal(6) # 0..63 counter
-        self.rotate1_counter   = Signal(2) # 0..3 counter
-        self.rotate2_counter   = Signal(2) # 0..3 counter
-        super().__init__(*args)
-
     def elaborate(self, platform):
         m = Module()
 
@@ -114,135 +118,65 @@ class Toplevel(wiring.Component):
 
         m.d.boot += self.init_done.eq(1)
 
-        # ------------------------------ user code below this line --------------------------------
+        # Video interface
 
-        # Video
-
-        m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=8)
+        m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=VID_DIV_RATIO)
         m.d.comb += [
             self.video_rgb_clk.eq(video_clk_div.clk),
             self.video_rgb_clk90.eq(video_clk_div.clk90),
         ]
 
-        # ~9.281 mhz clock; 60.022 fps
-        VID_H_BPORCH = 4
-        VID_H_ACTIVE = 400
-        VID_H_TOTAL  = 408
-        VID_V_BPORCH = 29
-        VID_V_ACTIVE = 320
-        VID_V_TOTAL  = 379
+        video_x_count = Signal(10)
+        video_y_count = Signal(10)
 
-        assert 47 <= (74250000 / video_clk_div.ratio / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
+        # Audio interface
 
-        x_count = Signal(10)
-        y_count = Signal(10)
+        audgen_silenced = Signal(1)
+        audgen_channel_select = Signal(1)
+        audgen_channel_internal = Signal(4)
+        audgen_bit_update_stb = Signal(1)
+        audgen_word_update_stb = Signal(1)
+        audgen_dac = Signal(1)
 
-        # Partial results for colors
-        render_state = Signal(Shape.cast(RenderState))
-        current_color_id = Signal(Shape.cast(RenderMode))
-        next_color_id = Signal(Shape.cast(RenderMode))
-        flash_color = Signal(24)
-        current_flash_on = Signal(1)
-        next_flash_on = Signal(1)
-        rotate2_counter_anti = Signal(2)
+        # App interface
 
-        m.d.comb += rotate2_counter_anti.eq(ROTATE_COUNTER_MAX - self.rotate2_counter)
-
-        def rgb(r,g,b):
-            return [self.video_rgb.r.eq(r), self.video_rgb.g.eq(g), self.video_rgb.b.eq(b)]
-
-        val = Const(VID_V_BPORCH, y_count.shape())
-        with m.If((y_count >= val) & (y_count <= val + rotate2_counter_anti)):   # Top row red
-            m.d.comb += render_state.eq(RenderState.TOP)
-
-        val = Const(VID_V_ACTIVE + VID_V_BPORCH - 1, y_count.shape())
-        with m.Elif((y_count <= val) & (y_count >= val - rotate2_counter_anti)): # Bottom row yellow
-            m.d.comb += render_state.eq(RenderState.BOTTOM)
-
-        val = Const(VID_H_BPORCH, x_count.shape())
-        with m.Elif((x_count >= val) & (x_count <= val + rotate2_counter_anti)): # Left column green
-            m.d.comb += render_state.eq(RenderState.LEFT)
-
-        val = Const(VID_H_ACTIVE + VID_H_BPORCH - 1, x_count.shape())
-        with m.Elif((x_count <= val) & (x_count >= val - rotate2_counter_anti)): # Right column blue
-            m.d.comb += render_state.eq(RenderState.RIGHT)
-
-        with m.Elif(y_count - VID_V_BPORCH > self.animation_counter * (VID_V_ACTIVE // ANIMATION_COUNTER_SIZE)):
-            m.d.comb += render_state.eq(RenderState.NEXT)
-        with m.Else(): # Remaining pixels, alternate black
-            m.d.comb += render_state.eq(RenderState.CURRENT)
+        video_hsync_stb = Signal(1)
+        video_vsync_stb = Signal(1)
+        video_active = Signal(1)
 
         m.d.comb += [
-            current_color_id.eq(self.rotate1_counter+1),
-            next_color_id.eq(self.rotate1_counter)
+            video_hsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_TOTAL - 1)),
+            video_vsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_TOTAL - 1) & (video_y_count == VID_V_TOTAL - 1)),
+            video_active.eq((video_x_count >= VID_H_BPORCH) & (video_x_count < VID_H_ACTIVE + VID_H_BPORCH) &
+                (video_y_count >= VID_V_BPORCH) & (video_y_count < VID_V_ACTIVE + VID_V_BPORCH))
         ]
 
-        with m.If(self.rotate1_counter[0] ^ self.rotate2_counter[0]):
-            m.d.comb += flash_color.eq(0x0)
-        with m.Else():
-            m.d.comb += flash_color.eq(0xFFFFFF)
-
-        for [flash_on, id] in [[current_flash_on, current_color_id], [next_flash_on, next_color_id]]:
-            with m.Switch(id):
-                with m.Case(RenderMode.PLAIN):
-                    m.d.comb += flash_on.eq(0)
-                with m.Case(RenderMode.VERT):
-                    m.d.comb += flash_on.eq(x_count[0])
-                with m.Case(RenderMode.HORIZ):
-                    m.d.comb += flash_on.eq(y_count[0])
-                with m.Case(RenderMode.CHECKER):
-                    m.d.comb += flash_on.eq(x_count[0] ^ y_count[0])
+        self.app_elaborate(platform, m,
+            video_clk_div.stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, self.video_rgb,
+            audgen_silenced, audgen_channel_select, audgen_channel_internal, audgen_bit_update_stb, audgen_word_update_stb, audgen_dac)
 
         # Draw
+
         with m.If(video_clk_div.stb):
             # Vertical and horizontal sync
             m.d.sync += [
-                self.video_vs.eq((x_count == 0) & (y_count == 0)),
+                self.video_vs.eq((video_x_count == 0) & (video_y_count == 0)),
                 # HS must occur at least 3 cycles after VS
-                self.video_hs.eq(x_count == 3),
+                self.video_hs.eq(video_x_count == 3),
             ]
 
             # Iterate screen "beam"
-            m.d.sync += x_count.eq(x_count + 1)
-            with m.If(x_count == VID_H_TOTAL - 1):
-                m.d.sync += x_count.eq(0)
-                m.d.sync += y_count.eq(y_count + 1)
-                with m.If(y_count == VID_V_TOTAL - 1):
-                    m.d.sync += y_count.eq(0)
-
-                    # NEW FRAME LOGIC
-                    m.d.sync += self.animation_counter.eq(self.animation_counter + 1)
-
-                    with m.If(self.animation_counter == ANIMATION_COUNTER_MAX):
-                        m.d.sync += self.rotate1_counter.eq(self.rotate1_counter + 1)
-                        with m.If(self.rotate1_counter == ROTATE_COUNTER_MAX):
-                            m.d.sync += self.rotate2_counter.eq(self.rotate2_counter + 1)
+            m.d.sync += video_x_count.eq(video_x_count + 1)
+            with m.If(video_x_count == VID_H_TOTAL - 1):
+                m.d.sync += video_x_count.eq(0)
+                m.d.sync += video_y_count.eq(video_y_count + 1)
+                with m.If(video_y_count == VID_V_TOTAL - 1):
+                    m.d.sync += video_y_count.eq(0)
 
             # inactive screen areas must be black
             m.d.sync += [
-                self.video_de.eq(0),
-                self.video_rgb.eq(0)
+                self.video_de.eq(0)
             ]
-
-            # Color selection for live pixels
-            with m.If((x_count >= VID_H_BPORCH) & (x_count < VID_H_ACTIVE + VID_H_BPORCH)):
-                with m.If((y_count >= VID_V_BPORCH) & (y_count < VID_V_ACTIVE + VID_V_BPORCH)):
-                    m.d.sync += self.video_de.eq(1)
-                    with m.Switch(render_state):
-                        with m.Case(RenderState.TOP): # Red
-                            m.d.sync += rgb(0xFF, 0, 0)
-                        with m.Case(RenderState.BOTTOM): # Yellow
-                            m.d.sync += rgb(0xFF, 0xFF, 0x80)
-                        with m.Case(RenderState.LEFT): # Green
-                            m.d.sync += rgb(0, 0xFF, 0)
-                        with m.Case(RenderState.RIGHT): # Blue
-                            m.d.sync += rgb(0, 0, 0xFF)
-                        for [case, flash_on, invert] in [[RenderState.CURRENT, current_flash_on, 0x0], [RenderState.NEXT, next_flash_on, 0xFFFFFF]]:
-                            with m.Case(case):
-                                with m.If(flash_on): # Remaining pixels, alternate black
-                                    m.d.sync += self.video_rgb.eq(flash_color^invert)
-                                with m.Else():
-                                    m.d.sync += rgb(0xa0, 0x00, 0x80) # Magenta
 
         # Audio
 
@@ -300,19 +234,14 @@ class Toplevel(wiring.Component):
 
         # Audio generate
 
-        audgen_dac = Signal(1)      # Output value
-
-        # User logic
-        audgen_osc_phase = Signal(7)  # Counter for square wave
-        audgen_osc_wave = Signal(5)   # Counter for square waves on octaves C2 through C6 inclusive (msb is C2, lsb is C6)
-        audgen_output_word_bit = Signal(1) # As audgen_channel_internal increments scrolls through bits 0b0000011111111111, MSB first
-        audgen_high = Signal(1)       # High when square wave high
-        audgen_osc_wave_select = Signal(4) # Which bit in audgen_osc_wave to output?
+        m.d.comb += [ # For app interface
+            audgen_channel_select.eq(audgen_lrck),
+            audgen_word_update_stb.eq(0), # Will override below
+            audgen_bit_update_stb.eq(0), # Will override below
+        ]
 
         # Bits of audgen_lrck_count: ABCCCCDD
         # D: audgen_slck_count equivalent; C: audgen_channel_internal; B: audgen_silenced; A: audgen_lrck
-        audgen_silenced = Signal(1)
-        audgen_channel_internal = Signal(4)
         audgen_lrck_internal = Signal(5)
         m.d.comb += [
             audgen_channel_internal.eq(audgen_lrck_count[2:6]),
@@ -320,29 +249,11 @@ class Toplevel(wiring.Component):
             audgen_lrck_internal.eq(audgen_lrck_count[2:7]) # BCCCC (audgen_channel_internal + audgen_silenced)
         ]
 
-        m.d.comb += [
-            audgen_output_word_bit.eq(audgen_channel_internal <= 5),
-            audgen_osc_wave_select.eq( 4-(self.rotate1_counter + (self.rotate2_counter == 3)) )
-        ]
         with m.If(audgen_slck_update): # Update late as possible (could do so as early as implied falling edge...)
-            # Convert audgen user logic to a waveform—- alternate 0b0000011111111111 and 0b1111100000000000 words
-            m.d.sync += audgen_dac.eq( Mux(audgen_silenced, 0, audgen_output_word_bit ^ audgen_high) )
+            audgen_bit_update_stb.eq(1)
 
             with m.If(audgen_lrck_internal == 23): # Audio logic halfway through "silenced" period (FIXME could move forward or back-- Analogue sample code did this on lrck falling edge)
-                # Audio generation user logic
-                with m.If(audgen_osc_phase < 46): # Alternating every 46 stereo samples gets us on average a wave-cycle every 46 audio frames ~= 1046.5hz = C6
-                    m.d.sync += audgen_osc_phase.eq( audgen_osc_phase + 1 )
-                with m.Else():
-                    m.d.sync += [
-                        audgen_osc_phase.eq( 1 ), # note audgen_osc_phase is currently EQUAL to 46
-                        audgen_osc_wave.eq( audgen_osc_wave + 1 ),
-
-                        # Set square wave high or low by selecting an octave from the osc_wave bitstring
-                        # Pattern is C2 C3 C4 C5, C2 C3 C4 C5, C2 C3 C4 C5, C3 C4 C5 C6
-                        # Notice crossing streams: Which octave we select is based on the *graphics* state
-                        # Also notice msb is lowest frequency so we want to count from msb to lsb 
-                        audgen_high.eq( audgen_osc_wave.bit_select( audgen_osc_wave_select , 1 ) )
-                    ]
+                m.d.comb += audgen_word_update_stb.eq(1)
 
         # Module output
         m.d.comb += [
@@ -352,6 +263,146 @@ class Toplevel(wiring.Component):
         ]
 
         return m
+
+    # "User logic"
+    def app_elaborate(self, platform, m,
+            video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, video_rgb_out,
+            audio_silenced, audio_channel_select, audio_channel_internal, audio_bit_update_stb, audio_word_update_stb, audio_dac_out):
+        # App: Test pattern
+        # 3 effects:
+        #     * Outer sides are red, green, yellow and blue. Every 4 "beats" they grow narrower, until on the 4th beat they are 1 pixel wide.
+        #     * Every "beat" the background alternates (vertical wipe) between magenta, vertical stripes, horizontal stripes, and checkerboard (stripes and checkers alternate black and white)
+        #     * Every "beat" a square wave C note rises, on beat 4 it rises one octave higher.
+
+        # Setup
+
+        animation_counter = Signal(6) # 0..63 counter
+        rotate1_counter   = Signal(2) # 0..3 counter
+        rotate2_counter   = Signal(2) # 0..3 counter
+
+        # Partial results for colors
+        render_state = Signal(Shape.cast(RenderState))
+        current_color_id = Signal(Shape.cast(RenderMode))
+        next_color_id = Signal(Shape.cast(RenderMode))
+        flash_color = Signal(24)
+        current_flash_on = Signal(1)
+        next_flash_on = Signal(1)
+        rotate2_counter_anti = Signal(2)
+
+        m.d.comb += rotate2_counter_anti.eq(ROTATE_COUNTER_MAX - rotate2_counter)
+
+        def rgb(r,g,b):
+            return [video_rgb_out.r.eq(r), video_rgb_out.g.eq(g), video_rgb_out.b.eq(b)]
+
+        val = Const(VID_V_BPORCH, video_y_count.shape())
+        with m.If((video_y_count >= val) & (video_y_count <= val + rotate2_counter_anti)):   # Top row red
+            m.d.comb += render_state.eq(RenderState.TOP)
+
+        val = Const(VID_V_ACTIVE + VID_V_BPORCH - 1, video_y_count.shape())
+        with m.Elif((video_y_count <= val) & (video_y_count >= val - rotate2_counter_anti)): # Bottom row yellow
+            m.d.comb += render_state.eq(RenderState.BOTTOM)
+
+        val = Const(VID_H_BPORCH, video_x_count.shape())
+        with m.Elif((video_x_count >= val) & (video_x_count <= val + rotate2_counter_anti)): # Left column green
+            m.d.comb += render_state.eq(RenderState.LEFT)
+
+        val = Const(VID_H_ACTIVE + VID_H_BPORCH - 1, video_x_count.shape())
+        with m.Elif((video_x_count <= val) & (video_x_count >= val - rotate2_counter_anti)): # Right column blue
+            m.d.comb += render_state.eq(RenderState.RIGHT)
+
+        with m.Elif(video_y_count - VID_V_BPORCH > animation_counter * (VID_V_ACTIVE // ANIMATION_COUNTER_SIZE)):
+            m.d.comb += render_state.eq(RenderState.NEXT)
+        with m.Else(): # Remaining pixels, alternate black
+            m.d.comb += render_state.eq(RenderState.CURRENT)
+
+        m.d.comb += [
+            current_color_id.eq(rotate1_counter+1),
+            next_color_id.eq(rotate1_counter)
+        ]
+
+        with m.If(rotate1_counter[0] ^ rotate2_counter[0]):
+            m.d.comb += flash_color.eq(0x0)
+        with m.Else():
+            m.d.comb += flash_color.eq(0xFFFFFF)
+
+        for [flash_on, id] in [[current_flash_on, current_color_id], [next_flash_on, next_color_id]]:
+            with m.Switch(id):
+                with m.Case(RenderMode.PLAIN):
+                    m.d.comb += flash_on.eq(0)
+                with m.Case(RenderMode.VERT):
+                    m.d.comb += flash_on.eq(video_x_count[0])
+                with m.Case(RenderMode.HORIZ):
+                    m.d.comb += flash_on.eq(video_y_count[0])
+                with m.Case(RenderMode.CHECKER):
+                    m.d.comb += flash_on.eq(video_x_count[0] ^ video_y_count[0])
+
+        # Animation
+
+        # New frame logic
+        with m.If(video_vsync_stb):
+            m.d.sync += animation_counter.eq(animation_counter + 1)
+
+            with m.If(animation_counter == ANIMATION_COUNTER_MAX):
+                m.d.sync += rotate1_counter.eq(rotate1_counter + 1)
+                with m.If(rotate1_counter == ROTATE_COUNTER_MAX):
+                    m.d.sync += rotate2_counter.eq(rotate2_counter + 1)
+
+        # Draw logic
+        with m.If(video_pixel_stb):            # inactive screen areas must be black
+            m.d.sync += [
+                video_rgb_out.eq(0)
+            ]
+
+            # Color selection for live pixels
+            with m.If(video_active):
+                with m.Switch(render_state):
+                    with m.Case(RenderState.TOP): # Red
+                        m.d.sync += rgb(0xFF, 0, 0)
+                    with m.Case(RenderState.BOTTOM): # Yellow
+                        m.d.sync += rgb(0xFF, 0xFF, 0x80)
+                    with m.Case(RenderState.LEFT): # Green
+                        m.d.sync += rgb(0, 0xFF, 0)
+                    with m.Case(RenderState.RIGHT): # Blue
+                        m.d.sync += rgb(0, 0, 0xFF)
+                    for [case, flash_on, invert] in [[RenderState.CURRENT, current_flash_on, 0x0], [RenderState.NEXT, next_flash_on, 0xFFFFFF]]:
+                        with m.Case(case):
+                            with m.If(flash_on): # Remaining pixels, alternate black
+                                m.d.sync += video_rgb_out.eq(flash_color^invert)
+                            with m.Else():
+                                m.d.sync += rgb(0xa0, 0x00, 0x80) # Magenta
+
+        # Audio
+
+        audio_high = Signal(1)       # High when square wave high (1 bit dac effectively)
+        audio_output_word_bit = Signal(1) # As audio_channel_internal increments scrolls through bits 0b0000011111111111, MSB first
+
+        audgen_osc_phase = Signal(7)  # Counter for square wave
+        audgen_osc_wave = Signal(5)   # Counter for square waves on octaves C2 through C6 inclusive (msb is C2, lsb is C6)
+        audgen_osc_wave_select = Signal(4) # Which bit in audio_osc_wave to output?
+
+        m.d.comb += audio_output_word_bit.eq(audio_channel_internal <= 5) # 1 bit dac state
+
+        m.d.comb += audgen_osc_wave_select.eq( 4-(rotate1_counter + (rotate2_counter == 3)) ) # Video state
+
+        with m.If(audio_bit_update_stb):
+            # Convert above state logic to a waveform—- alternate 0b0000011111111111 and 0b1111100000000000 words
+            m.d.sync += audio_dac_out.eq( Mux(audio_silenced, 0, audio_output_word_bit ^ audio_high) )
+
+        with m.If(audio_word_update_stb):
+            # Audio generation user logic
+            with m.If(audgen_osc_phase < 46): # Alternating every 46 stereo samples gets us on average a wave-cycle every 46 audio frames ~= 1046.5hz = C6
+                m.d.sync += audgen_osc_phase.eq( audgen_osc_phase + 1 )
+            with m.Else():
+                m.d.sync += [
+                    audgen_osc_phase.eq( 1 ), # note audgen_osc_phase is currently EQUAL to 46
+                    audgen_osc_wave.eq( audgen_osc_wave + 1 ),
+
+                    # Set square wave high or low by selecting an octave from the osc_wave bitstring
+                    # Pattern is C2 C3 C4 C5, C2 C3 C4 C5, C2 C3 C4 C5, C3 C4 C5 C6
+                    # Notice crossing streams: Which octave we select is based on the *graphics* state
+                    # Also notice msb is lowest frequency so we want to count from msb to lsb 
+                    audio_high.eq( audgen_osc_wave.bit_select( audgen_osc_wave_select , 1 ) )
+                ]
 
 
 def simulate():
