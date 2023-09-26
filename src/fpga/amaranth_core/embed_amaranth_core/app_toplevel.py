@@ -9,6 +9,9 @@ from .resolution import *
 from .toplevel import Toplevel
 
 
+DEBUG_NO_OPENING_PAUSE = False
+
+
 class AppToplevel(Toplevel):
     def app_elaborate(self, platform, m,
             video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, video_rgb_out,
@@ -17,11 +20,14 @@ class AppToplevel(Toplevel):
 
         # Setup
 
-        reset_value = (1 << (VID_H_ACTIVE//2)) + (1 << (VID_H_ACTIVE//4))
-        topline_state = Signal(VID_H_ACTIVE)
+        reset_value = (1 << (VID_H_ACTIVE//2))
+        topline_state = Signal(VID_H_ACTIVE, reset=reset_value)
         active_state = Signal(VID_H_ACTIVE, reset=reset_value)
         audgen_state = Signal(VID_H_ACTIVE, reset=reset_value)
-        need_topline_backcopy = Signal(1) # Fires 1 cycle after first-row hsync 
+        need_topline_backcopy = Signal(1) # Fires 1 cycle after first-row hsync
+
+        countdown_timer = Signal(6, reset=0 if DEBUG_NO_OPENING_PAUSE else ((1<<6)-1))
+        frozen = Signal(1, reset=0 if DEBUG_NO_OPENING_PAUSE else 1)
 
         reset_value = None # Take me unto thine arms, GC
 
@@ -54,7 +60,7 @@ class AppToplevel(Toplevel):
                 ]
 
             # Row finished
-            with m.If(video_hsync_stb):
+            with m.If(video_hsync_stb & (video_y_count >= VID_V_BPORCH) & (video_y_count < VID_V_ACTIVE + VID_V_BPORCH - 1)):
                 # Perform rule 30
                 for i in range(VID_H_ACTIVE): # For each col
                     # Calculate indices
@@ -84,19 +90,31 @@ class AppToplevel(Toplevel):
                             m.d.sync += at.eq(0)
 
                 # 1 cycle after first row is done performing CA, make that the new topline
-                with m.If(video_y_count == VID_V_BPORCH):
+                # (Unless we are in first second and frozen)
+                with m.If(
+                        (video_y_count == VID_V_BPORCH) & 
+                        (~frozen) &
+                        (countdown_timer[0:1] == 0)):
                     m.d.sync += need_topline_backcopy.eq(1)
 
             # Screen finished
             with m.If(video_vsync_stb):
                 # Set audio state and new active state from most recent topline state
                 m.d.sync += [
+                    countdown_timer.eq(countdown_timer - 1),
                     audgen_state.eq(topline_state),
                     active_state.eq(topline_state),
                 ]
+                with m.If(countdown_timer == 0):
+                    m.d.sync += [
+                        frozen.eq(0)
+                    ]
 
         with m.If(need_topline_backcopy):
-            m.d.sync += topline_state.eq(active_state)
+            m.d.sync += [
+                topline_state.eq(active_state),
+                need_topline_backcopy.eq(0)
+            ]
 
         # Audio
 

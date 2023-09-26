@@ -3,7 +3,21 @@
 module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_key, cont1_trig, cont2_joy, cont2_key, cont2_trig, cont3_joy, cont3_key, cont3_trig, cont4_joy, cont4_key, cont4_trig, dbg_rx, dbg_tx, init_done, rst, user1
 , user2, video_de, video_hs, video_rgb, video_rgb_clk, video_rgb_clk90, video_skip, video_vs, audio_adc);
   reg \$auto$verilog_backend.cc:2083:dump_module$1  = 0;
+  wire \$100 ;
+  wire \$102 ;
+  wire \$104 ;
+  wire \$106 ;
+  wire \$108 ;
   wire \$11 ;
+  wire \$110 ;
+  wire \$112 ;
+  wire [2:0] \$114 ;
+  wire [2:0] \$115 ;
+  wire \$117 ;
+  wire \$119 ;
+  wire [8:0] \$121 ;
+  wire [8:0] \$122 ;
+  wire \$124 ;
   wire \$13 ;
   wire \$15 ;
   wire \$17 ;
@@ -15,7 +29,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   wire \$29 ;
   wire \$3 ;
   wire \$31 ;
-  wire \$32 ;
+  wire \$33 ;
   wire \$35 ;
   wire \$37 ;
   wire \$39 ;
@@ -23,37 +37,38 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   wire \$43 ;
   wire \$45 ;
   wire \$47 ;
-  wire [10:0] \$49 ;
+  wire \$49 ;
   wire \$5 ;
-  wire [10:0] \$50 ;
-  wire \$52 ;
-  wire \$54 ;
-  wire [10:0] \$56 ;
-  wire [10:0] \$57 ;
+  wire \$51 ;
+  wire \$53 ;
+  wire [5:0] \$55 ;
+  wire [5:0] \$56 ;
+  wire \$58 ;
   wire \$59 ;
-  wire [22:0] \$61 ;
-  wire [22:0] \$62 ;
-  wire [23:0] \$64 ;
-  wire [22:0] \$65 ;
-  wire [23:0] \$67 ;
-  wire \$69 ;
+  wire \$62 ;
+  wire \$64 ;
+  wire \$66 ;
+  wire \$68 ;
   wire \$7 ;
-  wire \$71 ;
-  wire \$73 ;
-  wire \$75 ;
-  wire \$77 ;
-  wire \$79 ;
+  wire \$70 ;
+  wire \$72 ;
+  wire \$74 ;
+  wire \$76 ;
+  wire [10:0] \$78 ;
+  wire [10:0] \$79 ;
   wire \$81 ;
   wire \$83 ;
-  wire [2:0] \$85 ;
-  wire [2:0] \$86 ;
+  wire [10:0] \$85 ;
+  wire [10:0] \$86 ;
   wire \$88 ;
   wire \$9 ;
-  wire \$90 ;
-  wire [8:0] \$92 ;
-  wire [8:0] \$93 ;
-  wire \$95 ;
-  reg [399:0] active_state = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000010000000000000000000000000;
+  wire [22:0] \$90 ;
+  wire [22:0] \$91 ;
+  wire [23:0] \$93 ;
+  wire [22:0] \$94 ;
+  wire [23:0] \$96 ;
+  wire \$98 ;
+  reg [399:0] active_state = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
   reg [399:0] \active_state$next ;
   reg [21:0] audgen_accum = 22'h0b5464;
   reg [21:0] \audgen_accum$next ;
@@ -75,7 +90,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   reg [1:0] \audgen_slck_count$next ;
   reg audgen_slck_update = 1'h1;
   reg \audgen_slck_update$next ;
-  reg [399:0] audgen_state = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000010000000000000000000000000;
+  reg [399:0] audgen_state = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
   reg [399:0] \audgen_state$next ;
   reg audgen_word_update_stb;
   input audio_adc;
@@ -116,11 +131,15 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   wire [31:0] cont4_key;
   input [15:0] cont4_trig;
   wire [15:0] cont4_trig;
+  reg [4:0] countdown_timer = 5'h1f;
+  reg [4:0] \countdown_timer$next ;
   input dbg_rx;
   wire dbg_rx;
   input dbg_tx;
   wire dbg_tx;
   reg [23:0] flash_color;
+  reg frozen = 1'h1;
+  reg \frozen$next ;
   output init_done;
   reg init_done = 1'h0;
   wire \init_done$next ;
@@ -129,7 +148,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   input rst;
   wire rst;
   wire \rst$2 ;
-  reg [399:0] topline_state = 400'h0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+  reg [399:0] topline_state = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
   reg [399:0] \topline_state$next ;
   input user1;
   wire user1;
@@ -164,14 +183,41 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   reg [9:0] video_y_count = 10'h000;
   reg [9:0] \video_y_count$next ;
   assign \$9  = video_clk_div_stb & \$7 ;
+  assign \$100  = ~ audgen_mclk;
+  assign \$102  = ~ audgen_slck_count[1];
+  assign \$104  = ~ audgen_mclk;
+  assign \$106  = audgen_mclk_stb & \$104 ;
+  assign \$108  = audgen_slck_count == 2'h2;
+  assign \$110  = ~ audgen_mclk;
+  assign \$112  = audgen_mclk_stb & \$110 ;
+  assign \$115  = audgen_slck_count + 1'h1;
+  assign \$117  = ~ audgen_mclk;
+  assign \$11  = video_y_count == 9'h15c;
+  assign \$119  = audgen_mclk_stb & \$117 ;
+  assign \$122  = audgen_lrck_count + 1'h1;
+  assign \$124  = audgen_lrck_internal == 5'h17;
+  always @(posedge boot_clk)
+    init_done <= 1'h1;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) active_state <= 400'h0000000000000000000000000000000000000000000000000100000000000000000000000010000000000000000000000000;
+    if (\rst$2 ) need_topline_backcopy <= 1'h0;
+    else need_topline_backcopy <= \need_topline_backcopy$next ;
+  always @(posedge \clk$1 , posedge \rst$2 )
+    if (\rst$2 ) video_rgb <= 24'h000000;
+    else video_rgb <= \video_rgb$next ;
+  always @(posedge \clk$1 , posedge \rst$2 )
+    if (\rst$2 ) active_state <= 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
     else active_state <= \active_state$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) audgen_state <= 400'h0000000000000000000000000000000000000000000000000100000000000000000000000010000000000000000000000000;
+    if (\rst$2 ) countdown_timer <= 5'h1f;
+    else countdown_timer <= \countdown_timer$next ;
+  always @(posedge \clk$1 , posedge \rst$2 )
+    if (\rst$2 ) audgen_state <= 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
     else audgen_state <= \audgen_state$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) topline_state <= 400'h0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+    if (\rst$2 ) frozen <= 1'h1;
+    else frozen <= \frozen$next ;
+  always @(posedge \clk$1 , posedge \rst$2 )
+    if (\rst$2 ) topline_state <= 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
     else topline_state <= \topline_state$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_dac <= 1'h0;
@@ -191,6 +237,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_de <= 1'h0;
     else video_de <= \video_de$next ;
+  assign \$13  = \$9  & \$11 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_accum <= 22'h0b5464;
     else audgen_accum <= \audgen_accum$next ;
@@ -206,8 +253,6 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_lrck_count <= 8'h00;
     else audgen_lrck_count <= \audgen_lrck_count$next ;
-  assign \$11  = video_y_count == 9'h193;
-  assign \$13  = \$9  & \$11 ;
   assign \$15  = video_x_count >= 3'h4;
   assign \$17  = video_x_count < 9'h194;
   assign \$19  = \$15  & \$17 ;
@@ -215,48 +260,42 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   assign \$23  = \$19  & \$21 ;
   assign \$25  = video_y_count < 9'h15d;
   assign \$27  = \$23  & \$25 ;
-  assign \$29  = video_y_count == 5'h1d;
-  assign \$32  = video_clk_div_stb & video_vsync_stb;
-  assign \$31  = ~ \$32 ;
-  assign \$35  = audgen_channel_internal <= 3'h5;
-  assign \$37  = audio_output_word_bit ^ audio_high;
+  assign \$29  = video_y_count >= 5'h1d;
+  assign \$31  = video_hsync_stb & \$29 ;
+  assign \$33  = video_y_count < 9'h15c;
+  assign \$35  = \$31  & \$33 ;
+  assign \$37  = video_y_count == 5'h1d;
   assign \$3  = video_x_count == 9'h194;
-  assign \$39  = audgen_silenced ? 1'h0 : \$37 ;
-  assign \$41  = ! video_x_count;
-  assign \$43  = ! video_y_count;
+  assign \$39  = ~ frozen;
+  assign \$41  = \$37  & \$39 ;
+  assign \$43  = ~ countdown_timer[0];
   assign \$45  = \$41  & \$43 ;
-  assign \$47  = video_x_count == 2'h3;
-  assign \$50  = video_x_count + 1'h1;
-  assign \$52  = video_x_count == 9'h197;
-  assign \$54  = video_x_count == 9'h197;
-  assign \$57  = video_y_count + 1'h1;
+  assign \$47  = video_y_count >= 5'h1d;
+  assign \$49  = video_hsync_stb & \$47 ;
+  assign \$51  = video_y_count < 9'h15c;
+  assign \$53  = \$49  & \$51 ;
+  assign \$56  = countdown_timer - 1'h1;
   assign \$5  = video_clk_div_stb & \$3 ;
-  assign \$59  = video_y_count == 9'h17a;
-  assign \$62  = audgen_accum + 22'h03c000;
-  assign \$65  = audgen_accum - 22'h0b5464;
-  assign \$67  = $signed(\$65 ) + $signed(23'h03c000);
-  assign \$69  = audgen_accum >= 22'h0b5464;
-  assign \$71  = ~ audgen_mclk;
-  assign \$73  = ~ audgen_slck_count[1];
-  assign \$75  = ~ audgen_mclk;
-  assign \$77  = audgen_mclk_stb & \$75 ;
+  assign \$59  = video_clk_div_stb & video_vsync_stb;
+  assign \$58  = ~ \$59 ;
+  assign \$62  = ! countdown_timer;
+  assign \$64  = audgen_channel_internal <= 3'h5;
+  assign \$66  = audio_output_word_bit ^ audio_high;
+  assign \$68  = audgen_silenced ? 1'h0 : \$66 ;
+  assign \$70  = ! video_x_count;
+  assign \$72  = ! video_y_count;
+  assign \$74  = \$70  & \$72 ;
+  assign \$76  = video_x_count == 2'h3;
   assign \$7  = video_x_count == 9'h195;
-  assign \$79  = audgen_slck_count == 2'h2;
-  assign \$81  = ~ audgen_mclk;
-  assign \$83  = audgen_mclk_stb & \$81 ;
-  assign \$86  = audgen_slck_count + 1'h1;
-  assign \$88  = ~ audgen_mclk;
-  assign \$90  = audgen_mclk_stb & \$88 ;
-  assign \$93  = audgen_lrck_count + 1'h1;
-  assign \$95  = audgen_lrck_internal == 5'h17;
-  always @(posedge boot_clk)
-    init_done <= 1'h1;
-  always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) need_topline_backcopy <= 1'h0;
-    else need_topline_backcopy <= \need_topline_backcopy$next ;
-  always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) video_rgb <= 24'h000000;
-    else video_rgb <= \video_rgb$next ;
+  assign \$79  = video_x_count + 1'h1;
+  assign \$81  = video_x_count == 9'h197;
+  assign \$83  = video_x_count == 9'h197;
+  assign \$86  = video_y_count + 1'h1;
+  assign \$88  = video_y_count == 9'h17a;
+  assign \$91  = audgen_accum + 22'h03c000;
+  assign \$94  = audgen_accum - 22'h0b5464;
+  assign \$96  = $signed(\$94 ) + $signed(23'h03c000);
+  assign \$98  = audgen_accum >= 22'h0b5464;
   \amaranth_core.video_clk_div  video_clk_div (
     .clk(\clk$1 ),
     .\clk$1 (video_clk_div_clk),
@@ -269,13 +308,17 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \need_topline_backcopy$next  = 1'h0;
     casez (video_clk_div_stb)
       1'h1:
-          casez (video_hsync_stb)
+          casez (\$35 )
             1'h1:
-                casez (\$29 )
+                casez (\$45 )
                   1'h1:
                       \need_topline_backcopy$next  = 1'h1;
                 endcase
           endcase
+    endcase
+    casez (need_topline_backcopy)
+      1'h1:
+          \need_topline_backcopy$next  = 1'h0;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -310,7 +353,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
             1'h1:
                 \active_state$next  = { active_state[0], active_state[399:1] };
           endcase
-          casez (video_hsync_stb)
+          casez (\$53 )
             1'h1:
               begin
                 (* full_case = 32'd1 *)
@@ -7923,7 +7966,22 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     endcase
     casez (\rst$2 )
       1'h1:
-          \active_state$next  = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000010000000000000000000000000;
+          \active_state$next  = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
+    endcase
+  end
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
+    \countdown_timer$next  = countdown_timer;
+    casez (video_clk_div_stb)
+      1'h1:
+          casez (video_vsync_stb)
+            1'h1:
+                \countdown_timer$next  = \$56 [4:0];
+          endcase
+    endcase
+    casez (\rst$2 )
+      1'h1:
+          \countdown_timer$next  = 5'h1f;
     endcase
   end
   always @* begin
@@ -7938,14 +7996,32 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     endcase
     casez (audgen_word_update_stb)
       1'h1:
-          casez (\$31 )
+          casez (\$58 )
             1'h1:
                 \audgen_state$next  = { audgen_state[0], audgen_state[399:1] };
           endcase
     endcase
     casez (\rst$2 )
       1'h1:
-          \audgen_state$next  = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000010000000000000000000000000;
+          \audgen_state$next  = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
+    endcase
+  end
+  always @* begin
+    if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
+    \frozen$next  = frozen;
+    casez (video_clk_div_stb)
+      1'h1:
+          casez (video_vsync_stb)
+            1'h1:
+                casez (\$62 )
+                  1'h1:
+                      \frozen$next  = 1'h0;
+                endcase
+          endcase
+    endcase
+    casez (\rst$2 )
+      1'h1:
+          \frozen$next  = 1'h1;
     endcase
   end
   always @* begin
@@ -7957,7 +8033,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     endcase
     casez (\rst$2 )
       1'h1:
-          \topline_state$next  = 400'h0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+          \topline_state$next  = 400'h0000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000;
     endcase
   end
   always @* begin
@@ -7965,7 +8041,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \audgen_dac$next  = audgen_dac;
     casez (audgen_bit_update_stb)
       1'h1:
-          \audgen_dac$next  = \$39 ;
+          \audgen_dac$next  = \$68 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -7977,7 +8053,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \video_vs$next  = video_vs;
     casez (video_clk_div_stb)
       1'h1:
-          \video_vs$next  = \$45 ;
+          \video_vs$next  = \$74 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -7989,7 +8065,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \video_hs$next  = video_hs;
     casez (video_clk_div_stb)
       1'h1:
-          \video_hs$next  = \$47 ;
+          \video_hs$next  = \$76 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -8002,8 +8078,8 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     casez (video_clk_div_stb)
       1'h1:
         begin
-          \video_x_count$next  = \$50 [9:0];
-          casez (\$52 )
+          \video_x_count$next  = \$79 [9:0];
+          casez (\$81 )
             1'h1:
                 \video_x_count$next  = 10'h000;
           endcase
@@ -8019,11 +8095,11 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \video_y_count$next  = video_y_count;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$54 )
+          casez (\$83 )
             1'h1:
               begin
-                \video_y_count$next  = \$57 [9:0];
-                casez (\$59 )
+                \video_y_count$next  = \$86 [9:0];
+                casez (\$88 )
                   1'h1:
                       \video_y_count$next  = 10'h000;
                 endcase
@@ -8049,10 +8125,10 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    \audgen_accum$next  = \$62 [21:0];
+    \audgen_accum$next  = \$91 [21:0];
     casez (audgen_mclk_stb)
       1'h1:
-          \audgen_accum$next  = \$67 [21:0];
+          \audgen_accum$next  = \$96 [21:0];
     endcase
     casez (\rst$2 )
       1'h1:
@@ -8064,7 +8140,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     \audgen_mclk$next  = audgen_mclk;
     casez (audgen_mclk_stb)
       1'h1:
-          \audgen_mclk$next  = \$71 ;
+          \audgen_mclk$next  = \$100 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -8074,9 +8150,9 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     \audgen_slck_update$next  = 1'h0;
-    casez (\$77 )
+    casez (\$106 )
       1'h1:
-          casez (\$79 )
+          casez (\$108 )
             1'h1:
                 \audgen_slck_update$next  = 1'h1;
           endcase
@@ -8089,9 +8165,9 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     \audgen_slck_count$next  = audgen_slck_count;
-    casez (\$83 )
+    casez (\$112 )
       1'h1:
-          \audgen_slck_count$next  = \$86 [1:0];
+          \audgen_slck_count$next  = \$115 [1:0];
     endcase
     casez (\rst$2 )
       1'h1:
@@ -8101,9 +8177,9 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
     \audgen_lrck_count$next  = audgen_lrck_count;
-    casez (\$90 )
+    casez (\$119 )
       1'h1:
-          \audgen_lrck_count$next  = \$93 [7:0];
+          \audgen_lrck_count$next  = \$122 [7:0];
     endcase
     casez (\rst$2 )
       1'h1:
@@ -8115,7 +8191,7 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     audgen_word_update_stb = 1'h0;
     casez (audgen_slck_update)
       1'h1:
-          casez (\$95 )
+          casez (\$124 )
             1'h1:
                 audgen_word_update_stb = 1'h1;
           endcase
@@ -8139,12 +8215,13 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
           flash_color = 24'hffffff;
     endcase
   end
-  assign \$49  = \$50 ;
-  assign \$56  = \$57 ;
-  assign \$61  = \$62 ;
-  assign \$64  = \$67 ;
+  assign \$55  = \$56 ;
+  assign \$78  = \$79 ;
   assign \$85  = \$86 ;
-  assign \$92  = \$93 ;
+  assign \$90  = \$91 ;
+  assign \$93  = \$96 ;
+  assign \$114  = \$115 ;
+  assign \$121  = \$122 ;
   assign audio_lrck = audgen_lrck;
   assign audio_dac = audgen_dac;
   assign audio_mclk = audgen_mclk;
@@ -8153,10 +8230,10 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   assign audgen_channel_internal = audgen_lrck_count[5:2];
   assign audgen_channel_select = audgen_lrck;
   assign audgen_lrck = audgen_lrck_count[7];
-  assign audgen_slck = \$73 ;
-  assign audgen_mclk_stb = \$69 ;
+  assign audgen_slck = \$102 ;
+  assign audgen_mclk_stb = \$98 ;
   assign audio_high = audgen_state[0];
-  assign audio_output_word_bit = \$35 ;
+  assign audio_output_word_bit = \$64 ;
   assign video_active = \$27 ;
   assign video_vsync_stb = \$13 ;
   assign video_hsync_stb = \$5 ;
