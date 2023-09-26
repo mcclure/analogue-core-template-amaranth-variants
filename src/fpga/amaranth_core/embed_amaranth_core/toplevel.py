@@ -122,8 +122,8 @@ class Toplevel(wiring.Component):
         video_active = Signal(1)
 
         m.d.comb += [ # Hsync strobes the pixel *after* the final displayed pixel of the row; vsync strobes one pixel after final-row hsync
-            video_hsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_TOTAL)),
-            video_vsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_TOTAL + 1) & (video_y_count == VID_V_TOTAL - 1)),
+            video_hsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH)),
+            video_vsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH + 1) & (video_y_count == VID_H_ACTIVE + VID_H_BPORCH - 1)),
             video_active.eq((video_x_count >= VID_H_BPORCH) & (video_x_count < VID_H_ACTIVE + VID_H_BPORCH) &
                 (video_y_count >= VID_V_BPORCH) & (video_y_count < VID_V_ACTIVE + VID_V_BPORCH))
         ]

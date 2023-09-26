@@ -55,9 +55,34 @@ class AppToplevel(Toplevel):
 
             # Row finished
             with m.If(video_hsync_stb):
-                m.d.sync += [
+                # Perform rule 30
+                for i in range(VID_H_ACTIVE): # For each col
+                    # Calculate indices
+                    pre = (i+(VID_H_ACTIVE-1))%VID_H_ACTIVE
+                    nex = (i+1)%VID_H_ACTIVE
+                    # Output signal
+                    at = active_state[i]
+                    # Input signal
+                    cat = Cat(Cat(active_state[pre], at), active_state[nex])
+                    # Cellular automaton definition (rule 30)
+                    with m.Switch(cat):
+                        with m.Case(0b000):
+                            m.d.sync += at.eq(0)
+                        with m.Case(0b001):
+                            m.d.sync += at.eq(1)
+                        with m.Case(0b010):
+                            m.d.sync += at.eq(1)
+                        with m.Case(0b011):
+                            m.d.sync += at.eq(1)
+                        with m.Case(0b100):
+                            m.d.sync += at.eq(1)
+                        with m.Case(0b101):
+                            m.d.sync += at.eq(0)
+                        with m.Case(0b110):
+                            m.d.sync += at.eq(0)
+                        with m.Case(0b111):
+                            m.d.sync += at.eq(0)
 
-                ]
                 # 1 cycle after first row is done performing CA, make that the new topline
                 with m.If(video_y_count == VID_V_BPORCH):
                     m.d.sync += need_topline_backcopy.eq(1)
