@@ -10,6 +10,6 @@ simulation = [
 ]
 
 [tool.pdm.scripts]
-simulate = {call = "my_amaranth_core.toplevel:simulate"}
-capture_frame = {call = "my_amaranth_core.toplevel:capture_frame"}
-generate = {call = "my_amaranth_core.toplevel:generate"}
+simulate = {call = "embed_amaranth_core.toplevel:simulate"}
+capture_frame = {call = "embed_amaranth_core.toplevel:capture_frame"}
+generate = {call = "embed_amaranth_core.toplevel:generate"}
