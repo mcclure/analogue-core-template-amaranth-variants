@@ -1,6 +1,26 @@
 # Amaranth Core Template / Screen Test
 
-This is a screen test with synchronized video animation and audio, written by Andi McClure based on a video template by Whitequark. On my system (WSL in Windows 10), these are the build steps, although they will differ on yours:
+This is a screen test with synchronized video animation and audio, written by Andi McClure based on a video template by Whitequark.
+
+## Build
+
+On my system these are the build steps, although they will differ on yours.
+
+Do this once when you first check out:
+
+```
+(cd src/fpga/amaranth_core/ && python.exe -m pdm install)
+```
+
+Then on Linux, do this:
+
+
+```
+(cd src/fpga/amaranth_core/ && python3 -m pdm generate) && (cd src/fpga && ~/usr/intelFPGA_lite/22.1std/quartus/bin/quartus_sh --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cp bitstream.rbf_r "/media/mcc/3930-6663/Cores/test.andi amaranth/bitstream.rbf_r") && (cp video.json "/media/mcc/3930-6663/Cores/test.andi amaranth/video.json")
+```
+
+Or, on Windows 10, it's this:
+
 
 ```
 (cd src/fpga/amaranth_core/ && python.exe -m pdm generate) && (cd src/fpga && /mnt/d/intelFPGA_lite/22.1std/quartus/bin64/quartus_sh.exe --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cmd.exe /c copy bitstream.rbf_r "E:\Cores\test.andi amaranth\bitstream.rbf_r") && (cmd.exe /c copy video.json "E:\Cores\test.andi amaranth\video.json")
