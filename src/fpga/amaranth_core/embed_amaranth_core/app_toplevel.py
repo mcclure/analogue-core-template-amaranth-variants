@@ -13,6 +13,8 @@ DEBUG_NO_OPENING_PAUSE = False
 DEBUG_NO_CONTROLS = False
 
 AUDIO_DIVISOR_BITS = 2
+SPEED_LEVELS = 8
+SPEED_INITIAL = 1 # 0 index
 
 class AppToplevel(Toplevel):
     def app_elaborate(self, platform, m,
@@ -42,6 +44,10 @@ class AppToplevel(Toplevel):
         pause_key_wants_frozen = Signal(1)
         need_frozen_exception = Signal(1)
 
+        # Speed
+        speed_counter = Signal(SPEED_LEVELS)
+        speed_counter_mask = Signal(SPEED_LEVELS, reset=((1<<SPEED_INITIAL) - 1))
+
         # Audio mechanics
         audio_divide_counter = Signal(AUDIO_DIVISOR_BITS, reset = AUDIO_DIVISOR_BITS and ((1<<AUDIO_DIVISOR_BITS)-1))
         audio_divide_stb = Signal(1)
@@ -70,6 +76,25 @@ class AppToplevel(Toplevel):
                         ]
                 with m.Else():
                     m.d.sync += pause_key_wants_frozen.eq(~pause_key_wants_frozen)
+
+            l_press = Signal(1)
+            r_press = Signal(1)
+            m.d.comb += [
+                l_press.eq(self.cont1_key[8] & ~cont1_key_last[8]),
+                r_press.eq(self.cont1_key[9] & ~cont1_key_last[9])
+            ]
+
+            with m.If(l_press & r_press): # If the user somehow does this, do nothing
+                pass
+            with m.Elif(l_press):
+                m.d.sync += [
+                    speed_counter_mask.eq(speed_counter_mask.shift_left(1)),
+                    speed_counter_mask[0].eq(1)
+                ]
+            with m.Elif(r_press):
+                m.d.sync += [
+                    speed_counter_mask.eq(speed_counter_mask.shift_right(1))
+                ]
 
         # Partial results for colors
 
@@ -143,10 +168,17 @@ class AppToplevel(Toplevel):
             with m.If(video_vsync_stb):
                 # Is the next frame paused?
                 m.d.sync += [
-                    frame_frozen.eq(opening_wants_frozen | pause_key_wants_frozen),
-                    active_state.eq(topline_state)
+                    active_state.eq(topline_state), # Reset line renderer to frame
+                    speed_counter.eq(speed_counter+1)
                 ]
-                with m.If(need_frozen_exception):
+
+                # Only consider this a true frame rollover if speed counter matches
+                with m.If((speed_counter & speed_counter_mask)==0): # Halve speed for each bit of mask 
+                    m.d.sync += \
+                        frame_frozen.eq(opening_wants_frozen | pause_key_wants_frozen)
+                with m.Else():
+                    m.d.sync += frame_frozen.eq(1)
+                with m.If(need_frozen_exception): # Note this means you can step more quickly than the speed counter
                     m.d.sync += frame_frozen.eq(0)
 
                 # Reset frozen exception

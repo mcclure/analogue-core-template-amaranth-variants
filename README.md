@@ -16,7 +16,7 @@ Then on Linux, do this:
 
 
 ```
-(cd src/fpga/amaranth_core/ && python3 -m pdm generate) && (cd src/fpga && ~/usr/intelFPGA_lite/22.1std/quartus/bin/quartus_sh --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cp bitstream.rbf_r "/media/mcc/3930-6663/Cores/test.andi amaranth/bitstream.rbf_r") && (cp video.json "/media/mcc/3930-6663/Cores/test.andi amaranth/video.json")
+(cd src/fpga/amaranth_core/ && python3 -m pdm generate) && (cd src/fpga && ~/usr/intelFPGA_lite/22.1std/quartus/bin/quartus_sh --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cp bitstream.rbf_r "/media/mcc/3930-6663/Cores/test.andi amaranth/bitstream.rbf_r") && (cp video.json "/media/mcc/3930-6663/Cores/test.andi amaranth/video.json") && sync
 ```
 
 Or, on Windows 10, it's this:
