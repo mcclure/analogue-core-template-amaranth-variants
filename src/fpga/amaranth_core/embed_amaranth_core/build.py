@@ -14,7 +14,7 @@ def simulate():
     sim = Simulator(AppToplevel())
     sim.add_clock(1/74.25e6)
     with sim.write_vcd("dump.vcd"):
-        sim.run_until(10e-3, run_passive=True)
+        sim.run_until(21e-3, run_passive=True)
 
 
 def capture_frame():

@@ -10,6 +10,7 @@ from .toplevel import Toplevel
 
 
 DEBUG_NO_OPENING_PAUSE = False
+DEBUG_NO_CONTROLS = False
 
 AUDIO_DIVISOR_BITS = 2
 
@@ -21,19 +22,54 @@ class AppToplevel(Toplevel):
 
         # Setup
 
-        reset_value = (1 << (VID_H_ACTIVE//2))
-        topline_state = Signal(VID_H_ACTIVE, reset=reset_value)
-        active_state = Signal(VID_H_ACTIVE, reset=reset_value)
-        audgen_state = Signal(VID_H_ACTIVE, reset=reset_value)
+        # CA mechanics
+        line_reset_value = (1 << (VID_H_ACTIVE//2)) # Initial state value of first line
+        topline_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
+        active_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
+        audgen_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
         need_topline_backcopy = Signal(1) # Fires 1 cycle after first-row hsync
 
-        countdown_timer = Signal(6, reset=0 if DEBUG_NO_OPENING_PAUSE else ((1<<6)-1))
-        frozen = Signal(1, reset=0 if DEBUG_NO_OPENING_PAUSE else 1)
+        # CA control mechanics
+        frame_frozen = Signal(1, reset=0 if DEBUG_NO_OPENING_PAUSE else 1)
 
+        # Initial pause
+        opening_countdown_timer_reset_value = ((1<<6)-1)
+        opening_countdown_timer = Signal(6, reset=0 if DEBUG_NO_OPENING_PAUSE else opening_countdown_timer_reset_value)
+        opening_wants_frozen = Signal(1)
+        opening_countdown_timer_late_reset = Signal(1)
+
+        # Elective pause
+        pause_key_wants_frozen = Signal(1)
+        need_frozen_exception = Signal(1)
+
+        # Audio mechanics
         audio_divide_counter = Signal(AUDIO_DIVISOR_BITS, reset = AUDIO_DIVISOR_BITS and ((1<<AUDIO_DIVISOR_BITS)-1))
         audio_divide_stb = Signal(1)
 
-        reset_value = None # Take me unto thine arms, GC
+        line_reset_value = None # Take me unto thine arms, GC
+
+        # Controls
+
+        if DEBUG_NO_CONTROLS:
+            m.d.comb += [
+                pause_key_wants_frozen.eq(0),
+                need_frozen_exception.eq(0)
+            ]
+        else:
+            cont1_key_last = Signal(self.cont1_key.shape())
+            m.d.sync += cont1_key_last.eq(self.cont1_key) # TODO: Debounce
+
+            with m.If(self.cont1_key[15] & (~cont1_key_last[15])): # "Start"
+                with m.If(self.cont1_key[14]): # "Select""
+                    with m.If(pause_key_wants_frozen): # While paused, did select+start
+                        m.d.sync += need_frozen_exception.eq(1) # Perform one step
+                    with m.Else(): # While unpaused, did select+start
+                        m.d.sync += [ # Perform one step then freeze for 64 frames
+                            opening_countdown_timer_late_reset.eq(1),
+                            need_frozen_exception.eq(1)
+                        ]
+                with m.Else():
+                    m.d.sync += pause_key_wants_frozen.eq(~pause_key_wants_frozen)
 
         # Partial results for colors
 
@@ -48,6 +84,9 @@ class AppToplevel(Toplevel):
         # Animation
 
         # Draw logic
+
+        m.d.comb += opening_wants_frozen.eq(opening_countdown_timer != 0)
+
         m.d.sync += [
             need_topline_backcopy.eq(0)
         ]
@@ -97,27 +136,44 @@ class AppToplevel(Toplevel):
                 # (Unless we are in first second and frozen)
                 with m.If(
                         (video_y_count == VID_V_BPORCH) & 
-                        (~frozen) &
-                        (countdown_timer[0:1] == 0)):
+                        (~frame_frozen)):
                     m.d.sync += need_topline_backcopy.eq(1)
 
             # Screen finished
             with m.If(video_vsync_stb):
-                # Set audio state and new active state from most recent topline state
+                # Is the next frame paused?
                 m.d.sync += [
-                    countdown_timer.eq(countdown_timer - 1),
-                    audgen_state.eq(topline_state),
-                    active_state.eq(topline_state),
+                    frame_frozen.eq(opening_wants_frozen | pause_key_wants_frozen),
+                    active_state.eq(topline_state)
                 ]
-                with m.If(countdown_timer == 0):
+                with m.If(need_frozen_exception):
+                    m.d.sync += frame_frozen.eq(0)
+
+                # Reset frozen exception
+                if not DEBUG_NO_CONTROLS:
+                    with m.If(need_frozen_exception):
+                        m.d.sync += need_frozen_exception.eq(0)
+
+                # Service opening timer
+                with m.If(opening_countdown_timer != 0):
+                    m.d.sync += opening_countdown_timer.eq(opening_countdown_timer - 1)
+
+                # Set audio state and new active state from most recent topline state
+                with m.If(~frame_frozen): # Notice frozen for *just-finished* frame
                     m.d.sync += [
-                        frozen.eq(0)
+                        audgen_state.eq(topline_state),
                     ]
 
-        with m.If(need_topline_backcopy):
+        with m.If(need_topline_backcopy): # Do last to override
             m.d.sync += [
                 topline_state.eq(active_state),
                 need_topline_backcopy.eq(0)
+            ]
+
+        with m.If(opening_countdown_timer_late_reset): # Do last to override
+            m.d.sync += [
+                opening_countdown_timer.eq(opening_countdown_timer_reset_value),
+                opening_countdown_timer_late_reset.eq(0)
             ]
 
         # Audio

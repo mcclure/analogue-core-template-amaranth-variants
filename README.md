@@ -28,6 +28,12 @@ Or, on Windows 10, it's this:
 
 This assumes JSON files besides video.json have already been configured per the Analogue documentation. Clearer build instructions are forthcoming.
 
+By the way, to simulate:
+
+```
+(cd src/fpga/amaranth_core/ && python3 -m pdm simulate && gtkwave dump.vcd&)
+```
+
 ## Editing
 
 The only important files in this tree are in `src/fpga/amaranth_core/embed_amaranth_core`.
