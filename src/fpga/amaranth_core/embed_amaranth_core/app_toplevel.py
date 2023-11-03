@@ -16,6 +16,12 @@ AUDIO_DIVISOR_BITS = 2
 SPEED_LEVELS = 8
 SPEED_INITIAL = 1 # 0 index
 
+class ScribbleKind(enum.IntEnum):
+    SINGLE_BLACK = 0
+    SINGLE_WHITE = 1
+    MANY_BLACK = 2
+    MANY_WHITE = 3
+
 class AppToplevel(Toplevel):
     def app_elaborate(self, platform, m,
             video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, video_rgb_out,
@@ -29,7 +35,8 @@ class AppToplevel(Toplevel):
         topline_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
         active_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
         audgen_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
-        need_topline_backcopy = Signal(1) # Fires 1 cycle after first-row hsync
+        need_topline_copy = Signal(1) # Fires at variable time-- copy topline to active
+        need_topline_backcopy = Signal(1) # Fires 1 cycle after first-row hsync-- copy active to topline
 
         # CA control mechanics
         frame_frozen = Signal(1, reset=0 if DEBUG_NO_OPENING_PAUSE else 1)
@@ -48,6 +55,11 @@ class AppToplevel(Toplevel):
         speed_counter = Signal(SPEED_LEVELS)
         speed_counter_mask = Signal(SPEED_LEVELS, reset=((1<<SPEED_INITIAL) - 1))
 
+        # Scribble
+        scribble_hold = [Signal(1) for _ in range(4)]
+        scribble_single = [Signal(1) for _ in range(4)]
+        need_scribble = Signal(1)
+
         # Audio mechanics
         audio_divide_counter = Signal(AUDIO_DIVISOR_BITS, reset = AUDIO_DIVISOR_BITS and ((1<<AUDIO_DIVISOR_BITS)-1))
         audio_divide_stb = Signal(1)
@@ -59,14 +71,18 @@ class AppToplevel(Toplevel):
         if DEBUG_NO_CONTROLS:
             m.d.comb += [
                 pause_key_wants_frozen.eq(0),
-                need_frozen_exception.eq(0)
+                need_frozen_exception.eq(0),
+                need_topline_copy.eq(0) # May be overridden later
             ]
         else:
             cont1_key_last = Signal(self.cont1_key.shape())
             m.d.sync += cont1_key_last.eq(self.cont1_key) # TODO: Debounce
 
+            select = Signal(1) # Modifier
+            m.d.comb += select.eq(self.cont1_key[14])
+
             with m.If(self.cont1_key[15] & (~cont1_key_last[15])): # "Start"
-                with m.If(self.cont1_key[14]): # "Select""
+                with m.If(select): # "Start + Select"
                     with m.If(pause_key_wants_frozen): # While paused, did select+start
                         m.d.sync += need_frozen_exception.eq(1) # Perform one step
                     with m.Else(): # While unpaused, did select+start
@@ -95,6 +111,16 @@ class AppToplevel(Toplevel):
                 m.d.sync += [
                     speed_counter_mask.eq(speed_counter_mask.shift_right(1))
                 ]
+
+            for idx, bit in enumerate([7,6,5,4]): # Y, X, B, A
+                with m.If(self.cont1_key[bit] & ~cont1_key_last[bit]):
+                    with m.If(select):
+                        m.d.sync += scribble_single[idx].eq(1)
+                    with m.Else():
+                        m.d.sync += scribble_hold[idx].eq(1)    
+                with m.Elif(cont1_key_last[bit] & ~self.cont1_key[bit]):
+                    m.d.sync += scribble_hold[idx].eq(0)
+                scribble_hold
 
         # Partial results for colors
 
@@ -168,7 +194,6 @@ class AppToplevel(Toplevel):
             with m.If(video_vsync_stb):
                 # Is the next frame paused?
                 m.d.sync += [
-                    active_state.eq(topline_state), # Reset line renderer to frame
                     speed_counter.eq(speed_counter+1)
                 ]
 
@@ -181,10 +206,42 @@ class AppToplevel(Toplevel):
                 with m.If(need_frozen_exception): # Note this means you can step more quickly than the speed counter
                     m.d.sync += frame_frozen.eq(0)
 
-                # Reset frozen exception
-                if not DEBUG_NO_CONTROLS:
+                if DEBUG_NO_CONTROLS:
+                    m.d.comb += need_topline_copy.eq(1)
+                else:
+                    # Reset frozen exception
                     with m.If(need_frozen_exception):
                         m.d.sync += need_frozen_exception.eq(0)
+
+                    # Activate scribble
+                    for idx in ScribbleKind:
+                        # TRIGGER DOWN SCRIBBLE NEXT FRAME
+                        scribble_now = Signal(1)
+                        m.d.comb += scribble_now.eq(0)
+                        with m.If(scribble_single[idx]):
+                            m.d.comb += scribble_now.eq(1)
+                            m.d.sync += scribble_single[idx].eq(0)
+                        with m.If(scribble_hold[idx]):
+                            m.d.comb += scribble_now.eq(1)
+                        with m.If(scribble_now):
+                            many = 5
+                            match idx:
+                                case ScribbleKind.SINGLE_BLACK:
+                                    m.d.sync += topline_state[VID_H_ACTIVE//2].eq(1)
+                                case ScribbleKind.SINGLE_WHITE:
+                                    m.d.sync += topline_state[VID_H_ACTIVE//2+1].eq(0)
+                                case ScribbleKind.MANY_BLACK:
+                                    m.d.sync += [
+                                        topline_state[off*VID_H_ACTIVE//many+off].eq(1)
+                                        for off in range(many) 
+                                    ]
+                                case ScribbleKind.MANY_WHITE:
+                                    m.d.sync += [
+                                        topline_state[off*VID_H_ACTIVE//many+off*2+1].eq(0)
+                                        for off in range(many) 
+                                    ]
+
+                    m.d.sync += need_topline_copy.eq(1)
 
                 # Service opening timer
                 with m.If(opening_countdown_timer != 0):
@@ -195,6 +252,12 @@ class AppToplevel(Toplevel):
                     m.d.sync += [
                         audgen_state.eq(topline_state),
                     ]
+
+        with m.If(need_topline_copy): # Do last because can be driven multiple ways
+            m.d.sync += active_state.eq(topline_state) # Reset line renderer to frame
+
+            if not DEBUG_NO_CONTROLS:
+                m.d.sync += need_topline_copy.eq(0)
 
         with m.If(need_topline_backcopy): # Do last to override
             m.d.sync += [
