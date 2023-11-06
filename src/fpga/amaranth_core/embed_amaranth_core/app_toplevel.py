@@ -22,6 +22,14 @@ class ScribbleKind(enum.IntEnum):
     MANY_BLACK = 2
     MANY_WHITE = 3
 
+class AutoKind(enum.IntEnum):
+    rule30 = 0 # Triangles
+    rule110 = 1 # Left isoceles triangles
+    rule106 = 2 # Weird diagonal
+    rule14 = 3 # Ultra normal diagonal
+
+AUTO_DEFAULT = AutoKind.rule30
+
 class AppToplevel(Toplevel):
     def app_elaborate(self, platform, m,
             video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, video_rgb_out,
@@ -54,6 +62,11 @@ class AppToplevel(Toplevel):
         # Speed
         speed_counter = Signal(SPEED_LEVELS)
         speed_counter_mask = Signal(SPEED_LEVELS, reset=((1<<SPEED_INITIAL) - 1))
+
+        # Automaton
+        automata = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
+        automata_next = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
+        need_automata_next = Signal(1)
 
         # Scribble
         scribble_hold = [Signal(1) for _ in range(4)]
@@ -122,6 +135,34 @@ class AppToplevel(Toplevel):
                     m.d.sync += scribble_hold[idx].eq(0)
                 scribble_hold
 
+            d_hold = []
+            d_press = []
+            d_release = []
+
+            for bit in [0, 2, 3, 1]:
+                hold = Signal(1)
+                m.d.comb += hold.eq(self.cont1_key[bit])
+                d_hold.append(hold)
+
+                press = Signal(1)
+                m.d.comb += press.eq(hold & ~cont1_key_last[bit])
+                d_press.append(press)
+
+                release = Signal(1)
+                m.d.comb += release.eq(~hold & cont1_key_last[bit])
+                d_release.append(release)
+
+            with m.If(0):
+                pass
+            for idx,press in enumerate(d_press):
+                with m.Elif(press):
+                    m.d.sync += [
+                        automata_next.eq(idx),
+                        need_automata_next.eq(1)
+                    ]
+            # TODO: Also release behavior
+
+
         # Partial results for colors
 
         flash_color = Signal(24)
@@ -164,24 +205,80 @@ class AppToplevel(Toplevel):
                     at = active_state[i]
                     # Input signal
                     cat = Cat(Cat(active_state[pre], at), active_state[nex])
-                    # Cellular automaton definition (rule 30)
-                    with m.Switch(cat):
-                        with m.Case(0b000):
-                            m.d.sync += at.eq(0)
-                        with m.Case(0b001):
-                            m.d.sync += at.eq(1)
-                        with m.Case(0b010):
-                            m.d.sync += at.eq(1)
-                        with m.Case(0b011):
-                            m.d.sync += at.eq(1)
-                        with m.Case(0b100):
-                            m.d.sync += at.eq(1)
-                        with m.Case(0b101):
-                            m.d.sync += at.eq(0)
-                        with m.Case(0b110):
-                            m.d.sync += at.eq(0)
-                        with m.Case(0b111):
-                            m.d.sync += at.eq(0)
+                    # Cellular automaton definition
+                    with m.Switch(automata):
+                        with m.Case(AutoKind.rule30):
+                            with m.Switch(cat):
+                                with m.Case(0b000):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b001):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b010):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b011):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b100):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b101):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b110):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b111):
+                                    m.d.sync += at.eq(0)
+                        with m.Case(AutoKind.rule110):
+                            with m.Switch(cat):
+                                with m.Case(0b000):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b001):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b010):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b011):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b100):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b101):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b110):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b111):
+                                    m.d.sync += at.eq(0)
+                        with m.Case(AutoKind.rule106):
+                            with m.Switch(cat):
+                                with m.Case(0b000):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b001):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b010):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b011):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b100):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b101):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b110):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b111):
+                                    m.d.sync += at.eq(0)
+                        with m.Case(AutoKind.rule14):
+                            with m.Switch(cat):
+                                with m.Case(0b000):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b001):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b010):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b011):
+                                    m.d.sync += at.eq(1)
+                                with m.Case(0b100):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b101):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b110):
+                                    m.d.sync += at.eq(0)
+                                with m.Case(0b111):
+                                    m.d.sync += at.eq(0)
 
                 # 1 cycle after first row is done performing CA, make that the new topline
                 # (Unless we are in first second and frozen)
@@ -240,6 +337,13 @@ class AppToplevel(Toplevel):
                                         topline_state[off*VID_H_ACTIVE//many+off*2+1].eq(0)
                                         for off in range(many) 
                                     ]
+
+                    # Activate automata change
+                    with m.If(need_automata_next):
+                        m.d.sync += [
+                            automata.eq(automata_next),
+                            need_automata_next.eq(0)
+                        ]
 
                     m.d.sync += need_topline_copy.eq(1)
 
