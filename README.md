@@ -28,6 +28,10 @@ Or, on Windows 10, it's this:
 
 This assumes JSON files besides video.json have already been configured per the Analogue documentation. Clearer build instructions are forthcoming.
 
+### Build (tips)
+
+Watch for warnings of type 332119; these are timing errors, and are critical. (Alternately, in Quartus, look for purple warnings.) If you need to do a clean quartus build, delete src/fpga/db/
+
 By the way, to simulate:
 
 ```
