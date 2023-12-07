@@ -139,7 +139,7 @@ class AppToplevel(Toplevel):
             d_press = []
             d_release = []
 
-            for bit in [0, 2, 3, 1]:
+            for bit in [0, 2, 3, 1]: # Up, Left, Right, Down
                 hold = Signal(1)
                 m.d.comb += hold.eq(self.cont1_key[bit])
                 d_hold.append(hold)
