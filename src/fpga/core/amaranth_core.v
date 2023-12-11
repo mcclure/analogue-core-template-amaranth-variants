@@ -193,10 +193,10 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   output audio_mclk;
   wire audio_mclk;
   wire audio_output_word_bit;
-  reg [1:0] automata = 2'h0;
-  reg [1:0] \automata$next ;
   reg [1:0] automata_next = 2'h0;
   reg [1:0] \automata_next$next ;
+  reg [7:0] automata_table = 8'h1e;
+  reg [7:0] \automata_table$next ;
   wire boot_clk;
   input clk;
   wire clk;
@@ -470,8 +470,8 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
     if (\rst$2 ) topline_state <= 160'h0000000000000000000100000000000000000000;
     else topline_state <= \topline_state$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) automata <= 2'h0;
-    else automata <= \automata$next ;
+    if (\rst$2 ) automata_table <= 8'h1e;
+    else automata_table <= \automata_table$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) need_topline_copy <= 1'h0;
     else need_topline_copy <= \need_topline_copy$next ;
@@ -942,13284 +942,3044 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
             1'h1:
               begin
                 (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[1:0], active_state[159] })
-                        3'h0:
-                            \active_state$next [0] = 1'h0;
-                        3'h1:
-                            \active_state$next [0] = 1'h1;
-                        3'h2:
-                            \active_state$next [0] = 1'h1;
-                        3'h3:
-                            \active_state$next [0] = 1'h1;
-                        3'h4:
-                            \active_state$next [0] = 1'h1;
-                        3'h5:
-                            \active_state$next [0] = 1'h0;
-                        3'h6:
-                            \active_state$next [0] = 1'h0;
-                        3'h7:
-                            \active_state$next [0] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[1:0], active_state[159] })
-                        3'h0:
-                            \active_state$next [0] = 1'h0;
-                        3'h1:
-                            \active_state$next [0] = 1'h1;
-                        3'h2:
-                            \active_state$next [0] = 1'h1;
-                        3'h3:
-                            \active_state$next [0] = 1'h1;
-                        3'h4:
-                            \active_state$next [0] = 1'h0;
-                        3'h5:
-                            \active_state$next [0] = 1'h1;
-                        3'h6:
-                            \active_state$next [0] = 1'h1;
-                        3'h7:
-                            \active_state$next [0] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[1:0], active_state[159] })
-                        3'h0:
-                            \active_state$next [0] = 1'h0;
-                        3'h1:
-                            \active_state$next [0] = 1'h1;
-                        3'h2:
-                            \active_state$next [0] = 1'h0;
-                        3'h3:
-                            \active_state$next [0] = 1'h1;
-                        3'h4:
-                            \active_state$next [0] = 1'h0;
-                        3'h5:
-                            \active_state$next [0] = 1'h1;
-                        3'h6:
-                            \active_state$next [0] = 1'h1;
-                        3'h7:
-                            \active_state$next [0] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[1:0], active_state[159] })
-                        3'h0:
-                            \active_state$next [0] = 1'h0;
-                        3'h1:
-                            \active_state$next [0] = 1'h1;
-                        3'h2:
-                            \active_state$next [0] = 1'h1;
-                        3'h3:
-                            \active_state$next [0] = 1'h1;
-                        3'h4:
-                            \active_state$next [0] = 1'h0;
-                        3'h5:
-                            \active_state$next [0] = 1'h0;
-                        3'h6:
-                            \active_state$next [0] = 1'h0;
-                        3'h7:
-                            \active_state$next [0] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[2:0])
-                        3'h0:
-                            \active_state$next [1] = 1'h0;
-                        3'h1:
-                            \active_state$next [1] = 1'h1;
-                        3'h2:
-                            \active_state$next [1] = 1'h1;
-                        3'h3:
-                            \active_state$next [1] = 1'h1;
-                        3'h4:
-                            \active_state$next [1] = 1'h1;
-                        3'h5:
-                            \active_state$next [1] = 1'h0;
-                        3'h6:
-                            \active_state$next [1] = 1'h0;
-                        3'h7:
-                            \active_state$next [1] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[2:0])
-                        3'h0:
-                            \active_state$next [1] = 1'h0;
-                        3'h1:
-                            \active_state$next [1] = 1'h1;
-                        3'h2:
-                            \active_state$next [1] = 1'h1;
-                        3'h3:
-                            \active_state$next [1] = 1'h1;
-                        3'h4:
-                            \active_state$next [1] = 1'h0;
-                        3'h5:
-                            \active_state$next [1] = 1'h1;
-                        3'h6:
-                            \active_state$next [1] = 1'h1;
-                        3'h7:
-                            \active_state$next [1] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[2:0])
-                        3'h0:
-                            \active_state$next [1] = 1'h0;
-                        3'h1:
-                            \active_state$next [1] = 1'h1;
-                        3'h2:
-                            \active_state$next [1] = 1'h0;
-                        3'h3:
-                            \active_state$next [1] = 1'h1;
-                        3'h4:
-                            \active_state$next [1] = 1'h0;
-                        3'h5:
-                            \active_state$next [1] = 1'h1;
-                        3'h6:
-                            \active_state$next [1] = 1'h1;
-                        3'h7:
-                            \active_state$next [1] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[2:0])
-                        3'h0:
-                            \active_state$next [1] = 1'h0;
-                        3'h1:
-                            \active_state$next [1] = 1'h1;
-                        3'h2:
-                            \active_state$next [1] = 1'h1;
-                        3'h3:
-                            \active_state$next [1] = 1'h1;
-                        3'h4:
-                            \active_state$next [1] = 1'h0;
-                        3'h5:
-                            \active_state$next [1] = 1'h0;
-                        3'h6:
-                            \active_state$next [1] = 1'h0;
-                        3'h7:
-                            \active_state$next [1] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[3:1])
-                        3'h0:
-                            \active_state$next [2] = 1'h0;
-                        3'h1:
-                            \active_state$next [2] = 1'h1;
-                        3'h2:
-                            \active_state$next [2] = 1'h1;
-                        3'h3:
-                            \active_state$next [2] = 1'h1;
-                        3'h4:
-                            \active_state$next [2] = 1'h1;
-                        3'h5:
-                            \active_state$next [2] = 1'h0;
-                        3'h6:
-                            \active_state$next [2] = 1'h0;
-                        3'h7:
-                            \active_state$next [2] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[3:1])
-                        3'h0:
-                            \active_state$next [2] = 1'h0;
-                        3'h1:
-                            \active_state$next [2] = 1'h1;
-                        3'h2:
-                            \active_state$next [2] = 1'h1;
-                        3'h3:
-                            \active_state$next [2] = 1'h1;
-                        3'h4:
-                            \active_state$next [2] = 1'h0;
-                        3'h5:
-                            \active_state$next [2] = 1'h1;
-                        3'h6:
-                            \active_state$next [2] = 1'h1;
-                        3'h7:
-                            \active_state$next [2] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[3:1])
-                        3'h0:
-                            \active_state$next [2] = 1'h0;
-                        3'h1:
-                            \active_state$next [2] = 1'h1;
-                        3'h2:
-                            \active_state$next [2] = 1'h0;
-                        3'h3:
-                            \active_state$next [2] = 1'h1;
-                        3'h4:
-                            \active_state$next [2] = 1'h0;
-                        3'h5:
-                            \active_state$next [2] = 1'h1;
-                        3'h6:
-                            \active_state$next [2] = 1'h1;
-                        3'h7:
-                            \active_state$next [2] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[3:1])
-                        3'h0:
-                            \active_state$next [2] = 1'h0;
-                        3'h1:
-                            \active_state$next [2] = 1'h1;
-                        3'h2:
-                            \active_state$next [2] = 1'h1;
-                        3'h3:
-                            \active_state$next [2] = 1'h1;
-                        3'h4:
-                            \active_state$next [2] = 1'h0;
-                        3'h5:
-                            \active_state$next [2] = 1'h0;
-                        3'h6:
-                            \active_state$next [2] = 1'h0;
-                        3'h7:
-                            \active_state$next [2] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[4:2])
-                        3'h0:
-                            \active_state$next [3] = 1'h0;
-                        3'h1:
-                            \active_state$next [3] = 1'h1;
-                        3'h2:
-                            \active_state$next [3] = 1'h1;
-                        3'h3:
-                            \active_state$next [3] = 1'h1;
-                        3'h4:
-                            \active_state$next [3] = 1'h1;
-                        3'h5:
-                            \active_state$next [3] = 1'h0;
-                        3'h6:
-                            \active_state$next [3] = 1'h0;
-                        3'h7:
-                            \active_state$next [3] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[4:2])
-                        3'h0:
-                            \active_state$next [3] = 1'h0;
-                        3'h1:
-                            \active_state$next [3] = 1'h1;
-                        3'h2:
-                            \active_state$next [3] = 1'h1;
-                        3'h3:
-                            \active_state$next [3] = 1'h1;
-                        3'h4:
-                            \active_state$next [3] = 1'h0;
-                        3'h5:
-                            \active_state$next [3] = 1'h1;
-                        3'h6:
-                            \active_state$next [3] = 1'h1;
-                        3'h7:
-                            \active_state$next [3] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[4:2])
-                        3'h0:
-                            \active_state$next [3] = 1'h0;
-                        3'h1:
-                            \active_state$next [3] = 1'h1;
-                        3'h2:
-                            \active_state$next [3] = 1'h0;
-                        3'h3:
-                            \active_state$next [3] = 1'h1;
-                        3'h4:
-                            \active_state$next [3] = 1'h0;
-                        3'h5:
-                            \active_state$next [3] = 1'h1;
-                        3'h6:
-                            \active_state$next [3] = 1'h1;
-                        3'h7:
-                            \active_state$next [3] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[4:2])
-                        3'h0:
-                            \active_state$next [3] = 1'h0;
-                        3'h1:
-                            \active_state$next [3] = 1'h1;
-                        3'h2:
-                            \active_state$next [3] = 1'h1;
-                        3'h3:
-                            \active_state$next [3] = 1'h1;
-                        3'h4:
-                            \active_state$next [3] = 1'h0;
-                        3'h5:
-                            \active_state$next [3] = 1'h0;
-                        3'h6:
-                            \active_state$next [3] = 1'h0;
-                        3'h7:
-                            \active_state$next [3] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[5:3])
-                        3'h0:
-                            \active_state$next [4] = 1'h0;
-                        3'h1:
-                            \active_state$next [4] = 1'h1;
-                        3'h2:
-                            \active_state$next [4] = 1'h1;
-                        3'h3:
-                            \active_state$next [4] = 1'h1;
-                        3'h4:
-                            \active_state$next [4] = 1'h1;
-                        3'h5:
-                            \active_state$next [4] = 1'h0;
-                        3'h6:
-                            \active_state$next [4] = 1'h0;
-                        3'h7:
-                            \active_state$next [4] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[5:3])
-                        3'h0:
-                            \active_state$next [4] = 1'h0;
-                        3'h1:
-                            \active_state$next [4] = 1'h1;
-                        3'h2:
-                            \active_state$next [4] = 1'h1;
-                        3'h3:
-                            \active_state$next [4] = 1'h1;
-                        3'h4:
-                            \active_state$next [4] = 1'h0;
-                        3'h5:
-                            \active_state$next [4] = 1'h1;
-                        3'h6:
-                            \active_state$next [4] = 1'h1;
-                        3'h7:
-                            \active_state$next [4] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[5:3])
-                        3'h0:
-                            \active_state$next [4] = 1'h0;
-                        3'h1:
-                            \active_state$next [4] = 1'h1;
-                        3'h2:
-                            \active_state$next [4] = 1'h0;
-                        3'h3:
-                            \active_state$next [4] = 1'h1;
-                        3'h4:
-                            \active_state$next [4] = 1'h0;
-                        3'h5:
-                            \active_state$next [4] = 1'h1;
-                        3'h6:
-                            \active_state$next [4] = 1'h1;
-                        3'h7:
-                            \active_state$next [4] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[5:3])
-                        3'h0:
-                            \active_state$next [4] = 1'h0;
-                        3'h1:
-                            \active_state$next [4] = 1'h1;
-                        3'h2:
-                            \active_state$next [4] = 1'h1;
-                        3'h3:
-                            \active_state$next [4] = 1'h1;
-                        3'h4:
-                            \active_state$next [4] = 1'h0;
-                        3'h5:
-                            \active_state$next [4] = 1'h0;
-                        3'h6:
-                            \active_state$next [4] = 1'h0;
-                        3'h7:
-                            \active_state$next [4] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[6:4])
-                        3'h0:
-                            \active_state$next [5] = 1'h0;
-                        3'h1:
-                            \active_state$next [5] = 1'h1;
-                        3'h2:
-                            \active_state$next [5] = 1'h1;
-                        3'h3:
-                            \active_state$next [5] = 1'h1;
-                        3'h4:
-                            \active_state$next [5] = 1'h1;
-                        3'h5:
-                            \active_state$next [5] = 1'h0;
-                        3'h6:
-                            \active_state$next [5] = 1'h0;
-                        3'h7:
-                            \active_state$next [5] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[6:4])
-                        3'h0:
-                            \active_state$next [5] = 1'h0;
-                        3'h1:
-                            \active_state$next [5] = 1'h1;
-                        3'h2:
-                            \active_state$next [5] = 1'h1;
-                        3'h3:
-                            \active_state$next [5] = 1'h1;
-                        3'h4:
-                            \active_state$next [5] = 1'h0;
-                        3'h5:
-                            \active_state$next [5] = 1'h1;
-                        3'h6:
-                            \active_state$next [5] = 1'h1;
-                        3'h7:
-                            \active_state$next [5] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[6:4])
-                        3'h0:
-                            \active_state$next [5] = 1'h0;
-                        3'h1:
-                            \active_state$next [5] = 1'h1;
-                        3'h2:
-                            \active_state$next [5] = 1'h0;
-                        3'h3:
-                            \active_state$next [5] = 1'h1;
-                        3'h4:
-                            \active_state$next [5] = 1'h0;
-                        3'h5:
-                            \active_state$next [5] = 1'h1;
-                        3'h6:
-                            \active_state$next [5] = 1'h1;
-                        3'h7:
-                            \active_state$next [5] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[6:4])
-                        3'h0:
-                            \active_state$next [5] = 1'h0;
-                        3'h1:
-                            \active_state$next [5] = 1'h1;
-                        3'h2:
-                            \active_state$next [5] = 1'h1;
-                        3'h3:
-                            \active_state$next [5] = 1'h1;
-                        3'h4:
-                            \active_state$next [5] = 1'h0;
-                        3'h5:
-                            \active_state$next [5] = 1'h0;
-                        3'h6:
-                            \active_state$next [5] = 1'h0;
-                        3'h7:
-                            \active_state$next [5] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[7:5])
-                        3'h0:
-                            \active_state$next [6] = 1'h0;
-                        3'h1:
-                            \active_state$next [6] = 1'h1;
-                        3'h2:
-                            \active_state$next [6] = 1'h1;
-                        3'h3:
-                            \active_state$next [6] = 1'h1;
-                        3'h4:
-                            \active_state$next [6] = 1'h1;
-                        3'h5:
-                            \active_state$next [6] = 1'h0;
-                        3'h6:
-                            \active_state$next [6] = 1'h0;
-                        3'h7:
-                            \active_state$next [6] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[7:5])
-                        3'h0:
-                            \active_state$next [6] = 1'h0;
-                        3'h1:
-                            \active_state$next [6] = 1'h1;
-                        3'h2:
-                            \active_state$next [6] = 1'h1;
-                        3'h3:
-                            \active_state$next [6] = 1'h1;
-                        3'h4:
-                            \active_state$next [6] = 1'h0;
-                        3'h5:
-                            \active_state$next [6] = 1'h1;
-                        3'h6:
-                            \active_state$next [6] = 1'h1;
-                        3'h7:
-                            \active_state$next [6] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[7:5])
-                        3'h0:
-                            \active_state$next [6] = 1'h0;
-                        3'h1:
-                            \active_state$next [6] = 1'h1;
-                        3'h2:
-                            \active_state$next [6] = 1'h0;
-                        3'h3:
-                            \active_state$next [6] = 1'h1;
-                        3'h4:
-                            \active_state$next [6] = 1'h0;
-                        3'h5:
-                            \active_state$next [6] = 1'h1;
-                        3'h6:
-                            \active_state$next [6] = 1'h1;
-                        3'h7:
-                            \active_state$next [6] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[7:5])
-                        3'h0:
-                            \active_state$next [6] = 1'h0;
-                        3'h1:
-                            \active_state$next [6] = 1'h1;
-                        3'h2:
-                            \active_state$next [6] = 1'h1;
-                        3'h3:
-                            \active_state$next [6] = 1'h1;
-                        3'h4:
-                            \active_state$next [6] = 1'h0;
-                        3'h5:
-                            \active_state$next [6] = 1'h0;
-                        3'h6:
-                            \active_state$next [6] = 1'h0;
-                        3'h7:
-                            \active_state$next [6] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[8:6])
-                        3'h0:
-                            \active_state$next [7] = 1'h0;
-                        3'h1:
-                            \active_state$next [7] = 1'h1;
-                        3'h2:
-                            \active_state$next [7] = 1'h1;
-                        3'h3:
-                            \active_state$next [7] = 1'h1;
-                        3'h4:
-                            \active_state$next [7] = 1'h1;
-                        3'h5:
-                            \active_state$next [7] = 1'h0;
-                        3'h6:
-                            \active_state$next [7] = 1'h0;
-                        3'h7:
-                            \active_state$next [7] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[8:6])
-                        3'h0:
-                            \active_state$next [7] = 1'h0;
-                        3'h1:
-                            \active_state$next [7] = 1'h1;
-                        3'h2:
-                            \active_state$next [7] = 1'h1;
-                        3'h3:
-                            \active_state$next [7] = 1'h1;
-                        3'h4:
-                            \active_state$next [7] = 1'h0;
-                        3'h5:
-                            \active_state$next [7] = 1'h1;
-                        3'h6:
-                            \active_state$next [7] = 1'h1;
-                        3'h7:
-                            \active_state$next [7] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[8:6])
-                        3'h0:
-                            \active_state$next [7] = 1'h0;
-                        3'h1:
-                            \active_state$next [7] = 1'h1;
-                        3'h2:
-                            \active_state$next [7] = 1'h0;
-                        3'h3:
-                            \active_state$next [7] = 1'h1;
-                        3'h4:
-                            \active_state$next [7] = 1'h0;
-                        3'h5:
-                            \active_state$next [7] = 1'h1;
-                        3'h6:
-                            \active_state$next [7] = 1'h1;
-                        3'h7:
-                            \active_state$next [7] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[8:6])
-                        3'h0:
-                            \active_state$next [7] = 1'h0;
-                        3'h1:
-                            \active_state$next [7] = 1'h1;
-                        3'h2:
-                            \active_state$next [7] = 1'h1;
-                        3'h3:
-                            \active_state$next [7] = 1'h1;
-                        3'h4:
-                            \active_state$next [7] = 1'h0;
-                        3'h5:
-                            \active_state$next [7] = 1'h0;
-                        3'h6:
-                            \active_state$next [7] = 1'h0;
-                        3'h7:
-                            \active_state$next [7] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[9:7])
-                        3'h0:
-                            \active_state$next [8] = 1'h0;
-                        3'h1:
-                            \active_state$next [8] = 1'h1;
-                        3'h2:
-                            \active_state$next [8] = 1'h1;
-                        3'h3:
-                            \active_state$next [8] = 1'h1;
-                        3'h4:
-                            \active_state$next [8] = 1'h1;
-                        3'h5:
-                            \active_state$next [8] = 1'h0;
-                        3'h6:
-                            \active_state$next [8] = 1'h0;
-                        3'h7:
-                            \active_state$next [8] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[9:7])
-                        3'h0:
-                            \active_state$next [8] = 1'h0;
-                        3'h1:
-                            \active_state$next [8] = 1'h1;
-                        3'h2:
-                            \active_state$next [8] = 1'h1;
-                        3'h3:
-                            \active_state$next [8] = 1'h1;
-                        3'h4:
-                            \active_state$next [8] = 1'h0;
-                        3'h5:
-                            \active_state$next [8] = 1'h1;
-                        3'h6:
-                            \active_state$next [8] = 1'h1;
-                        3'h7:
-                            \active_state$next [8] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[9:7])
-                        3'h0:
-                            \active_state$next [8] = 1'h0;
-                        3'h1:
-                            \active_state$next [8] = 1'h1;
-                        3'h2:
-                            \active_state$next [8] = 1'h0;
-                        3'h3:
-                            \active_state$next [8] = 1'h1;
-                        3'h4:
-                            \active_state$next [8] = 1'h0;
-                        3'h5:
-                            \active_state$next [8] = 1'h1;
-                        3'h6:
-                            \active_state$next [8] = 1'h1;
-                        3'h7:
-                            \active_state$next [8] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[9:7])
-                        3'h0:
-                            \active_state$next [8] = 1'h0;
-                        3'h1:
-                            \active_state$next [8] = 1'h1;
-                        3'h2:
-                            \active_state$next [8] = 1'h1;
-                        3'h3:
-                            \active_state$next [8] = 1'h1;
-                        3'h4:
-                            \active_state$next [8] = 1'h0;
-                        3'h5:
-                            \active_state$next [8] = 1'h0;
-                        3'h6:
-                            \active_state$next [8] = 1'h0;
-                        3'h7:
-                            \active_state$next [8] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[10:8])
-                        3'h0:
-                            \active_state$next [9] = 1'h0;
-                        3'h1:
-                            \active_state$next [9] = 1'h1;
-                        3'h2:
-                            \active_state$next [9] = 1'h1;
-                        3'h3:
-                            \active_state$next [9] = 1'h1;
-                        3'h4:
-                            \active_state$next [9] = 1'h1;
-                        3'h5:
-                            \active_state$next [9] = 1'h0;
-                        3'h6:
-                            \active_state$next [9] = 1'h0;
-                        3'h7:
-                            \active_state$next [9] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[10:8])
-                        3'h0:
-                            \active_state$next [9] = 1'h0;
-                        3'h1:
-                            \active_state$next [9] = 1'h1;
-                        3'h2:
-                            \active_state$next [9] = 1'h1;
-                        3'h3:
-                            \active_state$next [9] = 1'h1;
-                        3'h4:
-                            \active_state$next [9] = 1'h0;
-                        3'h5:
-                            \active_state$next [9] = 1'h1;
-                        3'h6:
-                            \active_state$next [9] = 1'h1;
-                        3'h7:
-                            \active_state$next [9] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[10:8])
-                        3'h0:
-                            \active_state$next [9] = 1'h0;
-                        3'h1:
-                            \active_state$next [9] = 1'h1;
-                        3'h2:
-                            \active_state$next [9] = 1'h0;
-                        3'h3:
-                            \active_state$next [9] = 1'h1;
-                        3'h4:
-                            \active_state$next [9] = 1'h0;
-                        3'h5:
-                            \active_state$next [9] = 1'h1;
-                        3'h6:
-                            \active_state$next [9] = 1'h1;
-                        3'h7:
-                            \active_state$next [9] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[10:8])
-                        3'h0:
-                            \active_state$next [9] = 1'h0;
-                        3'h1:
-                            \active_state$next [9] = 1'h1;
-                        3'h2:
-                            \active_state$next [9] = 1'h1;
-                        3'h3:
-                            \active_state$next [9] = 1'h1;
-                        3'h4:
-                            \active_state$next [9] = 1'h0;
-                        3'h5:
-                            \active_state$next [9] = 1'h0;
-                        3'h6:
-                            \active_state$next [9] = 1'h0;
-                        3'h7:
-                            \active_state$next [9] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[11:9])
-                        3'h0:
-                            \active_state$next [10] = 1'h0;
-                        3'h1:
-                            \active_state$next [10] = 1'h1;
-                        3'h2:
-                            \active_state$next [10] = 1'h1;
-                        3'h3:
-                            \active_state$next [10] = 1'h1;
-                        3'h4:
-                            \active_state$next [10] = 1'h1;
-                        3'h5:
-                            \active_state$next [10] = 1'h0;
-                        3'h6:
-                            \active_state$next [10] = 1'h0;
-                        3'h7:
-                            \active_state$next [10] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[11:9])
-                        3'h0:
-                            \active_state$next [10] = 1'h0;
-                        3'h1:
-                            \active_state$next [10] = 1'h1;
-                        3'h2:
-                            \active_state$next [10] = 1'h1;
-                        3'h3:
-                            \active_state$next [10] = 1'h1;
-                        3'h4:
-                            \active_state$next [10] = 1'h0;
-                        3'h5:
-                            \active_state$next [10] = 1'h1;
-                        3'h6:
-                            \active_state$next [10] = 1'h1;
-                        3'h7:
-                            \active_state$next [10] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[11:9])
-                        3'h0:
-                            \active_state$next [10] = 1'h0;
-                        3'h1:
-                            \active_state$next [10] = 1'h1;
-                        3'h2:
-                            \active_state$next [10] = 1'h0;
-                        3'h3:
-                            \active_state$next [10] = 1'h1;
-                        3'h4:
-                            \active_state$next [10] = 1'h0;
-                        3'h5:
-                            \active_state$next [10] = 1'h1;
-                        3'h6:
-                            \active_state$next [10] = 1'h1;
-                        3'h7:
-                            \active_state$next [10] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[11:9])
-                        3'h0:
-                            \active_state$next [10] = 1'h0;
-                        3'h1:
-                            \active_state$next [10] = 1'h1;
-                        3'h2:
-                            \active_state$next [10] = 1'h1;
-                        3'h3:
-                            \active_state$next [10] = 1'h1;
-                        3'h4:
-                            \active_state$next [10] = 1'h0;
-                        3'h5:
-                            \active_state$next [10] = 1'h0;
-                        3'h6:
-                            \active_state$next [10] = 1'h0;
-                        3'h7:
-                            \active_state$next [10] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[12:10])
-                        3'h0:
-                            \active_state$next [11] = 1'h0;
-                        3'h1:
-                            \active_state$next [11] = 1'h1;
-                        3'h2:
-                            \active_state$next [11] = 1'h1;
-                        3'h3:
-                            \active_state$next [11] = 1'h1;
-                        3'h4:
-                            \active_state$next [11] = 1'h1;
-                        3'h5:
-                            \active_state$next [11] = 1'h0;
-                        3'h6:
-                            \active_state$next [11] = 1'h0;
-                        3'h7:
-                            \active_state$next [11] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[12:10])
-                        3'h0:
-                            \active_state$next [11] = 1'h0;
-                        3'h1:
-                            \active_state$next [11] = 1'h1;
-                        3'h2:
-                            \active_state$next [11] = 1'h1;
-                        3'h3:
-                            \active_state$next [11] = 1'h1;
-                        3'h4:
-                            \active_state$next [11] = 1'h0;
-                        3'h5:
-                            \active_state$next [11] = 1'h1;
-                        3'h6:
-                            \active_state$next [11] = 1'h1;
-                        3'h7:
-                            \active_state$next [11] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[12:10])
-                        3'h0:
-                            \active_state$next [11] = 1'h0;
-                        3'h1:
-                            \active_state$next [11] = 1'h1;
-                        3'h2:
-                            \active_state$next [11] = 1'h0;
-                        3'h3:
-                            \active_state$next [11] = 1'h1;
-                        3'h4:
-                            \active_state$next [11] = 1'h0;
-                        3'h5:
-                            \active_state$next [11] = 1'h1;
-                        3'h6:
-                            \active_state$next [11] = 1'h1;
-                        3'h7:
-                            \active_state$next [11] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[12:10])
-                        3'h0:
-                            \active_state$next [11] = 1'h0;
-                        3'h1:
-                            \active_state$next [11] = 1'h1;
-                        3'h2:
-                            \active_state$next [11] = 1'h1;
-                        3'h3:
-                            \active_state$next [11] = 1'h1;
-                        3'h4:
-                            \active_state$next [11] = 1'h0;
-                        3'h5:
-                            \active_state$next [11] = 1'h0;
-                        3'h6:
-                            \active_state$next [11] = 1'h0;
-                        3'h7:
-                            \active_state$next [11] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[13:11])
-                        3'h0:
-                            \active_state$next [12] = 1'h0;
-                        3'h1:
-                            \active_state$next [12] = 1'h1;
-                        3'h2:
-                            \active_state$next [12] = 1'h1;
-                        3'h3:
-                            \active_state$next [12] = 1'h1;
-                        3'h4:
-                            \active_state$next [12] = 1'h1;
-                        3'h5:
-                            \active_state$next [12] = 1'h0;
-                        3'h6:
-                            \active_state$next [12] = 1'h0;
-                        3'h7:
-                            \active_state$next [12] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[13:11])
-                        3'h0:
-                            \active_state$next [12] = 1'h0;
-                        3'h1:
-                            \active_state$next [12] = 1'h1;
-                        3'h2:
-                            \active_state$next [12] = 1'h1;
-                        3'h3:
-                            \active_state$next [12] = 1'h1;
-                        3'h4:
-                            \active_state$next [12] = 1'h0;
-                        3'h5:
-                            \active_state$next [12] = 1'h1;
-                        3'h6:
-                            \active_state$next [12] = 1'h1;
-                        3'h7:
-                            \active_state$next [12] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[13:11])
-                        3'h0:
-                            \active_state$next [12] = 1'h0;
-                        3'h1:
-                            \active_state$next [12] = 1'h1;
-                        3'h2:
-                            \active_state$next [12] = 1'h0;
-                        3'h3:
-                            \active_state$next [12] = 1'h1;
-                        3'h4:
-                            \active_state$next [12] = 1'h0;
-                        3'h5:
-                            \active_state$next [12] = 1'h1;
-                        3'h6:
-                            \active_state$next [12] = 1'h1;
-                        3'h7:
-                            \active_state$next [12] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[13:11])
-                        3'h0:
-                            \active_state$next [12] = 1'h0;
-                        3'h1:
-                            \active_state$next [12] = 1'h1;
-                        3'h2:
-                            \active_state$next [12] = 1'h1;
-                        3'h3:
-                            \active_state$next [12] = 1'h1;
-                        3'h4:
-                            \active_state$next [12] = 1'h0;
-                        3'h5:
-                            \active_state$next [12] = 1'h0;
-                        3'h6:
-                            \active_state$next [12] = 1'h0;
-                        3'h7:
-                            \active_state$next [12] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[14:12])
-                        3'h0:
-                            \active_state$next [13] = 1'h0;
-                        3'h1:
-                            \active_state$next [13] = 1'h1;
-                        3'h2:
-                            \active_state$next [13] = 1'h1;
-                        3'h3:
-                            \active_state$next [13] = 1'h1;
-                        3'h4:
-                            \active_state$next [13] = 1'h1;
-                        3'h5:
-                            \active_state$next [13] = 1'h0;
-                        3'h6:
-                            \active_state$next [13] = 1'h0;
-                        3'h7:
-                            \active_state$next [13] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[14:12])
-                        3'h0:
-                            \active_state$next [13] = 1'h0;
-                        3'h1:
-                            \active_state$next [13] = 1'h1;
-                        3'h2:
-                            \active_state$next [13] = 1'h1;
-                        3'h3:
-                            \active_state$next [13] = 1'h1;
-                        3'h4:
-                            \active_state$next [13] = 1'h0;
-                        3'h5:
-                            \active_state$next [13] = 1'h1;
-                        3'h6:
-                            \active_state$next [13] = 1'h1;
-                        3'h7:
-                            \active_state$next [13] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[14:12])
-                        3'h0:
-                            \active_state$next [13] = 1'h0;
-                        3'h1:
-                            \active_state$next [13] = 1'h1;
-                        3'h2:
-                            \active_state$next [13] = 1'h0;
-                        3'h3:
-                            \active_state$next [13] = 1'h1;
-                        3'h4:
-                            \active_state$next [13] = 1'h0;
-                        3'h5:
-                            \active_state$next [13] = 1'h1;
-                        3'h6:
-                            \active_state$next [13] = 1'h1;
-                        3'h7:
-                            \active_state$next [13] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[14:12])
-                        3'h0:
-                            \active_state$next [13] = 1'h0;
-                        3'h1:
-                            \active_state$next [13] = 1'h1;
-                        3'h2:
-                            \active_state$next [13] = 1'h1;
-                        3'h3:
-                            \active_state$next [13] = 1'h1;
-                        3'h4:
-                            \active_state$next [13] = 1'h0;
-                        3'h5:
-                            \active_state$next [13] = 1'h0;
-                        3'h6:
-                            \active_state$next [13] = 1'h0;
-                        3'h7:
-                            \active_state$next [13] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[15:13])
-                        3'h0:
-                            \active_state$next [14] = 1'h0;
-                        3'h1:
-                            \active_state$next [14] = 1'h1;
-                        3'h2:
-                            \active_state$next [14] = 1'h1;
-                        3'h3:
-                            \active_state$next [14] = 1'h1;
-                        3'h4:
-                            \active_state$next [14] = 1'h1;
-                        3'h5:
-                            \active_state$next [14] = 1'h0;
-                        3'h6:
-                            \active_state$next [14] = 1'h0;
-                        3'h7:
-                            \active_state$next [14] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[15:13])
-                        3'h0:
-                            \active_state$next [14] = 1'h0;
-                        3'h1:
-                            \active_state$next [14] = 1'h1;
-                        3'h2:
-                            \active_state$next [14] = 1'h1;
-                        3'h3:
-                            \active_state$next [14] = 1'h1;
-                        3'h4:
-                            \active_state$next [14] = 1'h0;
-                        3'h5:
-                            \active_state$next [14] = 1'h1;
-                        3'h6:
-                            \active_state$next [14] = 1'h1;
-                        3'h7:
-                            \active_state$next [14] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[15:13])
-                        3'h0:
-                            \active_state$next [14] = 1'h0;
-                        3'h1:
-                            \active_state$next [14] = 1'h1;
-                        3'h2:
-                            \active_state$next [14] = 1'h0;
-                        3'h3:
-                            \active_state$next [14] = 1'h1;
-                        3'h4:
-                            \active_state$next [14] = 1'h0;
-                        3'h5:
-                            \active_state$next [14] = 1'h1;
-                        3'h6:
-                            \active_state$next [14] = 1'h1;
-                        3'h7:
-                            \active_state$next [14] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[15:13])
-                        3'h0:
-                            \active_state$next [14] = 1'h0;
-                        3'h1:
-                            \active_state$next [14] = 1'h1;
-                        3'h2:
-                            \active_state$next [14] = 1'h1;
-                        3'h3:
-                            \active_state$next [14] = 1'h1;
-                        3'h4:
-                            \active_state$next [14] = 1'h0;
-                        3'h5:
-                            \active_state$next [14] = 1'h0;
-                        3'h6:
-                            \active_state$next [14] = 1'h0;
-                        3'h7:
-                            \active_state$next [14] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[16:14])
-                        3'h0:
-                            \active_state$next [15] = 1'h0;
-                        3'h1:
-                            \active_state$next [15] = 1'h1;
-                        3'h2:
-                            \active_state$next [15] = 1'h1;
-                        3'h3:
-                            \active_state$next [15] = 1'h1;
-                        3'h4:
-                            \active_state$next [15] = 1'h1;
-                        3'h5:
-                            \active_state$next [15] = 1'h0;
-                        3'h6:
-                            \active_state$next [15] = 1'h0;
-                        3'h7:
-                            \active_state$next [15] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[16:14])
-                        3'h0:
-                            \active_state$next [15] = 1'h0;
-                        3'h1:
-                            \active_state$next [15] = 1'h1;
-                        3'h2:
-                            \active_state$next [15] = 1'h1;
-                        3'h3:
-                            \active_state$next [15] = 1'h1;
-                        3'h4:
-                            \active_state$next [15] = 1'h0;
-                        3'h5:
-                            \active_state$next [15] = 1'h1;
-                        3'h6:
-                            \active_state$next [15] = 1'h1;
-                        3'h7:
-                            \active_state$next [15] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[16:14])
-                        3'h0:
-                            \active_state$next [15] = 1'h0;
-                        3'h1:
-                            \active_state$next [15] = 1'h1;
-                        3'h2:
-                            \active_state$next [15] = 1'h0;
-                        3'h3:
-                            \active_state$next [15] = 1'h1;
-                        3'h4:
-                            \active_state$next [15] = 1'h0;
-                        3'h5:
-                            \active_state$next [15] = 1'h1;
-                        3'h6:
-                            \active_state$next [15] = 1'h1;
-                        3'h7:
-                            \active_state$next [15] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[16:14])
-                        3'h0:
-                            \active_state$next [15] = 1'h0;
-                        3'h1:
-                            \active_state$next [15] = 1'h1;
-                        3'h2:
-                            \active_state$next [15] = 1'h1;
-                        3'h3:
-                            \active_state$next [15] = 1'h1;
-                        3'h4:
-                            \active_state$next [15] = 1'h0;
-                        3'h5:
-                            \active_state$next [15] = 1'h0;
-                        3'h6:
-                            \active_state$next [15] = 1'h0;
-                        3'h7:
-                            \active_state$next [15] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[17:15])
-                        3'h0:
-                            \active_state$next [16] = 1'h0;
-                        3'h1:
-                            \active_state$next [16] = 1'h1;
-                        3'h2:
-                            \active_state$next [16] = 1'h1;
-                        3'h3:
-                            \active_state$next [16] = 1'h1;
-                        3'h4:
-                            \active_state$next [16] = 1'h1;
-                        3'h5:
-                            \active_state$next [16] = 1'h0;
-                        3'h6:
-                            \active_state$next [16] = 1'h0;
-                        3'h7:
-                            \active_state$next [16] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[17:15])
-                        3'h0:
-                            \active_state$next [16] = 1'h0;
-                        3'h1:
-                            \active_state$next [16] = 1'h1;
-                        3'h2:
-                            \active_state$next [16] = 1'h1;
-                        3'h3:
-                            \active_state$next [16] = 1'h1;
-                        3'h4:
-                            \active_state$next [16] = 1'h0;
-                        3'h5:
-                            \active_state$next [16] = 1'h1;
-                        3'h6:
-                            \active_state$next [16] = 1'h1;
-                        3'h7:
-                            \active_state$next [16] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[17:15])
-                        3'h0:
-                            \active_state$next [16] = 1'h0;
-                        3'h1:
-                            \active_state$next [16] = 1'h1;
-                        3'h2:
-                            \active_state$next [16] = 1'h0;
-                        3'h3:
-                            \active_state$next [16] = 1'h1;
-                        3'h4:
-                            \active_state$next [16] = 1'h0;
-                        3'h5:
-                            \active_state$next [16] = 1'h1;
-                        3'h6:
-                            \active_state$next [16] = 1'h1;
-                        3'h7:
-                            \active_state$next [16] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[17:15])
-                        3'h0:
-                            \active_state$next [16] = 1'h0;
-                        3'h1:
-                            \active_state$next [16] = 1'h1;
-                        3'h2:
-                            \active_state$next [16] = 1'h1;
-                        3'h3:
-                            \active_state$next [16] = 1'h1;
-                        3'h4:
-                            \active_state$next [16] = 1'h0;
-                        3'h5:
-                            \active_state$next [16] = 1'h0;
-                        3'h6:
-                            \active_state$next [16] = 1'h0;
-                        3'h7:
-                            \active_state$next [16] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[18:16])
-                        3'h0:
-                            \active_state$next [17] = 1'h0;
-                        3'h1:
-                            \active_state$next [17] = 1'h1;
-                        3'h2:
-                            \active_state$next [17] = 1'h1;
-                        3'h3:
-                            \active_state$next [17] = 1'h1;
-                        3'h4:
-                            \active_state$next [17] = 1'h1;
-                        3'h5:
-                            \active_state$next [17] = 1'h0;
-                        3'h6:
-                            \active_state$next [17] = 1'h0;
-                        3'h7:
-                            \active_state$next [17] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[18:16])
-                        3'h0:
-                            \active_state$next [17] = 1'h0;
-                        3'h1:
-                            \active_state$next [17] = 1'h1;
-                        3'h2:
-                            \active_state$next [17] = 1'h1;
-                        3'h3:
-                            \active_state$next [17] = 1'h1;
-                        3'h4:
-                            \active_state$next [17] = 1'h0;
-                        3'h5:
-                            \active_state$next [17] = 1'h1;
-                        3'h6:
-                            \active_state$next [17] = 1'h1;
-                        3'h7:
-                            \active_state$next [17] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[18:16])
-                        3'h0:
-                            \active_state$next [17] = 1'h0;
-                        3'h1:
-                            \active_state$next [17] = 1'h1;
-                        3'h2:
-                            \active_state$next [17] = 1'h0;
-                        3'h3:
-                            \active_state$next [17] = 1'h1;
-                        3'h4:
-                            \active_state$next [17] = 1'h0;
-                        3'h5:
-                            \active_state$next [17] = 1'h1;
-                        3'h6:
-                            \active_state$next [17] = 1'h1;
-                        3'h7:
-                            \active_state$next [17] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[18:16])
-                        3'h0:
-                            \active_state$next [17] = 1'h0;
-                        3'h1:
-                            \active_state$next [17] = 1'h1;
-                        3'h2:
-                            \active_state$next [17] = 1'h1;
-                        3'h3:
-                            \active_state$next [17] = 1'h1;
-                        3'h4:
-                            \active_state$next [17] = 1'h0;
-                        3'h5:
-                            \active_state$next [17] = 1'h0;
-                        3'h6:
-                            \active_state$next [17] = 1'h0;
-                        3'h7:
-                            \active_state$next [17] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[19:17])
-                        3'h0:
-                            \active_state$next [18] = 1'h0;
-                        3'h1:
-                            \active_state$next [18] = 1'h1;
-                        3'h2:
-                            \active_state$next [18] = 1'h1;
-                        3'h3:
-                            \active_state$next [18] = 1'h1;
-                        3'h4:
-                            \active_state$next [18] = 1'h1;
-                        3'h5:
-                            \active_state$next [18] = 1'h0;
-                        3'h6:
-                            \active_state$next [18] = 1'h0;
-                        3'h7:
-                            \active_state$next [18] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[19:17])
-                        3'h0:
-                            \active_state$next [18] = 1'h0;
-                        3'h1:
-                            \active_state$next [18] = 1'h1;
-                        3'h2:
-                            \active_state$next [18] = 1'h1;
-                        3'h3:
-                            \active_state$next [18] = 1'h1;
-                        3'h4:
-                            \active_state$next [18] = 1'h0;
-                        3'h5:
-                            \active_state$next [18] = 1'h1;
-                        3'h6:
-                            \active_state$next [18] = 1'h1;
-                        3'h7:
-                            \active_state$next [18] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[19:17])
-                        3'h0:
-                            \active_state$next [18] = 1'h0;
-                        3'h1:
-                            \active_state$next [18] = 1'h1;
-                        3'h2:
-                            \active_state$next [18] = 1'h0;
-                        3'h3:
-                            \active_state$next [18] = 1'h1;
-                        3'h4:
-                            \active_state$next [18] = 1'h0;
-                        3'h5:
-                            \active_state$next [18] = 1'h1;
-                        3'h6:
-                            \active_state$next [18] = 1'h1;
-                        3'h7:
-                            \active_state$next [18] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[19:17])
-                        3'h0:
-                            \active_state$next [18] = 1'h0;
-                        3'h1:
-                            \active_state$next [18] = 1'h1;
-                        3'h2:
-                            \active_state$next [18] = 1'h1;
-                        3'h3:
-                            \active_state$next [18] = 1'h1;
-                        3'h4:
-                            \active_state$next [18] = 1'h0;
-                        3'h5:
-                            \active_state$next [18] = 1'h0;
-                        3'h6:
-                            \active_state$next [18] = 1'h0;
-                        3'h7:
-                            \active_state$next [18] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[20:18])
-                        3'h0:
-                            \active_state$next [19] = 1'h0;
-                        3'h1:
-                            \active_state$next [19] = 1'h1;
-                        3'h2:
-                            \active_state$next [19] = 1'h1;
-                        3'h3:
-                            \active_state$next [19] = 1'h1;
-                        3'h4:
-                            \active_state$next [19] = 1'h1;
-                        3'h5:
-                            \active_state$next [19] = 1'h0;
-                        3'h6:
-                            \active_state$next [19] = 1'h0;
-                        3'h7:
-                            \active_state$next [19] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[20:18])
-                        3'h0:
-                            \active_state$next [19] = 1'h0;
-                        3'h1:
-                            \active_state$next [19] = 1'h1;
-                        3'h2:
-                            \active_state$next [19] = 1'h1;
-                        3'h3:
-                            \active_state$next [19] = 1'h1;
-                        3'h4:
-                            \active_state$next [19] = 1'h0;
-                        3'h5:
-                            \active_state$next [19] = 1'h1;
-                        3'h6:
-                            \active_state$next [19] = 1'h1;
-                        3'h7:
-                            \active_state$next [19] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[20:18])
-                        3'h0:
-                            \active_state$next [19] = 1'h0;
-                        3'h1:
-                            \active_state$next [19] = 1'h1;
-                        3'h2:
-                            \active_state$next [19] = 1'h0;
-                        3'h3:
-                            \active_state$next [19] = 1'h1;
-                        3'h4:
-                            \active_state$next [19] = 1'h0;
-                        3'h5:
-                            \active_state$next [19] = 1'h1;
-                        3'h6:
-                            \active_state$next [19] = 1'h1;
-                        3'h7:
-                            \active_state$next [19] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[20:18])
-                        3'h0:
-                            \active_state$next [19] = 1'h0;
-                        3'h1:
-                            \active_state$next [19] = 1'h1;
-                        3'h2:
-                            \active_state$next [19] = 1'h1;
-                        3'h3:
-                            \active_state$next [19] = 1'h1;
-                        3'h4:
-                            \active_state$next [19] = 1'h0;
-                        3'h5:
-                            \active_state$next [19] = 1'h0;
-                        3'h6:
-                            \active_state$next [19] = 1'h0;
-                        3'h7:
-                            \active_state$next [19] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[21:19])
-                        3'h0:
-                            \active_state$next [20] = 1'h0;
-                        3'h1:
-                            \active_state$next [20] = 1'h1;
-                        3'h2:
-                            \active_state$next [20] = 1'h1;
-                        3'h3:
-                            \active_state$next [20] = 1'h1;
-                        3'h4:
-                            \active_state$next [20] = 1'h1;
-                        3'h5:
-                            \active_state$next [20] = 1'h0;
-                        3'h6:
-                            \active_state$next [20] = 1'h0;
-                        3'h7:
-                            \active_state$next [20] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[21:19])
-                        3'h0:
-                            \active_state$next [20] = 1'h0;
-                        3'h1:
-                            \active_state$next [20] = 1'h1;
-                        3'h2:
-                            \active_state$next [20] = 1'h1;
-                        3'h3:
-                            \active_state$next [20] = 1'h1;
-                        3'h4:
-                            \active_state$next [20] = 1'h0;
-                        3'h5:
-                            \active_state$next [20] = 1'h1;
-                        3'h6:
-                            \active_state$next [20] = 1'h1;
-                        3'h7:
-                            \active_state$next [20] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[21:19])
-                        3'h0:
-                            \active_state$next [20] = 1'h0;
-                        3'h1:
-                            \active_state$next [20] = 1'h1;
-                        3'h2:
-                            \active_state$next [20] = 1'h0;
-                        3'h3:
-                            \active_state$next [20] = 1'h1;
-                        3'h4:
-                            \active_state$next [20] = 1'h0;
-                        3'h5:
-                            \active_state$next [20] = 1'h1;
-                        3'h6:
-                            \active_state$next [20] = 1'h1;
-                        3'h7:
-                            \active_state$next [20] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[21:19])
-                        3'h0:
-                            \active_state$next [20] = 1'h0;
-                        3'h1:
-                            \active_state$next [20] = 1'h1;
-                        3'h2:
-                            \active_state$next [20] = 1'h1;
-                        3'h3:
-                            \active_state$next [20] = 1'h1;
-                        3'h4:
-                            \active_state$next [20] = 1'h0;
-                        3'h5:
-                            \active_state$next [20] = 1'h0;
-                        3'h6:
-                            \active_state$next [20] = 1'h0;
-                        3'h7:
-                            \active_state$next [20] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[22:20])
-                        3'h0:
-                            \active_state$next [21] = 1'h0;
-                        3'h1:
-                            \active_state$next [21] = 1'h1;
-                        3'h2:
-                            \active_state$next [21] = 1'h1;
-                        3'h3:
-                            \active_state$next [21] = 1'h1;
-                        3'h4:
-                            \active_state$next [21] = 1'h1;
-                        3'h5:
-                            \active_state$next [21] = 1'h0;
-                        3'h6:
-                            \active_state$next [21] = 1'h0;
-                        3'h7:
-                            \active_state$next [21] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[22:20])
-                        3'h0:
-                            \active_state$next [21] = 1'h0;
-                        3'h1:
-                            \active_state$next [21] = 1'h1;
-                        3'h2:
-                            \active_state$next [21] = 1'h1;
-                        3'h3:
-                            \active_state$next [21] = 1'h1;
-                        3'h4:
-                            \active_state$next [21] = 1'h0;
-                        3'h5:
-                            \active_state$next [21] = 1'h1;
-                        3'h6:
-                            \active_state$next [21] = 1'h1;
-                        3'h7:
-                            \active_state$next [21] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[22:20])
-                        3'h0:
-                            \active_state$next [21] = 1'h0;
-                        3'h1:
-                            \active_state$next [21] = 1'h1;
-                        3'h2:
-                            \active_state$next [21] = 1'h0;
-                        3'h3:
-                            \active_state$next [21] = 1'h1;
-                        3'h4:
-                            \active_state$next [21] = 1'h0;
-                        3'h5:
-                            \active_state$next [21] = 1'h1;
-                        3'h6:
-                            \active_state$next [21] = 1'h1;
-                        3'h7:
-                            \active_state$next [21] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[22:20])
-                        3'h0:
-                            \active_state$next [21] = 1'h0;
-                        3'h1:
-                            \active_state$next [21] = 1'h1;
-                        3'h2:
-                            \active_state$next [21] = 1'h1;
-                        3'h3:
-                            \active_state$next [21] = 1'h1;
-                        3'h4:
-                            \active_state$next [21] = 1'h0;
-                        3'h5:
-                            \active_state$next [21] = 1'h0;
-                        3'h6:
-                            \active_state$next [21] = 1'h0;
-                        3'h7:
-                            \active_state$next [21] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[23:21])
-                        3'h0:
-                            \active_state$next [22] = 1'h0;
-                        3'h1:
-                            \active_state$next [22] = 1'h1;
-                        3'h2:
-                            \active_state$next [22] = 1'h1;
-                        3'h3:
-                            \active_state$next [22] = 1'h1;
-                        3'h4:
-                            \active_state$next [22] = 1'h1;
-                        3'h5:
-                            \active_state$next [22] = 1'h0;
-                        3'h6:
-                            \active_state$next [22] = 1'h0;
-                        3'h7:
-                            \active_state$next [22] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[23:21])
-                        3'h0:
-                            \active_state$next [22] = 1'h0;
-                        3'h1:
-                            \active_state$next [22] = 1'h1;
-                        3'h2:
-                            \active_state$next [22] = 1'h1;
-                        3'h3:
-                            \active_state$next [22] = 1'h1;
-                        3'h4:
-                            \active_state$next [22] = 1'h0;
-                        3'h5:
-                            \active_state$next [22] = 1'h1;
-                        3'h6:
-                            \active_state$next [22] = 1'h1;
-                        3'h7:
-                            \active_state$next [22] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[23:21])
-                        3'h0:
-                            \active_state$next [22] = 1'h0;
-                        3'h1:
-                            \active_state$next [22] = 1'h1;
-                        3'h2:
-                            \active_state$next [22] = 1'h0;
-                        3'h3:
-                            \active_state$next [22] = 1'h1;
-                        3'h4:
-                            \active_state$next [22] = 1'h0;
-                        3'h5:
-                            \active_state$next [22] = 1'h1;
-                        3'h6:
-                            \active_state$next [22] = 1'h1;
-                        3'h7:
-                            \active_state$next [22] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[23:21])
-                        3'h0:
-                            \active_state$next [22] = 1'h0;
-                        3'h1:
-                            \active_state$next [22] = 1'h1;
-                        3'h2:
-                            \active_state$next [22] = 1'h1;
-                        3'h3:
-                            \active_state$next [22] = 1'h1;
-                        3'h4:
-                            \active_state$next [22] = 1'h0;
-                        3'h5:
-                            \active_state$next [22] = 1'h0;
-                        3'h6:
-                            \active_state$next [22] = 1'h0;
-                        3'h7:
-                            \active_state$next [22] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[24:22])
-                        3'h0:
-                            \active_state$next [23] = 1'h0;
-                        3'h1:
-                            \active_state$next [23] = 1'h1;
-                        3'h2:
-                            \active_state$next [23] = 1'h1;
-                        3'h3:
-                            \active_state$next [23] = 1'h1;
-                        3'h4:
-                            \active_state$next [23] = 1'h1;
-                        3'h5:
-                            \active_state$next [23] = 1'h0;
-                        3'h6:
-                            \active_state$next [23] = 1'h0;
-                        3'h7:
-                            \active_state$next [23] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[24:22])
-                        3'h0:
-                            \active_state$next [23] = 1'h0;
-                        3'h1:
-                            \active_state$next [23] = 1'h1;
-                        3'h2:
-                            \active_state$next [23] = 1'h1;
-                        3'h3:
-                            \active_state$next [23] = 1'h1;
-                        3'h4:
-                            \active_state$next [23] = 1'h0;
-                        3'h5:
-                            \active_state$next [23] = 1'h1;
-                        3'h6:
-                            \active_state$next [23] = 1'h1;
-                        3'h7:
-                            \active_state$next [23] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[24:22])
-                        3'h0:
-                            \active_state$next [23] = 1'h0;
-                        3'h1:
-                            \active_state$next [23] = 1'h1;
-                        3'h2:
-                            \active_state$next [23] = 1'h0;
-                        3'h3:
-                            \active_state$next [23] = 1'h1;
-                        3'h4:
-                            \active_state$next [23] = 1'h0;
-                        3'h5:
-                            \active_state$next [23] = 1'h1;
-                        3'h6:
-                            \active_state$next [23] = 1'h1;
-                        3'h7:
-                            \active_state$next [23] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[24:22])
-                        3'h0:
-                            \active_state$next [23] = 1'h0;
-                        3'h1:
-                            \active_state$next [23] = 1'h1;
-                        3'h2:
-                            \active_state$next [23] = 1'h1;
-                        3'h3:
-                            \active_state$next [23] = 1'h1;
-                        3'h4:
-                            \active_state$next [23] = 1'h0;
-                        3'h5:
-                            \active_state$next [23] = 1'h0;
-                        3'h6:
-                            \active_state$next [23] = 1'h0;
-                        3'h7:
-                            \active_state$next [23] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[25:23])
-                        3'h0:
-                            \active_state$next [24] = 1'h0;
-                        3'h1:
-                            \active_state$next [24] = 1'h1;
-                        3'h2:
-                            \active_state$next [24] = 1'h1;
-                        3'h3:
-                            \active_state$next [24] = 1'h1;
-                        3'h4:
-                            \active_state$next [24] = 1'h1;
-                        3'h5:
-                            \active_state$next [24] = 1'h0;
-                        3'h6:
-                            \active_state$next [24] = 1'h0;
-                        3'h7:
-                            \active_state$next [24] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[25:23])
-                        3'h0:
-                            \active_state$next [24] = 1'h0;
-                        3'h1:
-                            \active_state$next [24] = 1'h1;
-                        3'h2:
-                            \active_state$next [24] = 1'h1;
-                        3'h3:
-                            \active_state$next [24] = 1'h1;
-                        3'h4:
-                            \active_state$next [24] = 1'h0;
-                        3'h5:
-                            \active_state$next [24] = 1'h1;
-                        3'h6:
-                            \active_state$next [24] = 1'h1;
-                        3'h7:
-                            \active_state$next [24] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[25:23])
-                        3'h0:
-                            \active_state$next [24] = 1'h0;
-                        3'h1:
-                            \active_state$next [24] = 1'h1;
-                        3'h2:
-                            \active_state$next [24] = 1'h0;
-                        3'h3:
-                            \active_state$next [24] = 1'h1;
-                        3'h4:
-                            \active_state$next [24] = 1'h0;
-                        3'h5:
-                            \active_state$next [24] = 1'h1;
-                        3'h6:
-                            \active_state$next [24] = 1'h1;
-                        3'h7:
-                            \active_state$next [24] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[25:23])
-                        3'h0:
-                            \active_state$next [24] = 1'h0;
-                        3'h1:
-                            \active_state$next [24] = 1'h1;
-                        3'h2:
-                            \active_state$next [24] = 1'h1;
-                        3'h3:
-                            \active_state$next [24] = 1'h1;
-                        3'h4:
-                            \active_state$next [24] = 1'h0;
-                        3'h5:
-                            \active_state$next [24] = 1'h0;
-                        3'h6:
-                            \active_state$next [24] = 1'h0;
-                        3'h7:
-                            \active_state$next [24] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[26:24])
-                        3'h0:
-                            \active_state$next [25] = 1'h0;
-                        3'h1:
-                            \active_state$next [25] = 1'h1;
-                        3'h2:
-                            \active_state$next [25] = 1'h1;
-                        3'h3:
-                            \active_state$next [25] = 1'h1;
-                        3'h4:
-                            \active_state$next [25] = 1'h1;
-                        3'h5:
-                            \active_state$next [25] = 1'h0;
-                        3'h6:
-                            \active_state$next [25] = 1'h0;
-                        3'h7:
-                            \active_state$next [25] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[26:24])
-                        3'h0:
-                            \active_state$next [25] = 1'h0;
-                        3'h1:
-                            \active_state$next [25] = 1'h1;
-                        3'h2:
-                            \active_state$next [25] = 1'h1;
-                        3'h3:
-                            \active_state$next [25] = 1'h1;
-                        3'h4:
-                            \active_state$next [25] = 1'h0;
-                        3'h5:
-                            \active_state$next [25] = 1'h1;
-                        3'h6:
-                            \active_state$next [25] = 1'h1;
-                        3'h7:
-                            \active_state$next [25] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[26:24])
-                        3'h0:
-                            \active_state$next [25] = 1'h0;
-                        3'h1:
-                            \active_state$next [25] = 1'h1;
-                        3'h2:
-                            \active_state$next [25] = 1'h0;
-                        3'h3:
-                            \active_state$next [25] = 1'h1;
-                        3'h4:
-                            \active_state$next [25] = 1'h0;
-                        3'h5:
-                            \active_state$next [25] = 1'h1;
-                        3'h6:
-                            \active_state$next [25] = 1'h1;
-                        3'h7:
-                            \active_state$next [25] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[26:24])
-                        3'h0:
-                            \active_state$next [25] = 1'h0;
-                        3'h1:
-                            \active_state$next [25] = 1'h1;
-                        3'h2:
-                            \active_state$next [25] = 1'h1;
-                        3'h3:
-                            \active_state$next [25] = 1'h1;
-                        3'h4:
-                            \active_state$next [25] = 1'h0;
-                        3'h5:
-                            \active_state$next [25] = 1'h0;
-                        3'h6:
-                            \active_state$next [25] = 1'h0;
-                        3'h7:
-                            \active_state$next [25] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[27:25])
-                        3'h0:
-                            \active_state$next [26] = 1'h0;
-                        3'h1:
-                            \active_state$next [26] = 1'h1;
-                        3'h2:
-                            \active_state$next [26] = 1'h1;
-                        3'h3:
-                            \active_state$next [26] = 1'h1;
-                        3'h4:
-                            \active_state$next [26] = 1'h1;
-                        3'h5:
-                            \active_state$next [26] = 1'h0;
-                        3'h6:
-                            \active_state$next [26] = 1'h0;
-                        3'h7:
-                            \active_state$next [26] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[27:25])
-                        3'h0:
-                            \active_state$next [26] = 1'h0;
-                        3'h1:
-                            \active_state$next [26] = 1'h1;
-                        3'h2:
-                            \active_state$next [26] = 1'h1;
-                        3'h3:
-                            \active_state$next [26] = 1'h1;
-                        3'h4:
-                            \active_state$next [26] = 1'h0;
-                        3'h5:
-                            \active_state$next [26] = 1'h1;
-                        3'h6:
-                            \active_state$next [26] = 1'h1;
-                        3'h7:
-                            \active_state$next [26] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[27:25])
-                        3'h0:
-                            \active_state$next [26] = 1'h0;
-                        3'h1:
-                            \active_state$next [26] = 1'h1;
-                        3'h2:
-                            \active_state$next [26] = 1'h0;
-                        3'h3:
-                            \active_state$next [26] = 1'h1;
-                        3'h4:
-                            \active_state$next [26] = 1'h0;
-                        3'h5:
-                            \active_state$next [26] = 1'h1;
-                        3'h6:
-                            \active_state$next [26] = 1'h1;
-                        3'h7:
-                            \active_state$next [26] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[27:25])
-                        3'h0:
-                            \active_state$next [26] = 1'h0;
-                        3'h1:
-                            \active_state$next [26] = 1'h1;
-                        3'h2:
-                            \active_state$next [26] = 1'h1;
-                        3'h3:
-                            \active_state$next [26] = 1'h1;
-                        3'h4:
-                            \active_state$next [26] = 1'h0;
-                        3'h5:
-                            \active_state$next [26] = 1'h0;
-                        3'h6:
-                            \active_state$next [26] = 1'h0;
-                        3'h7:
-                            \active_state$next [26] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[28:26])
-                        3'h0:
-                            \active_state$next [27] = 1'h0;
-                        3'h1:
-                            \active_state$next [27] = 1'h1;
-                        3'h2:
-                            \active_state$next [27] = 1'h1;
-                        3'h3:
-                            \active_state$next [27] = 1'h1;
-                        3'h4:
-                            \active_state$next [27] = 1'h1;
-                        3'h5:
-                            \active_state$next [27] = 1'h0;
-                        3'h6:
-                            \active_state$next [27] = 1'h0;
-                        3'h7:
-                            \active_state$next [27] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[28:26])
-                        3'h0:
-                            \active_state$next [27] = 1'h0;
-                        3'h1:
-                            \active_state$next [27] = 1'h1;
-                        3'h2:
-                            \active_state$next [27] = 1'h1;
-                        3'h3:
-                            \active_state$next [27] = 1'h1;
-                        3'h4:
-                            \active_state$next [27] = 1'h0;
-                        3'h5:
-                            \active_state$next [27] = 1'h1;
-                        3'h6:
-                            \active_state$next [27] = 1'h1;
-                        3'h7:
-                            \active_state$next [27] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[28:26])
-                        3'h0:
-                            \active_state$next [27] = 1'h0;
-                        3'h1:
-                            \active_state$next [27] = 1'h1;
-                        3'h2:
-                            \active_state$next [27] = 1'h0;
-                        3'h3:
-                            \active_state$next [27] = 1'h1;
-                        3'h4:
-                            \active_state$next [27] = 1'h0;
-                        3'h5:
-                            \active_state$next [27] = 1'h1;
-                        3'h6:
-                            \active_state$next [27] = 1'h1;
-                        3'h7:
-                            \active_state$next [27] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[28:26])
-                        3'h0:
-                            \active_state$next [27] = 1'h0;
-                        3'h1:
-                            \active_state$next [27] = 1'h1;
-                        3'h2:
-                            \active_state$next [27] = 1'h1;
-                        3'h3:
-                            \active_state$next [27] = 1'h1;
-                        3'h4:
-                            \active_state$next [27] = 1'h0;
-                        3'h5:
-                            \active_state$next [27] = 1'h0;
-                        3'h6:
-                            \active_state$next [27] = 1'h0;
-                        3'h7:
-                            \active_state$next [27] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[29:27])
-                        3'h0:
-                            \active_state$next [28] = 1'h0;
-                        3'h1:
-                            \active_state$next [28] = 1'h1;
-                        3'h2:
-                            \active_state$next [28] = 1'h1;
-                        3'h3:
-                            \active_state$next [28] = 1'h1;
-                        3'h4:
-                            \active_state$next [28] = 1'h1;
-                        3'h5:
-                            \active_state$next [28] = 1'h0;
-                        3'h6:
-                            \active_state$next [28] = 1'h0;
-                        3'h7:
-                            \active_state$next [28] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[29:27])
-                        3'h0:
-                            \active_state$next [28] = 1'h0;
-                        3'h1:
-                            \active_state$next [28] = 1'h1;
-                        3'h2:
-                            \active_state$next [28] = 1'h1;
-                        3'h3:
-                            \active_state$next [28] = 1'h1;
-                        3'h4:
-                            \active_state$next [28] = 1'h0;
-                        3'h5:
-                            \active_state$next [28] = 1'h1;
-                        3'h6:
-                            \active_state$next [28] = 1'h1;
-                        3'h7:
-                            \active_state$next [28] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[29:27])
-                        3'h0:
-                            \active_state$next [28] = 1'h0;
-                        3'h1:
-                            \active_state$next [28] = 1'h1;
-                        3'h2:
-                            \active_state$next [28] = 1'h0;
-                        3'h3:
-                            \active_state$next [28] = 1'h1;
-                        3'h4:
-                            \active_state$next [28] = 1'h0;
-                        3'h5:
-                            \active_state$next [28] = 1'h1;
-                        3'h6:
-                            \active_state$next [28] = 1'h1;
-                        3'h7:
-                            \active_state$next [28] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[29:27])
-                        3'h0:
-                            \active_state$next [28] = 1'h0;
-                        3'h1:
-                            \active_state$next [28] = 1'h1;
-                        3'h2:
-                            \active_state$next [28] = 1'h1;
-                        3'h3:
-                            \active_state$next [28] = 1'h1;
-                        3'h4:
-                            \active_state$next [28] = 1'h0;
-                        3'h5:
-                            \active_state$next [28] = 1'h0;
-                        3'h6:
-                            \active_state$next [28] = 1'h0;
-                        3'h7:
-                            \active_state$next [28] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[30:28])
-                        3'h0:
-                            \active_state$next [29] = 1'h0;
-                        3'h1:
-                            \active_state$next [29] = 1'h1;
-                        3'h2:
-                            \active_state$next [29] = 1'h1;
-                        3'h3:
-                            \active_state$next [29] = 1'h1;
-                        3'h4:
-                            \active_state$next [29] = 1'h1;
-                        3'h5:
-                            \active_state$next [29] = 1'h0;
-                        3'h6:
-                            \active_state$next [29] = 1'h0;
-                        3'h7:
-                            \active_state$next [29] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[30:28])
-                        3'h0:
-                            \active_state$next [29] = 1'h0;
-                        3'h1:
-                            \active_state$next [29] = 1'h1;
-                        3'h2:
-                            \active_state$next [29] = 1'h1;
-                        3'h3:
-                            \active_state$next [29] = 1'h1;
-                        3'h4:
-                            \active_state$next [29] = 1'h0;
-                        3'h5:
-                            \active_state$next [29] = 1'h1;
-                        3'h6:
-                            \active_state$next [29] = 1'h1;
-                        3'h7:
-                            \active_state$next [29] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[30:28])
-                        3'h0:
-                            \active_state$next [29] = 1'h0;
-                        3'h1:
-                            \active_state$next [29] = 1'h1;
-                        3'h2:
-                            \active_state$next [29] = 1'h0;
-                        3'h3:
-                            \active_state$next [29] = 1'h1;
-                        3'h4:
-                            \active_state$next [29] = 1'h0;
-                        3'h5:
-                            \active_state$next [29] = 1'h1;
-                        3'h6:
-                            \active_state$next [29] = 1'h1;
-                        3'h7:
-                            \active_state$next [29] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[30:28])
-                        3'h0:
-                            \active_state$next [29] = 1'h0;
-                        3'h1:
-                            \active_state$next [29] = 1'h1;
-                        3'h2:
-                            \active_state$next [29] = 1'h1;
-                        3'h3:
-                            \active_state$next [29] = 1'h1;
-                        3'h4:
-                            \active_state$next [29] = 1'h0;
-                        3'h5:
-                            \active_state$next [29] = 1'h0;
-                        3'h6:
-                            \active_state$next [29] = 1'h0;
-                        3'h7:
-                            \active_state$next [29] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[31:29])
-                        3'h0:
-                            \active_state$next [30] = 1'h0;
-                        3'h1:
-                            \active_state$next [30] = 1'h1;
-                        3'h2:
-                            \active_state$next [30] = 1'h1;
-                        3'h3:
-                            \active_state$next [30] = 1'h1;
-                        3'h4:
-                            \active_state$next [30] = 1'h1;
-                        3'h5:
-                            \active_state$next [30] = 1'h0;
-                        3'h6:
-                            \active_state$next [30] = 1'h0;
-                        3'h7:
-                            \active_state$next [30] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[31:29])
-                        3'h0:
-                            \active_state$next [30] = 1'h0;
-                        3'h1:
-                            \active_state$next [30] = 1'h1;
-                        3'h2:
-                            \active_state$next [30] = 1'h1;
-                        3'h3:
-                            \active_state$next [30] = 1'h1;
-                        3'h4:
-                            \active_state$next [30] = 1'h0;
-                        3'h5:
-                            \active_state$next [30] = 1'h1;
-                        3'h6:
-                            \active_state$next [30] = 1'h1;
-                        3'h7:
-                            \active_state$next [30] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[31:29])
-                        3'h0:
-                            \active_state$next [30] = 1'h0;
-                        3'h1:
-                            \active_state$next [30] = 1'h1;
-                        3'h2:
-                            \active_state$next [30] = 1'h0;
-                        3'h3:
-                            \active_state$next [30] = 1'h1;
-                        3'h4:
-                            \active_state$next [30] = 1'h0;
-                        3'h5:
-                            \active_state$next [30] = 1'h1;
-                        3'h6:
-                            \active_state$next [30] = 1'h1;
-                        3'h7:
-                            \active_state$next [30] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[31:29])
-                        3'h0:
-                            \active_state$next [30] = 1'h0;
-                        3'h1:
-                            \active_state$next [30] = 1'h1;
-                        3'h2:
-                            \active_state$next [30] = 1'h1;
-                        3'h3:
-                            \active_state$next [30] = 1'h1;
-                        3'h4:
-                            \active_state$next [30] = 1'h0;
-                        3'h5:
-                            \active_state$next [30] = 1'h0;
-                        3'h6:
-                            \active_state$next [30] = 1'h0;
-                        3'h7:
-                            \active_state$next [30] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[32:30])
-                        3'h0:
-                            \active_state$next [31] = 1'h0;
-                        3'h1:
-                            \active_state$next [31] = 1'h1;
-                        3'h2:
-                            \active_state$next [31] = 1'h1;
-                        3'h3:
-                            \active_state$next [31] = 1'h1;
-                        3'h4:
-                            \active_state$next [31] = 1'h1;
-                        3'h5:
-                            \active_state$next [31] = 1'h0;
-                        3'h6:
-                            \active_state$next [31] = 1'h0;
-                        3'h7:
-                            \active_state$next [31] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[32:30])
-                        3'h0:
-                            \active_state$next [31] = 1'h0;
-                        3'h1:
-                            \active_state$next [31] = 1'h1;
-                        3'h2:
-                            \active_state$next [31] = 1'h1;
-                        3'h3:
-                            \active_state$next [31] = 1'h1;
-                        3'h4:
-                            \active_state$next [31] = 1'h0;
-                        3'h5:
-                            \active_state$next [31] = 1'h1;
-                        3'h6:
-                            \active_state$next [31] = 1'h1;
-                        3'h7:
-                            \active_state$next [31] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[32:30])
-                        3'h0:
-                            \active_state$next [31] = 1'h0;
-                        3'h1:
-                            \active_state$next [31] = 1'h1;
-                        3'h2:
-                            \active_state$next [31] = 1'h0;
-                        3'h3:
-                            \active_state$next [31] = 1'h1;
-                        3'h4:
-                            \active_state$next [31] = 1'h0;
-                        3'h5:
-                            \active_state$next [31] = 1'h1;
-                        3'h6:
-                            \active_state$next [31] = 1'h1;
-                        3'h7:
-                            \active_state$next [31] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[32:30])
-                        3'h0:
-                            \active_state$next [31] = 1'h0;
-                        3'h1:
-                            \active_state$next [31] = 1'h1;
-                        3'h2:
-                            \active_state$next [31] = 1'h1;
-                        3'h3:
-                            \active_state$next [31] = 1'h1;
-                        3'h4:
-                            \active_state$next [31] = 1'h0;
-                        3'h5:
-                            \active_state$next [31] = 1'h0;
-                        3'h6:
-                            \active_state$next [31] = 1'h0;
-                        3'h7:
-                            \active_state$next [31] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[33:31])
-                        3'h0:
-                            \active_state$next [32] = 1'h0;
-                        3'h1:
-                            \active_state$next [32] = 1'h1;
-                        3'h2:
-                            \active_state$next [32] = 1'h1;
-                        3'h3:
-                            \active_state$next [32] = 1'h1;
-                        3'h4:
-                            \active_state$next [32] = 1'h1;
-                        3'h5:
-                            \active_state$next [32] = 1'h0;
-                        3'h6:
-                            \active_state$next [32] = 1'h0;
-                        3'h7:
-                            \active_state$next [32] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[33:31])
-                        3'h0:
-                            \active_state$next [32] = 1'h0;
-                        3'h1:
-                            \active_state$next [32] = 1'h1;
-                        3'h2:
-                            \active_state$next [32] = 1'h1;
-                        3'h3:
-                            \active_state$next [32] = 1'h1;
-                        3'h4:
-                            \active_state$next [32] = 1'h0;
-                        3'h5:
-                            \active_state$next [32] = 1'h1;
-                        3'h6:
-                            \active_state$next [32] = 1'h1;
-                        3'h7:
-                            \active_state$next [32] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[33:31])
-                        3'h0:
-                            \active_state$next [32] = 1'h0;
-                        3'h1:
-                            \active_state$next [32] = 1'h1;
-                        3'h2:
-                            \active_state$next [32] = 1'h0;
-                        3'h3:
-                            \active_state$next [32] = 1'h1;
-                        3'h4:
-                            \active_state$next [32] = 1'h0;
-                        3'h5:
-                            \active_state$next [32] = 1'h1;
-                        3'h6:
-                            \active_state$next [32] = 1'h1;
-                        3'h7:
-                            \active_state$next [32] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[33:31])
-                        3'h0:
-                            \active_state$next [32] = 1'h0;
-                        3'h1:
-                            \active_state$next [32] = 1'h1;
-                        3'h2:
-                            \active_state$next [32] = 1'h1;
-                        3'h3:
-                            \active_state$next [32] = 1'h1;
-                        3'h4:
-                            \active_state$next [32] = 1'h0;
-                        3'h5:
-                            \active_state$next [32] = 1'h0;
-                        3'h6:
-                            \active_state$next [32] = 1'h0;
-                        3'h7:
-                            \active_state$next [32] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[34:32])
-                        3'h0:
-                            \active_state$next [33] = 1'h0;
-                        3'h1:
-                            \active_state$next [33] = 1'h1;
-                        3'h2:
-                            \active_state$next [33] = 1'h1;
-                        3'h3:
-                            \active_state$next [33] = 1'h1;
-                        3'h4:
-                            \active_state$next [33] = 1'h1;
-                        3'h5:
-                            \active_state$next [33] = 1'h0;
-                        3'h6:
-                            \active_state$next [33] = 1'h0;
-                        3'h7:
-                            \active_state$next [33] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[34:32])
-                        3'h0:
-                            \active_state$next [33] = 1'h0;
-                        3'h1:
-                            \active_state$next [33] = 1'h1;
-                        3'h2:
-                            \active_state$next [33] = 1'h1;
-                        3'h3:
-                            \active_state$next [33] = 1'h1;
-                        3'h4:
-                            \active_state$next [33] = 1'h0;
-                        3'h5:
-                            \active_state$next [33] = 1'h1;
-                        3'h6:
-                            \active_state$next [33] = 1'h1;
-                        3'h7:
-                            \active_state$next [33] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[34:32])
-                        3'h0:
-                            \active_state$next [33] = 1'h0;
-                        3'h1:
-                            \active_state$next [33] = 1'h1;
-                        3'h2:
-                            \active_state$next [33] = 1'h0;
-                        3'h3:
-                            \active_state$next [33] = 1'h1;
-                        3'h4:
-                            \active_state$next [33] = 1'h0;
-                        3'h5:
-                            \active_state$next [33] = 1'h1;
-                        3'h6:
-                            \active_state$next [33] = 1'h1;
-                        3'h7:
-                            \active_state$next [33] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[34:32])
-                        3'h0:
-                            \active_state$next [33] = 1'h0;
-                        3'h1:
-                            \active_state$next [33] = 1'h1;
-                        3'h2:
-                            \active_state$next [33] = 1'h1;
-                        3'h3:
-                            \active_state$next [33] = 1'h1;
-                        3'h4:
-                            \active_state$next [33] = 1'h0;
-                        3'h5:
-                            \active_state$next [33] = 1'h0;
-                        3'h6:
-                            \active_state$next [33] = 1'h0;
-                        3'h7:
-                            \active_state$next [33] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[35:33])
-                        3'h0:
-                            \active_state$next [34] = 1'h0;
-                        3'h1:
-                            \active_state$next [34] = 1'h1;
-                        3'h2:
-                            \active_state$next [34] = 1'h1;
-                        3'h3:
-                            \active_state$next [34] = 1'h1;
-                        3'h4:
-                            \active_state$next [34] = 1'h1;
-                        3'h5:
-                            \active_state$next [34] = 1'h0;
-                        3'h6:
-                            \active_state$next [34] = 1'h0;
-                        3'h7:
-                            \active_state$next [34] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[35:33])
-                        3'h0:
-                            \active_state$next [34] = 1'h0;
-                        3'h1:
-                            \active_state$next [34] = 1'h1;
-                        3'h2:
-                            \active_state$next [34] = 1'h1;
-                        3'h3:
-                            \active_state$next [34] = 1'h1;
-                        3'h4:
-                            \active_state$next [34] = 1'h0;
-                        3'h5:
-                            \active_state$next [34] = 1'h1;
-                        3'h6:
-                            \active_state$next [34] = 1'h1;
-                        3'h7:
-                            \active_state$next [34] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[35:33])
-                        3'h0:
-                            \active_state$next [34] = 1'h0;
-                        3'h1:
-                            \active_state$next [34] = 1'h1;
-                        3'h2:
-                            \active_state$next [34] = 1'h0;
-                        3'h3:
-                            \active_state$next [34] = 1'h1;
-                        3'h4:
-                            \active_state$next [34] = 1'h0;
-                        3'h5:
-                            \active_state$next [34] = 1'h1;
-                        3'h6:
-                            \active_state$next [34] = 1'h1;
-                        3'h7:
-                            \active_state$next [34] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[35:33])
-                        3'h0:
-                            \active_state$next [34] = 1'h0;
-                        3'h1:
-                            \active_state$next [34] = 1'h1;
-                        3'h2:
-                            \active_state$next [34] = 1'h1;
-                        3'h3:
-                            \active_state$next [34] = 1'h1;
-                        3'h4:
-                            \active_state$next [34] = 1'h0;
-                        3'h5:
-                            \active_state$next [34] = 1'h0;
-                        3'h6:
-                            \active_state$next [34] = 1'h0;
-                        3'h7:
-                            \active_state$next [34] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[36:34])
-                        3'h0:
-                            \active_state$next [35] = 1'h0;
-                        3'h1:
-                            \active_state$next [35] = 1'h1;
-                        3'h2:
-                            \active_state$next [35] = 1'h1;
-                        3'h3:
-                            \active_state$next [35] = 1'h1;
-                        3'h4:
-                            \active_state$next [35] = 1'h1;
-                        3'h5:
-                            \active_state$next [35] = 1'h0;
-                        3'h6:
-                            \active_state$next [35] = 1'h0;
-                        3'h7:
-                            \active_state$next [35] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[36:34])
-                        3'h0:
-                            \active_state$next [35] = 1'h0;
-                        3'h1:
-                            \active_state$next [35] = 1'h1;
-                        3'h2:
-                            \active_state$next [35] = 1'h1;
-                        3'h3:
-                            \active_state$next [35] = 1'h1;
-                        3'h4:
-                            \active_state$next [35] = 1'h0;
-                        3'h5:
-                            \active_state$next [35] = 1'h1;
-                        3'h6:
-                            \active_state$next [35] = 1'h1;
-                        3'h7:
-                            \active_state$next [35] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[36:34])
-                        3'h0:
-                            \active_state$next [35] = 1'h0;
-                        3'h1:
-                            \active_state$next [35] = 1'h1;
-                        3'h2:
-                            \active_state$next [35] = 1'h0;
-                        3'h3:
-                            \active_state$next [35] = 1'h1;
-                        3'h4:
-                            \active_state$next [35] = 1'h0;
-                        3'h5:
-                            \active_state$next [35] = 1'h1;
-                        3'h6:
-                            \active_state$next [35] = 1'h1;
-                        3'h7:
-                            \active_state$next [35] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[36:34])
-                        3'h0:
-                            \active_state$next [35] = 1'h0;
-                        3'h1:
-                            \active_state$next [35] = 1'h1;
-                        3'h2:
-                            \active_state$next [35] = 1'h1;
-                        3'h3:
-                            \active_state$next [35] = 1'h1;
-                        3'h4:
-                            \active_state$next [35] = 1'h0;
-                        3'h5:
-                            \active_state$next [35] = 1'h0;
-                        3'h6:
-                            \active_state$next [35] = 1'h0;
-                        3'h7:
-                            \active_state$next [35] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[37:35])
-                        3'h0:
-                            \active_state$next [36] = 1'h0;
-                        3'h1:
-                            \active_state$next [36] = 1'h1;
-                        3'h2:
-                            \active_state$next [36] = 1'h1;
-                        3'h3:
-                            \active_state$next [36] = 1'h1;
-                        3'h4:
-                            \active_state$next [36] = 1'h1;
-                        3'h5:
-                            \active_state$next [36] = 1'h0;
-                        3'h6:
-                            \active_state$next [36] = 1'h0;
-                        3'h7:
-                            \active_state$next [36] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[37:35])
-                        3'h0:
-                            \active_state$next [36] = 1'h0;
-                        3'h1:
-                            \active_state$next [36] = 1'h1;
-                        3'h2:
-                            \active_state$next [36] = 1'h1;
-                        3'h3:
-                            \active_state$next [36] = 1'h1;
-                        3'h4:
-                            \active_state$next [36] = 1'h0;
-                        3'h5:
-                            \active_state$next [36] = 1'h1;
-                        3'h6:
-                            \active_state$next [36] = 1'h1;
-                        3'h7:
-                            \active_state$next [36] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[37:35])
-                        3'h0:
-                            \active_state$next [36] = 1'h0;
-                        3'h1:
-                            \active_state$next [36] = 1'h1;
-                        3'h2:
-                            \active_state$next [36] = 1'h0;
-                        3'h3:
-                            \active_state$next [36] = 1'h1;
-                        3'h4:
-                            \active_state$next [36] = 1'h0;
-                        3'h5:
-                            \active_state$next [36] = 1'h1;
-                        3'h6:
-                            \active_state$next [36] = 1'h1;
-                        3'h7:
-                            \active_state$next [36] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[37:35])
-                        3'h0:
-                            \active_state$next [36] = 1'h0;
-                        3'h1:
-                            \active_state$next [36] = 1'h1;
-                        3'h2:
-                            \active_state$next [36] = 1'h1;
-                        3'h3:
-                            \active_state$next [36] = 1'h1;
-                        3'h4:
-                            \active_state$next [36] = 1'h0;
-                        3'h5:
-                            \active_state$next [36] = 1'h0;
-                        3'h6:
-                            \active_state$next [36] = 1'h0;
-                        3'h7:
-                            \active_state$next [36] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[38:36])
-                        3'h0:
-                            \active_state$next [37] = 1'h0;
-                        3'h1:
-                            \active_state$next [37] = 1'h1;
-                        3'h2:
-                            \active_state$next [37] = 1'h1;
-                        3'h3:
-                            \active_state$next [37] = 1'h1;
-                        3'h4:
-                            \active_state$next [37] = 1'h1;
-                        3'h5:
-                            \active_state$next [37] = 1'h0;
-                        3'h6:
-                            \active_state$next [37] = 1'h0;
-                        3'h7:
-                            \active_state$next [37] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[38:36])
-                        3'h0:
-                            \active_state$next [37] = 1'h0;
-                        3'h1:
-                            \active_state$next [37] = 1'h1;
-                        3'h2:
-                            \active_state$next [37] = 1'h1;
-                        3'h3:
-                            \active_state$next [37] = 1'h1;
-                        3'h4:
-                            \active_state$next [37] = 1'h0;
-                        3'h5:
-                            \active_state$next [37] = 1'h1;
-                        3'h6:
-                            \active_state$next [37] = 1'h1;
-                        3'h7:
-                            \active_state$next [37] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[38:36])
-                        3'h0:
-                            \active_state$next [37] = 1'h0;
-                        3'h1:
-                            \active_state$next [37] = 1'h1;
-                        3'h2:
-                            \active_state$next [37] = 1'h0;
-                        3'h3:
-                            \active_state$next [37] = 1'h1;
-                        3'h4:
-                            \active_state$next [37] = 1'h0;
-                        3'h5:
-                            \active_state$next [37] = 1'h1;
-                        3'h6:
-                            \active_state$next [37] = 1'h1;
-                        3'h7:
-                            \active_state$next [37] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[38:36])
-                        3'h0:
-                            \active_state$next [37] = 1'h0;
-                        3'h1:
-                            \active_state$next [37] = 1'h1;
-                        3'h2:
-                            \active_state$next [37] = 1'h1;
-                        3'h3:
-                            \active_state$next [37] = 1'h1;
-                        3'h4:
-                            \active_state$next [37] = 1'h0;
-                        3'h5:
-                            \active_state$next [37] = 1'h0;
-                        3'h6:
-                            \active_state$next [37] = 1'h0;
-                        3'h7:
-                            \active_state$next [37] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[39:37])
-                        3'h0:
-                            \active_state$next [38] = 1'h0;
-                        3'h1:
-                            \active_state$next [38] = 1'h1;
-                        3'h2:
-                            \active_state$next [38] = 1'h1;
-                        3'h3:
-                            \active_state$next [38] = 1'h1;
-                        3'h4:
-                            \active_state$next [38] = 1'h1;
-                        3'h5:
-                            \active_state$next [38] = 1'h0;
-                        3'h6:
-                            \active_state$next [38] = 1'h0;
-                        3'h7:
-                            \active_state$next [38] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[39:37])
-                        3'h0:
-                            \active_state$next [38] = 1'h0;
-                        3'h1:
-                            \active_state$next [38] = 1'h1;
-                        3'h2:
-                            \active_state$next [38] = 1'h1;
-                        3'h3:
-                            \active_state$next [38] = 1'h1;
-                        3'h4:
-                            \active_state$next [38] = 1'h0;
-                        3'h5:
-                            \active_state$next [38] = 1'h1;
-                        3'h6:
-                            \active_state$next [38] = 1'h1;
-                        3'h7:
-                            \active_state$next [38] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[39:37])
-                        3'h0:
-                            \active_state$next [38] = 1'h0;
-                        3'h1:
-                            \active_state$next [38] = 1'h1;
-                        3'h2:
-                            \active_state$next [38] = 1'h0;
-                        3'h3:
-                            \active_state$next [38] = 1'h1;
-                        3'h4:
-                            \active_state$next [38] = 1'h0;
-                        3'h5:
-                            \active_state$next [38] = 1'h1;
-                        3'h6:
-                            \active_state$next [38] = 1'h1;
-                        3'h7:
-                            \active_state$next [38] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[39:37])
-                        3'h0:
-                            \active_state$next [38] = 1'h0;
-                        3'h1:
-                            \active_state$next [38] = 1'h1;
-                        3'h2:
-                            \active_state$next [38] = 1'h1;
-                        3'h3:
-                            \active_state$next [38] = 1'h1;
-                        3'h4:
-                            \active_state$next [38] = 1'h0;
-                        3'h5:
-                            \active_state$next [38] = 1'h0;
-                        3'h6:
-                            \active_state$next [38] = 1'h0;
-                        3'h7:
-                            \active_state$next [38] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[40:38])
-                        3'h0:
-                            \active_state$next [39] = 1'h0;
-                        3'h1:
-                            \active_state$next [39] = 1'h1;
-                        3'h2:
-                            \active_state$next [39] = 1'h1;
-                        3'h3:
-                            \active_state$next [39] = 1'h1;
-                        3'h4:
-                            \active_state$next [39] = 1'h1;
-                        3'h5:
-                            \active_state$next [39] = 1'h0;
-                        3'h6:
-                            \active_state$next [39] = 1'h0;
-                        3'h7:
-                            \active_state$next [39] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[40:38])
-                        3'h0:
-                            \active_state$next [39] = 1'h0;
-                        3'h1:
-                            \active_state$next [39] = 1'h1;
-                        3'h2:
-                            \active_state$next [39] = 1'h1;
-                        3'h3:
-                            \active_state$next [39] = 1'h1;
-                        3'h4:
-                            \active_state$next [39] = 1'h0;
-                        3'h5:
-                            \active_state$next [39] = 1'h1;
-                        3'h6:
-                            \active_state$next [39] = 1'h1;
-                        3'h7:
-                            \active_state$next [39] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[40:38])
-                        3'h0:
-                            \active_state$next [39] = 1'h0;
-                        3'h1:
-                            \active_state$next [39] = 1'h1;
-                        3'h2:
-                            \active_state$next [39] = 1'h0;
-                        3'h3:
-                            \active_state$next [39] = 1'h1;
-                        3'h4:
-                            \active_state$next [39] = 1'h0;
-                        3'h5:
-                            \active_state$next [39] = 1'h1;
-                        3'h6:
-                            \active_state$next [39] = 1'h1;
-                        3'h7:
-                            \active_state$next [39] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[40:38])
-                        3'h0:
-                            \active_state$next [39] = 1'h0;
-                        3'h1:
-                            \active_state$next [39] = 1'h1;
-                        3'h2:
-                            \active_state$next [39] = 1'h1;
-                        3'h3:
-                            \active_state$next [39] = 1'h1;
-                        3'h4:
-                            \active_state$next [39] = 1'h0;
-                        3'h5:
-                            \active_state$next [39] = 1'h0;
-                        3'h6:
-                            \active_state$next [39] = 1'h0;
-                        3'h7:
-                            \active_state$next [39] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[41:39])
-                        3'h0:
-                            \active_state$next [40] = 1'h0;
-                        3'h1:
-                            \active_state$next [40] = 1'h1;
-                        3'h2:
-                            \active_state$next [40] = 1'h1;
-                        3'h3:
-                            \active_state$next [40] = 1'h1;
-                        3'h4:
-                            \active_state$next [40] = 1'h1;
-                        3'h5:
-                            \active_state$next [40] = 1'h0;
-                        3'h6:
-                            \active_state$next [40] = 1'h0;
-                        3'h7:
-                            \active_state$next [40] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[41:39])
-                        3'h0:
-                            \active_state$next [40] = 1'h0;
-                        3'h1:
-                            \active_state$next [40] = 1'h1;
-                        3'h2:
-                            \active_state$next [40] = 1'h1;
-                        3'h3:
-                            \active_state$next [40] = 1'h1;
-                        3'h4:
-                            \active_state$next [40] = 1'h0;
-                        3'h5:
-                            \active_state$next [40] = 1'h1;
-                        3'h6:
-                            \active_state$next [40] = 1'h1;
-                        3'h7:
-                            \active_state$next [40] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[41:39])
-                        3'h0:
-                            \active_state$next [40] = 1'h0;
-                        3'h1:
-                            \active_state$next [40] = 1'h1;
-                        3'h2:
-                            \active_state$next [40] = 1'h0;
-                        3'h3:
-                            \active_state$next [40] = 1'h1;
-                        3'h4:
-                            \active_state$next [40] = 1'h0;
-                        3'h5:
-                            \active_state$next [40] = 1'h1;
-                        3'h6:
-                            \active_state$next [40] = 1'h1;
-                        3'h7:
-                            \active_state$next [40] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[41:39])
-                        3'h0:
-                            \active_state$next [40] = 1'h0;
-                        3'h1:
-                            \active_state$next [40] = 1'h1;
-                        3'h2:
-                            \active_state$next [40] = 1'h1;
-                        3'h3:
-                            \active_state$next [40] = 1'h1;
-                        3'h4:
-                            \active_state$next [40] = 1'h0;
-                        3'h5:
-                            \active_state$next [40] = 1'h0;
-                        3'h6:
-                            \active_state$next [40] = 1'h0;
-                        3'h7:
-                            \active_state$next [40] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[42:40])
-                        3'h0:
-                            \active_state$next [41] = 1'h0;
-                        3'h1:
-                            \active_state$next [41] = 1'h1;
-                        3'h2:
-                            \active_state$next [41] = 1'h1;
-                        3'h3:
-                            \active_state$next [41] = 1'h1;
-                        3'h4:
-                            \active_state$next [41] = 1'h1;
-                        3'h5:
-                            \active_state$next [41] = 1'h0;
-                        3'h6:
-                            \active_state$next [41] = 1'h0;
-                        3'h7:
-                            \active_state$next [41] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[42:40])
-                        3'h0:
-                            \active_state$next [41] = 1'h0;
-                        3'h1:
-                            \active_state$next [41] = 1'h1;
-                        3'h2:
-                            \active_state$next [41] = 1'h1;
-                        3'h3:
-                            \active_state$next [41] = 1'h1;
-                        3'h4:
-                            \active_state$next [41] = 1'h0;
-                        3'h5:
-                            \active_state$next [41] = 1'h1;
-                        3'h6:
-                            \active_state$next [41] = 1'h1;
-                        3'h7:
-                            \active_state$next [41] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[42:40])
-                        3'h0:
-                            \active_state$next [41] = 1'h0;
-                        3'h1:
-                            \active_state$next [41] = 1'h1;
-                        3'h2:
-                            \active_state$next [41] = 1'h0;
-                        3'h3:
-                            \active_state$next [41] = 1'h1;
-                        3'h4:
-                            \active_state$next [41] = 1'h0;
-                        3'h5:
-                            \active_state$next [41] = 1'h1;
-                        3'h6:
-                            \active_state$next [41] = 1'h1;
-                        3'h7:
-                            \active_state$next [41] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[42:40])
-                        3'h0:
-                            \active_state$next [41] = 1'h0;
-                        3'h1:
-                            \active_state$next [41] = 1'h1;
-                        3'h2:
-                            \active_state$next [41] = 1'h1;
-                        3'h3:
-                            \active_state$next [41] = 1'h1;
-                        3'h4:
-                            \active_state$next [41] = 1'h0;
-                        3'h5:
-                            \active_state$next [41] = 1'h0;
-                        3'h6:
-                            \active_state$next [41] = 1'h0;
-                        3'h7:
-                            \active_state$next [41] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[43:41])
-                        3'h0:
-                            \active_state$next [42] = 1'h0;
-                        3'h1:
-                            \active_state$next [42] = 1'h1;
-                        3'h2:
-                            \active_state$next [42] = 1'h1;
-                        3'h3:
-                            \active_state$next [42] = 1'h1;
-                        3'h4:
-                            \active_state$next [42] = 1'h1;
-                        3'h5:
-                            \active_state$next [42] = 1'h0;
-                        3'h6:
-                            \active_state$next [42] = 1'h0;
-                        3'h7:
-                            \active_state$next [42] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[43:41])
-                        3'h0:
-                            \active_state$next [42] = 1'h0;
-                        3'h1:
-                            \active_state$next [42] = 1'h1;
-                        3'h2:
-                            \active_state$next [42] = 1'h1;
-                        3'h3:
-                            \active_state$next [42] = 1'h1;
-                        3'h4:
-                            \active_state$next [42] = 1'h0;
-                        3'h5:
-                            \active_state$next [42] = 1'h1;
-                        3'h6:
-                            \active_state$next [42] = 1'h1;
-                        3'h7:
-                            \active_state$next [42] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[43:41])
-                        3'h0:
-                            \active_state$next [42] = 1'h0;
-                        3'h1:
-                            \active_state$next [42] = 1'h1;
-                        3'h2:
-                            \active_state$next [42] = 1'h0;
-                        3'h3:
-                            \active_state$next [42] = 1'h1;
-                        3'h4:
-                            \active_state$next [42] = 1'h0;
-                        3'h5:
-                            \active_state$next [42] = 1'h1;
-                        3'h6:
-                            \active_state$next [42] = 1'h1;
-                        3'h7:
-                            \active_state$next [42] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[43:41])
-                        3'h0:
-                            \active_state$next [42] = 1'h0;
-                        3'h1:
-                            \active_state$next [42] = 1'h1;
-                        3'h2:
-                            \active_state$next [42] = 1'h1;
-                        3'h3:
-                            \active_state$next [42] = 1'h1;
-                        3'h4:
-                            \active_state$next [42] = 1'h0;
-                        3'h5:
-                            \active_state$next [42] = 1'h0;
-                        3'h6:
-                            \active_state$next [42] = 1'h0;
-                        3'h7:
-                            \active_state$next [42] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[44:42])
-                        3'h0:
-                            \active_state$next [43] = 1'h0;
-                        3'h1:
-                            \active_state$next [43] = 1'h1;
-                        3'h2:
-                            \active_state$next [43] = 1'h1;
-                        3'h3:
-                            \active_state$next [43] = 1'h1;
-                        3'h4:
-                            \active_state$next [43] = 1'h1;
-                        3'h5:
-                            \active_state$next [43] = 1'h0;
-                        3'h6:
-                            \active_state$next [43] = 1'h0;
-                        3'h7:
-                            \active_state$next [43] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[44:42])
-                        3'h0:
-                            \active_state$next [43] = 1'h0;
-                        3'h1:
-                            \active_state$next [43] = 1'h1;
-                        3'h2:
-                            \active_state$next [43] = 1'h1;
-                        3'h3:
-                            \active_state$next [43] = 1'h1;
-                        3'h4:
-                            \active_state$next [43] = 1'h0;
-                        3'h5:
-                            \active_state$next [43] = 1'h1;
-                        3'h6:
-                            \active_state$next [43] = 1'h1;
-                        3'h7:
-                            \active_state$next [43] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[44:42])
-                        3'h0:
-                            \active_state$next [43] = 1'h0;
-                        3'h1:
-                            \active_state$next [43] = 1'h1;
-                        3'h2:
-                            \active_state$next [43] = 1'h0;
-                        3'h3:
-                            \active_state$next [43] = 1'h1;
-                        3'h4:
-                            \active_state$next [43] = 1'h0;
-                        3'h5:
-                            \active_state$next [43] = 1'h1;
-                        3'h6:
-                            \active_state$next [43] = 1'h1;
-                        3'h7:
-                            \active_state$next [43] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[44:42])
-                        3'h0:
-                            \active_state$next [43] = 1'h0;
-                        3'h1:
-                            \active_state$next [43] = 1'h1;
-                        3'h2:
-                            \active_state$next [43] = 1'h1;
-                        3'h3:
-                            \active_state$next [43] = 1'h1;
-                        3'h4:
-                            \active_state$next [43] = 1'h0;
-                        3'h5:
-                            \active_state$next [43] = 1'h0;
-                        3'h6:
-                            \active_state$next [43] = 1'h0;
-                        3'h7:
-                            \active_state$next [43] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[45:43])
-                        3'h0:
-                            \active_state$next [44] = 1'h0;
-                        3'h1:
-                            \active_state$next [44] = 1'h1;
-                        3'h2:
-                            \active_state$next [44] = 1'h1;
-                        3'h3:
-                            \active_state$next [44] = 1'h1;
-                        3'h4:
-                            \active_state$next [44] = 1'h1;
-                        3'h5:
-                            \active_state$next [44] = 1'h0;
-                        3'h6:
-                            \active_state$next [44] = 1'h0;
-                        3'h7:
-                            \active_state$next [44] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[45:43])
-                        3'h0:
-                            \active_state$next [44] = 1'h0;
-                        3'h1:
-                            \active_state$next [44] = 1'h1;
-                        3'h2:
-                            \active_state$next [44] = 1'h1;
-                        3'h3:
-                            \active_state$next [44] = 1'h1;
-                        3'h4:
-                            \active_state$next [44] = 1'h0;
-                        3'h5:
-                            \active_state$next [44] = 1'h1;
-                        3'h6:
-                            \active_state$next [44] = 1'h1;
-                        3'h7:
-                            \active_state$next [44] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[45:43])
-                        3'h0:
-                            \active_state$next [44] = 1'h0;
-                        3'h1:
-                            \active_state$next [44] = 1'h1;
-                        3'h2:
-                            \active_state$next [44] = 1'h0;
-                        3'h3:
-                            \active_state$next [44] = 1'h1;
-                        3'h4:
-                            \active_state$next [44] = 1'h0;
-                        3'h5:
-                            \active_state$next [44] = 1'h1;
-                        3'h6:
-                            \active_state$next [44] = 1'h1;
-                        3'h7:
-                            \active_state$next [44] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[45:43])
-                        3'h0:
-                            \active_state$next [44] = 1'h0;
-                        3'h1:
-                            \active_state$next [44] = 1'h1;
-                        3'h2:
-                            \active_state$next [44] = 1'h1;
-                        3'h3:
-                            \active_state$next [44] = 1'h1;
-                        3'h4:
-                            \active_state$next [44] = 1'h0;
-                        3'h5:
-                            \active_state$next [44] = 1'h0;
-                        3'h6:
-                            \active_state$next [44] = 1'h0;
-                        3'h7:
-                            \active_state$next [44] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[46:44])
-                        3'h0:
-                            \active_state$next [45] = 1'h0;
-                        3'h1:
-                            \active_state$next [45] = 1'h1;
-                        3'h2:
-                            \active_state$next [45] = 1'h1;
-                        3'h3:
-                            \active_state$next [45] = 1'h1;
-                        3'h4:
-                            \active_state$next [45] = 1'h1;
-                        3'h5:
-                            \active_state$next [45] = 1'h0;
-                        3'h6:
-                            \active_state$next [45] = 1'h0;
-                        3'h7:
-                            \active_state$next [45] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[46:44])
-                        3'h0:
-                            \active_state$next [45] = 1'h0;
-                        3'h1:
-                            \active_state$next [45] = 1'h1;
-                        3'h2:
-                            \active_state$next [45] = 1'h1;
-                        3'h3:
-                            \active_state$next [45] = 1'h1;
-                        3'h4:
-                            \active_state$next [45] = 1'h0;
-                        3'h5:
-                            \active_state$next [45] = 1'h1;
-                        3'h6:
-                            \active_state$next [45] = 1'h1;
-                        3'h7:
-                            \active_state$next [45] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[46:44])
-                        3'h0:
-                            \active_state$next [45] = 1'h0;
-                        3'h1:
-                            \active_state$next [45] = 1'h1;
-                        3'h2:
-                            \active_state$next [45] = 1'h0;
-                        3'h3:
-                            \active_state$next [45] = 1'h1;
-                        3'h4:
-                            \active_state$next [45] = 1'h0;
-                        3'h5:
-                            \active_state$next [45] = 1'h1;
-                        3'h6:
-                            \active_state$next [45] = 1'h1;
-                        3'h7:
-                            \active_state$next [45] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[46:44])
-                        3'h0:
-                            \active_state$next [45] = 1'h0;
-                        3'h1:
-                            \active_state$next [45] = 1'h1;
-                        3'h2:
-                            \active_state$next [45] = 1'h1;
-                        3'h3:
-                            \active_state$next [45] = 1'h1;
-                        3'h4:
-                            \active_state$next [45] = 1'h0;
-                        3'h5:
-                            \active_state$next [45] = 1'h0;
-                        3'h6:
-                            \active_state$next [45] = 1'h0;
-                        3'h7:
-                            \active_state$next [45] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[47:45])
-                        3'h0:
-                            \active_state$next [46] = 1'h0;
-                        3'h1:
-                            \active_state$next [46] = 1'h1;
-                        3'h2:
-                            \active_state$next [46] = 1'h1;
-                        3'h3:
-                            \active_state$next [46] = 1'h1;
-                        3'h4:
-                            \active_state$next [46] = 1'h1;
-                        3'h5:
-                            \active_state$next [46] = 1'h0;
-                        3'h6:
-                            \active_state$next [46] = 1'h0;
-                        3'h7:
-                            \active_state$next [46] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[47:45])
-                        3'h0:
-                            \active_state$next [46] = 1'h0;
-                        3'h1:
-                            \active_state$next [46] = 1'h1;
-                        3'h2:
-                            \active_state$next [46] = 1'h1;
-                        3'h3:
-                            \active_state$next [46] = 1'h1;
-                        3'h4:
-                            \active_state$next [46] = 1'h0;
-                        3'h5:
-                            \active_state$next [46] = 1'h1;
-                        3'h6:
-                            \active_state$next [46] = 1'h1;
-                        3'h7:
-                            \active_state$next [46] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[47:45])
-                        3'h0:
-                            \active_state$next [46] = 1'h0;
-                        3'h1:
-                            \active_state$next [46] = 1'h1;
-                        3'h2:
-                            \active_state$next [46] = 1'h0;
-                        3'h3:
-                            \active_state$next [46] = 1'h1;
-                        3'h4:
-                            \active_state$next [46] = 1'h0;
-                        3'h5:
-                            \active_state$next [46] = 1'h1;
-                        3'h6:
-                            \active_state$next [46] = 1'h1;
-                        3'h7:
-                            \active_state$next [46] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[47:45])
-                        3'h0:
-                            \active_state$next [46] = 1'h0;
-                        3'h1:
-                            \active_state$next [46] = 1'h1;
-                        3'h2:
-                            \active_state$next [46] = 1'h1;
-                        3'h3:
-                            \active_state$next [46] = 1'h1;
-                        3'h4:
-                            \active_state$next [46] = 1'h0;
-                        3'h5:
-                            \active_state$next [46] = 1'h0;
-                        3'h6:
-                            \active_state$next [46] = 1'h0;
-                        3'h7:
-                            \active_state$next [46] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[48:46])
-                        3'h0:
-                            \active_state$next [47] = 1'h0;
-                        3'h1:
-                            \active_state$next [47] = 1'h1;
-                        3'h2:
-                            \active_state$next [47] = 1'h1;
-                        3'h3:
-                            \active_state$next [47] = 1'h1;
-                        3'h4:
-                            \active_state$next [47] = 1'h1;
-                        3'h5:
-                            \active_state$next [47] = 1'h0;
-                        3'h6:
-                            \active_state$next [47] = 1'h0;
-                        3'h7:
-                            \active_state$next [47] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[48:46])
-                        3'h0:
-                            \active_state$next [47] = 1'h0;
-                        3'h1:
-                            \active_state$next [47] = 1'h1;
-                        3'h2:
-                            \active_state$next [47] = 1'h1;
-                        3'h3:
-                            \active_state$next [47] = 1'h1;
-                        3'h4:
-                            \active_state$next [47] = 1'h0;
-                        3'h5:
-                            \active_state$next [47] = 1'h1;
-                        3'h6:
-                            \active_state$next [47] = 1'h1;
-                        3'h7:
-                            \active_state$next [47] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[48:46])
-                        3'h0:
-                            \active_state$next [47] = 1'h0;
-                        3'h1:
-                            \active_state$next [47] = 1'h1;
-                        3'h2:
-                            \active_state$next [47] = 1'h0;
-                        3'h3:
-                            \active_state$next [47] = 1'h1;
-                        3'h4:
-                            \active_state$next [47] = 1'h0;
-                        3'h5:
-                            \active_state$next [47] = 1'h1;
-                        3'h6:
-                            \active_state$next [47] = 1'h1;
-                        3'h7:
-                            \active_state$next [47] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[48:46])
-                        3'h0:
-                            \active_state$next [47] = 1'h0;
-                        3'h1:
-                            \active_state$next [47] = 1'h1;
-                        3'h2:
-                            \active_state$next [47] = 1'h1;
-                        3'h3:
-                            \active_state$next [47] = 1'h1;
-                        3'h4:
-                            \active_state$next [47] = 1'h0;
-                        3'h5:
-                            \active_state$next [47] = 1'h0;
-                        3'h6:
-                            \active_state$next [47] = 1'h0;
-                        3'h7:
-                            \active_state$next [47] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[49:47])
-                        3'h0:
-                            \active_state$next [48] = 1'h0;
-                        3'h1:
-                            \active_state$next [48] = 1'h1;
-                        3'h2:
-                            \active_state$next [48] = 1'h1;
-                        3'h3:
-                            \active_state$next [48] = 1'h1;
-                        3'h4:
-                            \active_state$next [48] = 1'h1;
-                        3'h5:
-                            \active_state$next [48] = 1'h0;
-                        3'h6:
-                            \active_state$next [48] = 1'h0;
-                        3'h7:
-                            \active_state$next [48] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[49:47])
-                        3'h0:
-                            \active_state$next [48] = 1'h0;
-                        3'h1:
-                            \active_state$next [48] = 1'h1;
-                        3'h2:
-                            \active_state$next [48] = 1'h1;
-                        3'h3:
-                            \active_state$next [48] = 1'h1;
-                        3'h4:
-                            \active_state$next [48] = 1'h0;
-                        3'h5:
-                            \active_state$next [48] = 1'h1;
-                        3'h6:
-                            \active_state$next [48] = 1'h1;
-                        3'h7:
-                            \active_state$next [48] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[49:47])
-                        3'h0:
-                            \active_state$next [48] = 1'h0;
-                        3'h1:
-                            \active_state$next [48] = 1'h1;
-                        3'h2:
-                            \active_state$next [48] = 1'h0;
-                        3'h3:
-                            \active_state$next [48] = 1'h1;
-                        3'h4:
-                            \active_state$next [48] = 1'h0;
-                        3'h5:
-                            \active_state$next [48] = 1'h1;
-                        3'h6:
-                            \active_state$next [48] = 1'h1;
-                        3'h7:
-                            \active_state$next [48] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[49:47])
-                        3'h0:
-                            \active_state$next [48] = 1'h0;
-                        3'h1:
-                            \active_state$next [48] = 1'h1;
-                        3'h2:
-                            \active_state$next [48] = 1'h1;
-                        3'h3:
-                            \active_state$next [48] = 1'h1;
-                        3'h4:
-                            \active_state$next [48] = 1'h0;
-                        3'h5:
-                            \active_state$next [48] = 1'h0;
-                        3'h6:
-                            \active_state$next [48] = 1'h0;
-                        3'h7:
-                            \active_state$next [48] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[50:48])
-                        3'h0:
-                            \active_state$next [49] = 1'h0;
-                        3'h1:
-                            \active_state$next [49] = 1'h1;
-                        3'h2:
-                            \active_state$next [49] = 1'h1;
-                        3'h3:
-                            \active_state$next [49] = 1'h1;
-                        3'h4:
-                            \active_state$next [49] = 1'h1;
-                        3'h5:
-                            \active_state$next [49] = 1'h0;
-                        3'h6:
-                            \active_state$next [49] = 1'h0;
-                        3'h7:
-                            \active_state$next [49] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[50:48])
-                        3'h0:
-                            \active_state$next [49] = 1'h0;
-                        3'h1:
-                            \active_state$next [49] = 1'h1;
-                        3'h2:
-                            \active_state$next [49] = 1'h1;
-                        3'h3:
-                            \active_state$next [49] = 1'h1;
-                        3'h4:
-                            \active_state$next [49] = 1'h0;
-                        3'h5:
-                            \active_state$next [49] = 1'h1;
-                        3'h6:
-                            \active_state$next [49] = 1'h1;
-                        3'h7:
-                            \active_state$next [49] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[50:48])
-                        3'h0:
-                            \active_state$next [49] = 1'h0;
-                        3'h1:
-                            \active_state$next [49] = 1'h1;
-                        3'h2:
-                            \active_state$next [49] = 1'h0;
-                        3'h3:
-                            \active_state$next [49] = 1'h1;
-                        3'h4:
-                            \active_state$next [49] = 1'h0;
-                        3'h5:
-                            \active_state$next [49] = 1'h1;
-                        3'h6:
-                            \active_state$next [49] = 1'h1;
-                        3'h7:
-                            \active_state$next [49] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[50:48])
-                        3'h0:
-                            \active_state$next [49] = 1'h0;
-                        3'h1:
-                            \active_state$next [49] = 1'h1;
-                        3'h2:
-                            \active_state$next [49] = 1'h1;
-                        3'h3:
-                            \active_state$next [49] = 1'h1;
-                        3'h4:
-                            \active_state$next [49] = 1'h0;
-                        3'h5:
-                            \active_state$next [49] = 1'h0;
-                        3'h6:
-                            \active_state$next [49] = 1'h0;
-                        3'h7:
-                            \active_state$next [49] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[51:49])
-                        3'h0:
-                            \active_state$next [50] = 1'h0;
-                        3'h1:
-                            \active_state$next [50] = 1'h1;
-                        3'h2:
-                            \active_state$next [50] = 1'h1;
-                        3'h3:
-                            \active_state$next [50] = 1'h1;
-                        3'h4:
-                            \active_state$next [50] = 1'h1;
-                        3'h5:
-                            \active_state$next [50] = 1'h0;
-                        3'h6:
-                            \active_state$next [50] = 1'h0;
-                        3'h7:
-                            \active_state$next [50] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[51:49])
-                        3'h0:
-                            \active_state$next [50] = 1'h0;
-                        3'h1:
-                            \active_state$next [50] = 1'h1;
-                        3'h2:
-                            \active_state$next [50] = 1'h1;
-                        3'h3:
-                            \active_state$next [50] = 1'h1;
-                        3'h4:
-                            \active_state$next [50] = 1'h0;
-                        3'h5:
-                            \active_state$next [50] = 1'h1;
-                        3'h6:
-                            \active_state$next [50] = 1'h1;
-                        3'h7:
-                            \active_state$next [50] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[51:49])
-                        3'h0:
-                            \active_state$next [50] = 1'h0;
-                        3'h1:
-                            \active_state$next [50] = 1'h1;
-                        3'h2:
-                            \active_state$next [50] = 1'h0;
-                        3'h3:
-                            \active_state$next [50] = 1'h1;
-                        3'h4:
-                            \active_state$next [50] = 1'h0;
-                        3'h5:
-                            \active_state$next [50] = 1'h1;
-                        3'h6:
-                            \active_state$next [50] = 1'h1;
-                        3'h7:
-                            \active_state$next [50] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[51:49])
-                        3'h0:
-                            \active_state$next [50] = 1'h0;
-                        3'h1:
-                            \active_state$next [50] = 1'h1;
-                        3'h2:
-                            \active_state$next [50] = 1'h1;
-                        3'h3:
-                            \active_state$next [50] = 1'h1;
-                        3'h4:
-                            \active_state$next [50] = 1'h0;
-                        3'h5:
-                            \active_state$next [50] = 1'h0;
-                        3'h6:
-                            \active_state$next [50] = 1'h0;
-                        3'h7:
-                            \active_state$next [50] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[52:50])
-                        3'h0:
-                            \active_state$next [51] = 1'h0;
-                        3'h1:
-                            \active_state$next [51] = 1'h1;
-                        3'h2:
-                            \active_state$next [51] = 1'h1;
-                        3'h3:
-                            \active_state$next [51] = 1'h1;
-                        3'h4:
-                            \active_state$next [51] = 1'h1;
-                        3'h5:
-                            \active_state$next [51] = 1'h0;
-                        3'h6:
-                            \active_state$next [51] = 1'h0;
-                        3'h7:
-                            \active_state$next [51] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[52:50])
-                        3'h0:
-                            \active_state$next [51] = 1'h0;
-                        3'h1:
-                            \active_state$next [51] = 1'h1;
-                        3'h2:
-                            \active_state$next [51] = 1'h1;
-                        3'h3:
-                            \active_state$next [51] = 1'h1;
-                        3'h4:
-                            \active_state$next [51] = 1'h0;
-                        3'h5:
-                            \active_state$next [51] = 1'h1;
-                        3'h6:
-                            \active_state$next [51] = 1'h1;
-                        3'h7:
-                            \active_state$next [51] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[52:50])
-                        3'h0:
-                            \active_state$next [51] = 1'h0;
-                        3'h1:
-                            \active_state$next [51] = 1'h1;
-                        3'h2:
-                            \active_state$next [51] = 1'h0;
-                        3'h3:
-                            \active_state$next [51] = 1'h1;
-                        3'h4:
-                            \active_state$next [51] = 1'h0;
-                        3'h5:
-                            \active_state$next [51] = 1'h1;
-                        3'h6:
-                            \active_state$next [51] = 1'h1;
-                        3'h7:
-                            \active_state$next [51] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[52:50])
-                        3'h0:
-                            \active_state$next [51] = 1'h0;
-                        3'h1:
-                            \active_state$next [51] = 1'h1;
-                        3'h2:
-                            \active_state$next [51] = 1'h1;
-                        3'h3:
-                            \active_state$next [51] = 1'h1;
-                        3'h4:
-                            \active_state$next [51] = 1'h0;
-                        3'h5:
-                            \active_state$next [51] = 1'h0;
-                        3'h6:
-                            \active_state$next [51] = 1'h0;
-                        3'h7:
-                            \active_state$next [51] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[53:51])
-                        3'h0:
-                            \active_state$next [52] = 1'h0;
-                        3'h1:
-                            \active_state$next [52] = 1'h1;
-                        3'h2:
-                            \active_state$next [52] = 1'h1;
-                        3'h3:
-                            \active_state$next [52] = 1'h1;
-                        3'h4:
-                            \active_state$next [52] = 1'h1;
-                        3'h5:
-                            \active_state$next [52] = 1'h0;
-                        3'h6:
-                            \active_state$next [52] = 1'h0;
-                        3'h7:
-                            \active_state$next [52] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[53:51])
-                        3'h0:
-                            \active_state$next [52] = 1'h0;
-                        3'h1:
-                            \active_state$next [52] = 1'h1;
-                        3'h2:
-                            \active_state$next [52] = 1'h1;
-                        3'h3:
-                            \active_state$next [52] = 1'h1;
-                        3'h4:
-                            \active_state$next [52] = 1'h0;
-                        3'h5:
-                            \active_state$next [52] = 1'h1;
-                        3'h6:
-                            \active_state$next [52] = 1'h1;
-                        3'h7:
-                            \active_state$next [52] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[53:51])
-                        3'h0:
-                            \active_state$next [52] = 1'h0;
-                        3'h1:
-                            \active_state$next [52] = 1'h1;
-                        3'h2:
-                            \active_state$next [52] = 1'h0;
-                        3'h3:
-                            \active_state$next [52] = 1'h1;
-                        3'h4:
-                            \active_state$next [52] = 1'h0;
-                        3'h5:
-                            \active_state$next [52] = 1'h1;
-                        3'h6:
-                            \active_state$next [52] = 1'h1;
-                        3'h7:
-                            \active_state$next [52] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[53:51])
-                        3'h0:
-                            \active_state$next [52] = 1'h0;
-                        3'h1:
-                            \active_state$next [52] = 1'h1;
-                        3'h2:
-                            \active_state$next [52] = 1'h1;
-                        3'h3:
-                            \active_state$next [52] = 1'h1;
-                        3'h4:
-                            \active_state$next [52] = 1'h0;
-                        3'h5:
-                            \active_state$next [52] = 1'h0;
-                        3'h6:
-                            \active_state$next [52] = 1'h0;
-                        3'h7:
-                            \active_state$next [52] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[54:52])
-                        3'h0:
-                            \active_state$next [53] = 1'h0;
-                        3'h1:
-                            \active_state$next [53] = 1'h1;
-                        3'h2:
-                            \active_state$next [53] = 1'h1;
-                        3'h3:
-                            \active_state$next [53] = 1'h1;
-                        3'h4:
-                            \active_state$next [53] = 1'h1;
-                        3'h5:
-                            \active_state$next [53] = 1'h0;
-                        3'h6:
-                            \active_state$next [53] = 1'h0;
-                        3'h7:
-                            \active_state$next [53] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[54:52])
-                        3'h0:
-                            \active_state$next [53] = 1'h0;
-                        3'h1:
-                            \active_state$next [53] = 1'h1;
-                        3'h2:
-                            \active_state$next [53] = 1'h1;
-                        3'h3:
-                            \active_state$next [53] = 1'h1;
-                        3'h4:
-                            \active_state$next [53] = 1'h0;
-                        3'h5:
-                            \active_state$next [53] = 1'h1;
-                        3'h6:
-                            \active_state$next [53] = 1'h1;
-                        3'h7:
-                            \active_state$next [53] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[54:52])
-                        3'h0:
-                            \active_state$next [53] = 1'h0;
-                        3'h1:
-                            \active_state$next [53] = 1'h1;
-                        3'h2:
-                            \active_state$next [53] = 1'h0;
-                        3'h3:
-                            \active_state$next [53] = 1'h1;
-                        3'h4:
-                            \active_state$next [53] = 1'h0;
-                        3'h5:
-                            \active_state$next [53] = 1'h1;
-                        3'h6:
-                            \active_state$next [53] = 1'h1;
-                        3'h7:
-                            \active_state$next [53] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[54:52])
-                        3'h0:
-                            \active_state$next [53] = 1'h0;
-                        3'h1:
-                            \active_state$next [53] = 1'h1;
-                        3'h2:
-                            \active_state$next [53] = 1'h1;
-                        3'h3:
-                            \active_state$next [53] = 1'h1;
-                        3'h4:
-                            \active_state$next [53] = 1'h0;
-                        3'h5:
-                            \active_state$next [53] = 1'h0;
-                        3'h6:
-                            \active_state$next [53] = 1'h0;
-                        3'h7:
-                            \active_state$next [53] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[55:53])
-                        3'h0:
-                            \active_state$next [54] = 1'h0;
-                        3'h1:
-                            \active_state$next [54] = 1'h1;
-                        3'h2:
-                            \active_state$next [54] = 1'h1;
-                        3'h3:
-                            \active_state$next [54] = 1'h1;
-                        3'h4:
-                            \active_state$next [54] = 1'h1;
-                        3'h5:
-                            \active_state$next [54] = 1'h0;
-                        3'h6:
-                            \active_state$next [54] = 1'h0;
-                        3'h7:
-                            \active_state$next [54] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[55:53])
-                        3'h0:
-                            \active_state$next [54] = 1'h0;
-                        3'h1:
-                            \active_state$next [54] = 1'h1;
-                        3'h2:
-                            \active_state$next [54] = 1'h1;
-                        3'h3:
-                            \active_state$next [54] = 1'h1;
-                        3'h4:
-                            \active_state$next [54] = 1'h0;
-                        3'h5:
-                            \active_state$next [54] = 1'h1;
-                        3'h6:
-                            \active_state$next [54] = 1'h1;
-                        3'h7:
-                            \active_state$next [54] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[55:53])
-                        3'h0:
-                            \active_state$next [54] = 1'h0;
-                        3'h1:
-                            \active_state$next [54] = 1'h1;
-                        3'h2:
-                            \active_state$next [54] = 1'h0;
-                        3'h3:
-                            \active_state$next [54] = 1'h1;
-                        3'h4:
-                            \active_state$next [54] = 1'h0;
-                        3'h5:
-                            \active_state$next [54] = 1'h1;
-                        3'h6:
-                            \active_state$next [54] = 1'h1;
-                        3'h7:
-                            \active_state$next [54] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[55:53])
-                        3'h0:
-                            \active_state$next [54] = 1'h0;
-                        3'h1:
-                            \active_state$next [54] = 1'h1;
-                        3'h2:
-                            \active_state$next [54] = 1'h1;
-                        3'h3:
-                            \active_state$next [54] = 1'h1;
-                        3'h4:
-                            \active_state$next [54] = 1'h0;
-                        3'h5:
-                            \active_state$next [54] = 1'h0;
-                        3'h6:
-                            \active_state$next [54] = 1'h0;
-                        3'h7:
-                            \active_state$next [54] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[56:54])
-                        3'h0:
-                            \active_state$next [55] = 1'h0;
-                        3'h1:
-                            \active_state$next [55] = 1'h1;
-                        3'h2:
-                            \active_state$next [55] = 1'h1;
-                        3'h3:
-                            \active_state$next [55] = 1'h1;
-                        3'h4:
-                            \active_state$next [55] = 1'h1;
-                        3'h5:
-                            \active_state$next [55] = 1'h0;
-                        3'h6:
-                            \active_state$next [55] = 1'h0;
-                        3'h7:
-                            \active_state$next [55] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[56:54])
-                        3'h0:
-                            \active_state$next [55] = 1'h0;
-                        3'h1:
-                            \active_state$next [55] = 1'h1;
-                        3'h2:
-                            \active_state$next [55] = 1'h1;
-                        3'h3:
-                            \active_state$next [55] = 1'h1;
-                        3'h4:
-                            \active_state$next [55] = 1'h0;
-                        3'h5:
-                            \active_state$next [55] = 1'h1;
-                        3'h6:
-                            \active_state$next [55] = 1'h1;
-                        3'h7:
-                            \active_state$next [55] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[56:54])
-                        3'h0:
-                            \active_state$next [55] = 1'h0;
-                        3'h1:
-                            \active_state$next [55] = 1'h1;
-                        3'h2:
-                            \active_state$next [55] = 1'h0;
-                        3'h3:
-                            \active_state$next [55] = 1'h1;
-                        3'h4:
-                            \active_state$next [55] = 1'h0;
-                        3'h5:
-                            \active_state$next [55] = 1'h1;
-                        3'h6:
-                            \active_state$next [55] = 1'h1;
-                        3'h7:
-                            \active_state$next [55] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[56:54])
-                        3'h0:
-                            \active_state$next [55] = 1'h0;
-                        3'h1:
-                            \active_state$next [55] = 1'h1;
-                        3'h2:
-                            \active_state$next [55] = 1'h1;
-                        3'h3:
-                            \active_state$next [55] = 1'h1;
-                        3'h4:
-                            \active_state$next [55] = 1'h0;
-                        3'h5:
-                            \active_state$next [55] = 1'h0;
-                        3'h6:
-                            \active_state$next [55] = 1'h0;
-                        3'h7:
-                            \active_state$next [55] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[57:55])
-                        3'h0:
-                            \active_state$next [56] = 1'h0;
-                        3'h1:
-                            \active_state$next [56] = 1'h1;
-                        3'h2:
-                            \active_state$next [56] = 1'h1;
-                        3'h3:
-                            \active_state$next [56] = 1'h1;
-                        3'h4:
-                            \active_state$next [56] = 1'h1;
-                        3'h5:
-                            \active_state$next [56] = 1'h0;
-                        3'h6:
-                            \active_state$next [56] = 1'h0;
-                        3'h7:
-                            \active_state$next [56] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[57:55])
-                        3'h0:
-                            \active_state$next [56] = 1'h0;
-                        3'h1:
-                            \active_state$next [56] = 1'h1;
-                        3'h2:
-                            \active_state$next [56] = 1'h1;
-                        3'h3:
-                            \active_state$next [56] = 1'h1;
-                        3'h4:
-                            \active_state$next [56] = 1'h0;
-                        3'h5:
-                            \active_state$next [56] = 1'h1;
-                        3'h6:
-                            \active_state$next [56] = 1'h1;
-                        3'h7:
-                            \active_state$next [56] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[57:55])
-                        3'h0:
-                            \active_state$next [56] = 1'h0;
-                        3'h1:
-                            \active_state$next [56] = 1'h1;
-                        3'h2:
-                            \active_state$next [56] = 1'h0;
-                        3'h3:
-                            \active_state$next [56] = 1'h1;
-                        3'h4:
-                            \active_state$next [56] = 1'h0;
-                        3'h5:
-                            \active_state$next [56] = 1'h1;
-                        3'h6:
-                            \active_state$next [56] = 1'h1;
-                        3'h7:
-                            \active_state$next [56] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[57:55])
-                        3'h0:
-                            \active_state$next [56] = 1'h0;
-                        3'h1:
-                            \active_state$next [56] = 1'h1;
-                        3'h2:
-                            \active_state$next [56] = 1'h1;
-                        3'h3:
-                            \active_state$next [56] = 1'h1;
-                        3'h4:
-                            \active_state$next [56] = 1'h0;
-                        3'h5:
-                            \active_state$next [56] = 1'h0;
-                        3'h6:
-                            \active_state$next [56] = 1'h0;
-                        3'h7:
-                            \active_state$next [56] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[58:56])
-                        3'h0:
-                            \active_state$next [57] = 1'h0;
-                        3'h1:
-                            \active_state$next [57] = 1'h1;
-                        3'h2:
-                            \active_state$next [57] = 1'h1;
-                        3'h3:
-                            \active_state$next [57] = 1'h1;
-                        3'h4:
-                            \active_state$next [57] = 1'h1;
-                        3'h5:
-                            \active_state$next [57] = 1'h0;
-                        3'h6:
-                            \active_state$next [57] = 1'h0;
-                        3'h7:
-                            \active_state$next [57] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[58:56])
-                        3'h0:
-                            \active_state$next [57] = 1'h0;
-                        3'h1:
-                            \active_state$next [57] = 1'h1;
-                        3'h2:
-                            \active_state$next [57] = 1'h1;
-                        3'h3:
-                            \active_state$next [57] = 1'h1;
-                        3'h4:
-                            \active_state$next [57] = 1'h0;
-                        3'h5:
-                            \active_state$next [57] = 1'h1;
-                        3'h6:
-                            \active_state$next [57] = 1'h1;
-                        3'h7:
-                            \active_state$next [57] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[58:56])
-                        3'h0:
-                            \active_state$next [57] = 1'h0;
-                        3'h1:
-                            \active_state$next [57] = 1'h1;
-                        3'h2:
-                            \active_state$next [57] = 1'h0;
-                        3'h3:
-                            \active_state$next [57] = 1'h1;
-                        3'h4:
-                            \active_state$next [57] = 1'h0;
-                        3'h5:
-                            \active_state$next [57] = 1'h1;
-                        3'h6:
-                            \active_state$next [57] = 1'h1;
-                        3'h7:
-                            \active_state$next [57] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[58:56])
-                        3'h0:
-                            \active_state$next [57] = 1'h0;
-                        3'h1:
-                            \active_state$next [57] = 1'h1;
-                        3'h2:
-                            \active_state$next [57] = 1'h1;
-                        3'h3:
-                            \active_state$next [57] = 1'h1;
-                        3'h4:
-                            \active_state$next [57] = 1'h0;
-                        3'h5:
-                            \active_state$next [57] = 1'h0;
-                        3'h6:
-                            \active_state$next [57] = 1'h0;
-                        3'h7:
-                            \active_state$next [57] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[59:57])
-                        3'h0:
-                            \active_state$next [58] = 1'h0;
-                        3'h1:
-                            \active_state$next [58] = 1'h1;
-                        3'h2:
-                            \active_state$next [58] = 1'h1;
-                        3'h3:
-                            \active_state$next [58] = 1'h1;
-                        3'h4:
-                            \active_state$next [58] = 1'h1;
-                        3'h5:
-                            \active_state$next [58] = 1'h0;
-                        3'h6:
-                            \active_state$next [58] = 1'h0;
-                        3'h7:
-                            \active_state$next [58] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[59:57])
-                        3'h0:
-                            \active_state$next [58] = 1'h0;
-                        3'h1:
-                            \active_state$next [58] = 1'h1;
-                        3'h2:
-                            \active_state$next [58] = 1'h1;
-                        3'h3:
-                            \active_state$next [58] = 1'h1;
-                        3'h4:
-                            \active_state$next [58] = 1'h0;
-                        3'h5:
-                            \active_state$next [58] = 1'h1;
-                        3'h6:
-                            \active_state$next [58] = 1'h1;
-                        3'h7:
-                            \active_state$next [58] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[59:57])
-                        3'h0:
-                            \active_state$next [58] = 1'h0;
-                        3'h1:
-                            \active_state$next [58] = 1'h1;
-                        3'h2:
-                            \active_state$next [58] = 1'h0;
-                        3'h3:
-                            \active_state$next [58] = 1'h1;
-                        3'h4:
-                            \active_state$next [58] = 1'h0;
-                        3'h5:
-                            \active_state$next [58] = 1'h1;
-                        3'h6:
-                            \active_state$next [58] = 1'h1;
-                        3'h7:
-                            \active_state$next [58] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[59:57])
-                        3'h0:
-                            \active_state$next [58] = 1'h0;
-                        3'h1:
-                            \active_state$next [58] = 1'h1;
-                        3'h2:
-                            \active_state$next [58] = 1'h1;
-                        3'h3:
-                            \active_state$next [58] = 1'h1;
-                        3'h4:
-                            \active_state$next [58] = 1'h0;
-                        3'h5:
-                            \active_state$next [58] = 1'h0;
-                        3'h6:
-                            \active_state$next [58] = 1'h0;
-                        3'h7:
-                            \active_state$next [58] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[60:58])
-                        3'h0:
-                            \active_state$next [59] = 1'h0;
-                        3'h1:
-                            \active_state$next [59] = 1'h1;
-                        3'h2:
-                            \active_state$next [59] = 1'h1;
-                        3'h3:
-                            \active_state$next [59] = 1'h1;
-                        3'h4:
-                            \active_state$next [59] = 1'h1;
-                        3'h5:
-                            \active_state$next [59] = 1'h0;
-                        3'h6:
-                            \active_state$next [59] = 1'h0;
-                        3'h7:
-                            \active_state$next [59] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[60:58])
-                        3'h0:
-                            \active_state$next [59] = 1'h0;
-                        3'h1:
-                            \active_state$next [59] = 1'h1;
-                        3'h2:
-                            \active_state$next [59] = 1'h1;
-                        3'h3:
-                            \active_state$next [59] = 1'h1;
-                        3'h4:
-                            \active_state$next [59] = 1'h0;
-                        3'h5:
-                            \active_state$next [59] = 1'h1;
-                        3'h6:
-                            \active_state$next [59] = 1'h1;
-                        3'h7:
-                            \active_state$next [59] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[60:58])
-                        3'h0:
-                            \active_state$next [59] = 1'h0;
-                        3'h1:
-                            \active_state$next [59] = 1'h1;
-                        3'h2:
-                            \active_state$next [59] = 1'h0;
-                        3'h3:
-                            \active_state$next [59] = 1'h1;
-                        3'h4:
-                            \active_state$next [59] = 1'h0;
-                        3'h5:
-                            \active_state$next [59] = 1'h1;
-                        3'h6:
-                            \active_state$next [59] = 1'h1;
-                        3'h7:
-                            \active_state$next [59] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[60:58])
-                        3'h0:
-                            \active_state$next [59] = 1'h0;
-                        3'h1:
-                            \active_state$next [59] = 1'h1;
-                        3'h2:
-                            \active_state$next [59] = 1'h1;
-                        3'h3:
-                            \active_state$next [59] = 1'h1;
-                        3'h4:
-                            \active_state$next [59] = 1'h0;
-                        3'h5:
-                            \active_state$next [59] = 1'h0;
-                        3'h6:
-                            \active_state$next [59] = 1'h0;
-                        3'h7:
-                            \active_state$next [59] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[61:59])
-                        3'h0:
-                            \active_state$next [60] = 1'h0;
-                        3'h1:
-                            \active_state$next [60] = 1'h1;
-                        3'h2:
-                            \active_state$next [60] = 1'h1;
-                        3'h3:
-                            \active_state$next [60] = 1'h1;
-                        3'h4:
-                            \active_state$next [60] = 1'h1;
-                        3'h5:
-                            \active_state$next [60] = 1'h0;
-                        3'h6:
-                            \active_state$next [60] = 1'h0;
-                        3'h7:
-                            \active_state$next [60] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[61:59])
-                        3'h0:
-                            \active_state$next [60] = 1'h0;
-                        3'h1:
-                            \active_state$next [60] = 1'h1;
-                        3'h2:
-                            \active_state$next [60] = 1'h1;
-                        3'h3:
-                            \active_state$next [60] = 1'h1;
-                        3'h4:
-                            \active_state$next [60] = 1'h0;
-                        3'h5:
-                            \active_state$next [60] = 1'h1;
-                        3'h6:
-                            \active_state$next [60] = 1'h1;
-                        3'h7:
-                            \active_state$next [60] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[61:59])
-                        3'h0:
-                            \active_state$next [60] = 1'h0;
-                        3'h1:
-                            \active_state$next [60] = 1'h1;
-                        3'h2:
-                            \active_state$next [60] = 1'h0;
-                        3'h3:
-                            \active_state$next [60] = 1'h1;
-                        3'h4:
-                            \active_state$next [60] = 1'h0;
-                        3'h5:
-                            \active_state$next [60] = 1'h1;
-                        3'h6:
-                            \active_state$next [60] = 1'h1;
-                        3'h7:
-                            \active_state$next [60] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[61:59])
-                        3'h0:
-                            \active_state$next [60] = 1'h0;
-                        3'h1:
-                            \active_state$next [60] = 1'h1;
-                        3'h2:
-                            \active_state$next [60] = 1'h1;
-                        3'h3:
-                            \active_state$next [60] = 1'h1;
-                        3'h4:
-                            \active_state$next [60] = 1'h0;
-                        3'h5:
-                            \active_state$next [60] = 1'h0;
-                        3'h6:
-                            \active_state$next [60] = 1'h0;
-                        3'h7:
-                            \active_state$next [60] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[62:60])
-                        3'h0:
-                            \active_state$next [61] = 1'h0;
-                        3'h1:
-                            \active_state$next [61] = 1'h1;
-                        3'h2:
-                            \active_state$next [61] = 1'h1;
-                        3'h3:
-                            \active_state$next [61] = 1'h1;
-                        3'h4:
-                            \active_state$next [61] = 1'h1;
-                        3'h5:
-                            \active_state$next [61] = 1'h0;
-                        3'h6:
-                            \active_state$next [61] = 1'h0;
-                        3'h7:
-                            \active_state$next [61] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[62:60])
-                        3'h0:
-                            \active_state$next [61] = 1'h0;
-                        3'h1:
-                            \active_state$next [61] = 1'h1;
-                        3'h2:
-                            \active_state$next [61] = 1'h1;
-                        3'h3:
-                            \active_state$next [61] = 1'h1;
-                        3'h4:
-                            \active_state$next [61] = 1'h0;
-                        3'h5:
-                            \active_state$next [61] = 1'h1;
-                        3'h6:
-                            \active_state$next [61] = 1'h1;
-                        3'h7:
-                            \active_state$next [61] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[62:60])
-                        3'h0:
-                            \active_state$next [61] = 1'h0;
-                        3'h1:
-                            \active_state$next [61] = 1'h1;
-                        3'h2:
-                            \active_state$next [61] = 1'h0;
-                        3'h3:
-                            \active_state$next [61] = 1'h1;
-                        3'h4:
-                            \active_state$next [61] = 1'h0;
-                        3'h5:
-                            \active_state$next [61] = 1'h1;
-                        3'h6:
-                            \active_state$next [61] = 1'h1;
-                        3'h7:
-                            \active_state$next [61] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[62:60])
-                        3'h0:
-                            \active_state$next [61] = 1'h0;
-                        3'h1:
-                            \active_state$next [61] = 1'h1;
-                        3'h2:
-                            \active_state$next [61] = 1'h1;
-                        3'h3:
-                            \active_state$next [61] = 1'h1;
-                        3'h4:
-                            \active_state$next [61] = 1'h0;
-                        3'h5:
-                            \active_state$next [61] = 1'h0;
-                        3'h6:
-                            \active_state$next [61] = 1'h0;
-                        3'h7:
-                            \active_state$next [61] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[63:61])
-                        3'h0:
-                            \active_state$next [62] = 1'h0;
-                        3'h1:
-                            \active_state$next [62] = 1'h1;
-                        3'h2:
-                            \active_state$next [62] = 1'h1;
-                        3'h3:
-                            \active_state$next [62] = 1'h1;
-                        3'h4:
-                            \active_state$next [62] = 1'h1;
-                        3'h5:
-                            \active_state$next [62] = 1'h0;
-                        3'h6:
-                            \active_state$next [62] = 1'h0;
-                        3'h7:
-                            \active_state$next [62] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[63:61])
-                        3'h0:
-                            \active_state$next [62] = 1'h0;
-                        3'h1:
-                            \active_state$next [62] = 1'h1;
-                        3'h2:
-                            \active_state$next [62] = 1'h1;
-                        3'h3:
-                            \active_state$next [62] = 1'h1;
-                        3'h4:
-                            \active_state$next [62] = 1'h0;
-                        3'h5:
-                            \active_state$next [62] = 1'h1;
-                        3'h6:
-                            \active_state$next [62] = 1'h1;
-                        3'h7:
-                            \active_state$next [62] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[63:61])
-                        3'h0:
-                            \active_state$next [62] = 1'h0;
-                        3'h1:
-                            \active_state$next [62] = 1'h1;
-                        3'h2:
-                            \active_state$next [62] = 1'h0;
-                        3'h3:
-                            \active_state$next [62] = 1'h1;
-                        3'h4:
-                            \active_state$next [62] = 1'h0;
-                        3'h5:
-                            \active_state$next [62] = 1'h1;
-                        3'h6:
-                            \active_state$next [62] = 1'h1;
-                        3'h7:
-                            \active_state$next [62] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[63:61])
-                        3'h0:
-                            \active_state$next [62] = 1'h0;
-                        3'h1:
-                            \active_state$next [62] = 1'h1;
-                        3'h2:
-                            \active_state$next [62] = 1'h1;
-                        3'h3:
-                            \active_state$next [62] = 1'h1;
-                        3'h4:
-                            \active_state$next [62] = 1'h0;
-                        3'h5:
-                            \active_state$next [62] = 1'h0;
-                        3'h6:
-                            \active_state$next [62] = 1'h0;
-                        3'h7:
-                            \active_state$next [62] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[64:62])
-                        3'h0:
-                            \active_state$next [63] = 1'h0;
-                        3'h1:
-                            \active_state$next [63] = 1'h1;
-                        3'h2:
-                            \active_state$next [63] = 1'h1;
-                        3'h3:
-                            \active_state$next [63] = 1'h1;
-                        3'h4:
-                            \active_state$next [63] = 1'h1;
-                        3'h5:
-                            \active_state$next [63] = 1'h0;
-                        3'h6:
-                            \active_state$next [63] = 1'h0;
-                        3'h7:
-                            \active_state$next [63] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[64:62])
-                        3'h0:
-                            \active_state$next [63] = 1'h0;
-                        3'h1:
-                            \active_state$next [63] = 1'h1;
-                        3'h2:
-                            \active_state$next [63] = 1'h1;
-                        3'h3:
-                            \active_state$next [63] = 1'h1;
-                        3'h4:
-                            \active_state$next [63] = 1'h0;
-                        3'h5:
-                            \active_state$next [63] = 1'h1;
-                        3'h6:
-                            \active_state$next [63] = 1'h1;
-                        3'h7:
-                            \active_state$next [63] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[64:62])
-                        3'h0:
-                            \active_state$next [63] = 1'h0;
-                        3'h1:
-                            \active_state$next [63] = 1'h1;
-                        3'h2:
-                            \active_state$next [63] = 1'h0;
-                        3'h3:
-                            \active_state$next [63] = 1'h1;
-                        3'h4:
-                            \active_state$next [63] = 1'h0;
-                        3'h5:
-                            \active_state$next [63] = 1'h1;
-                        3'h6:
-                            \active_state$next [63] = 1'h1;
-                        3'h7:
-                            \active_state$next [63] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[64:62])
-                        3'h0:
-                            \active_state$next [63] = 1'h0;
-                        3'h1:
-                            \active_state$next [63] = 1'h1;
-                        3'h2:
-                            \active_state$next [63] = 1'h1;
-                        3'h3:
-                            \active_state$next [63] = 1'h1;
-                        3'h4:
-                            \active_state$next [63] = 1'h0;
-                        3'h5:
-                            \active_state$next [63] = 1'h0;
-                        3'h6:
-                            \active_state$next [63] = 1'h0;
-                        3'h7:
-                            \active_state$next [63] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[65:63])
-                        3'h0:
-                            \active_state$next [64] = 1'h0;
-                        3'h1:
-                            \active_state$next [64] = 1'h1;
-                        3'h2:
-                            \active_state$next [64] = 1'h1;
-                        3'h3:
-                            \active_state$next [64] = 1'h1;
-                        3'h4:
-                            \active_state$next [64] = 1'h1;
-                        3'h5:
-                            \active_state$next [64] = 1'h0;
-                        3'h6:
-                            \active_state$next [64] = 1'h0;
-                        3'h7:
-                            \active_state$next [64] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[65:63])
-                        3'h0:
-                            \active_state$next [64] = 1'h0;
-                        3'h1:
-                            \active_state$next [64] = 1'h1;
-                        3'h2:
-                            \active_state$next [64] = 1'h1;
-                        3'h3:
-                            \active_state$next [64] = 1'h1;
-                        3'h4:
-                            \active_state$next [64] = 1'h0;
-                        3'h5:
-                            \active_state$next [64] = 1'h1;
-                        3'h6:
-                            \active_state$next [64] = 1'h1;
-                        3'h7:
-                            \active_state$next [64] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[65:63])
-                        3'h0:
-                            \active_state$next [64] = 1'h0;
-                        3'h1:
-                            \active_state$next [64] = 1'h1;
-                        3'h2:
-                            \active_state$next [64] = 1'h0;
-                        3'h3:
-                            \active_state$next [64] = 1'h1;
-                        3'h4:
-                            \active_state$next [64] = 1'h0;
-                        3'h5:
-                            \active_state$next [64] = 1'h1;
-                        3'h6:
-                            \active_state$next [64] = 1'h1;
-                        3'h7:
-                            \active_state$next [64] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[65:63])
-                        3'h0:
-                            \active_state$next [64] = 1'h0;
-                        3'h1:
-                            \active_state$next [64] = 1'h1;
-                        3'h2:
-                            \active_state$next [64] = 1'h1;
-                        3'h3:
-                            \active_state$next [64] = 1'h1;
-                        3'h4:
-                            \active_state$next [64] = 1'h0;
-                        3'h5:
-                            \active_state$next [64] = 1'h0;
-                        3'h6:
-                            \active_state$next [64] = 1'h0;
-                        3'h7:
-                            \active_state$next [64] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[66:64])
-                        3'h0:
-                            \active_state$next [65] = 1'h0;
-                        3'h1:
-                            \active_state$next [65] = 1'h1;
-                        3'h2:
-                            \active_state$next [65] = 1'h1;
-                        3'h3:
-                            \active_state$next [65] = 1'h1;
-                        3'h4:
-                            \active_state$next [65] = 1'h1;
-                        3'h5:
-                            \active_state$next [65] = 1'h0;
-                        3'h6:
-                            \active_state$next [65] = 1'h0;
-                        3'h7:
-                            \active_state$next [65] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[66:64])
-                        3'h0:
-                            \active_state$next [65] = 1'h0;
-                        3'h1:
-                            \active_state$next [65] = 1'h1;
-                        3'h2:
-                            \active_state$next [65] = 1'h1;
-                        3'h3:
-                            \active_state$next [65] = 1'h1;
-                        3'h4:
-                            \active_state$next [65] = 1'h0;
-                        3'h5:
-                            \active_state$next [65] = 1'h1;
-                        3'h6:
-                            \active_state$next [65] = 1'h1;
-                        3'h7:
-                            \active_state$next [65] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[66:64])
-                        3'h0:
-                            \active_state$next [65] = 1'h0;
-                        3'h1:
-                            \active_state$next [65] = 1'h1;
-                        3'h2:
-                            \active_state$next [65] = 1'h0;
-                        3'h3:
-                            \active_state$next [65] = 1'h1;
-                        3'h4:
-                            \active_state$next [65] = 1'h0;
-                        3'h5:
-                            \active_state$next [65] = 1'h1;
-                        3'h6:
-                            \active_state$next [65] = 1'h1;
-                        3'h7:
-                            \active_state$next [65] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[66:64])
-                        3'h0:
-                            \active_state$next [65] = 1'h0;
-                        3'h1:
-                            \active_state$next [65] = 1'h1;
-                        3'h2:
-                            \active_state$next [65] = 1'h1;
-                        3'h3:
-                            \active_state$next [65] = 1'h1;
-                        3'h4:
-                            \active_state$next [65] = 1'h0;
-                        3'h5:
-                            \active_state$next [65] = 1'h0;
-                        3'h6:
-                            \active_state$next [65] = 1'h0;
-                        3'h7:
-                            \active_state$next [65] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[67:65])
-                        3'h0:
-                            \active_state$next [66] = 1'h0;
-                        3'h1:
-                            \active_state$next [66] = 1'h1;
-                        3'h2:
-                            \active_state$next [66] = 1'h1;
-                        3'h3:
-                            \active_state$next [66] = 1'h1;
-                        3'h4:
-                            \active_state$next [66] = 1'h1;
-                        3'h5:
-                            \active_state$next [66] = 1'h0;
-                        3'h6:
-                            \active_state$next [66] = 1'h0;
-                        3'h7:
-                            \active_state$next [66] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[67:65])
-                        3'h0:
-                            \active_state$next [66] = 1'h0;
-                        3'h1:
-                            \active_state$next [66] = 1'h1;
-                        3'h2:
-                            \active_state$next [66] = 1'h1;
-                        3'h3:
-                            \active_state$next [66] = 1'h1;
-                        3'h4:
-                            \active_state$next [66] = 1'h0;
-                        3'h5:
-                            \active_state$next [66] = 1'h1;
-                        3'h6:
-                            \active_state$next [66] = 1'h1;
-                        3'h7:
-                            \active_state$next [66] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[67:65])
-                        3'h0:
-                            \active_state$next [66] = 1'h0;
-                        3'h1:
-                            \active_state$next [66] = 1'h1;
-                        3'h2:
-                            \active_state$next [66] = 1'h0;
-                        3'h3:
-                            \active_state$next [66] = 1'h1;
-                        3'h4:
-                            \active_state$next [66] = 1'h0;
-                        3'h5:
-                            \active_state$next [66] = 1'h1;
-                        3'h6:
-                            \active_state$next [66] = 1'h1;
-                        3'h7:
-                            \active_state$next [66] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[67:65])
-                        3'h0:
-                            \active_state$next [66] = 1'h0;
-                        3'h1:
-                            \active_state$next [66] = 1'h1;
-                        3'h2:
-                            \active_state$next [66] = 1'h1;
-                        3'h3:
-                            \active_state$next [66] = 1'h1;
-                        3'h4:
-                            \active_state$next [66] = 1'h0;
-                        3'h5:
-                            \active_state$next [66] = 1'h0;
-                        3'h6:
-                            \active_state$next [66] = 1'h0;
-                        3'h7:
-                            \active_state$next [66] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[68:66])
-                        3'h0:
-                            \active_state$next [67] = 1'h0;
-                        3'h1:
-                            \active_state$next [67] = 1'h1;
-                        3'h2:
-                            \active_state$next [67] = 1'h1;
-                        3'h3:
-                            \active_state$next [67] = 1'h1;
-                        3'h4:
-                            \active_state$next [67] = 1'h1;
-                        3'h5:
-                            \active_state$next [67] = 1'h0;
-                        3'h6:
-                            \active_state$next [67] = 1'h0;
-                        3'h7:
-                            \active_state$next [67] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[68:66])
-                        3'h0:
-                            \active_state$next [67] = 1'h0;
-                        3'h1:
-                            \active_state$next [67] = 1'h1;
-                        3'h2:
-                            \active_state$next [67] = 1'h1;
-                        3'h3:
-                            \active_state$next [67] = 1'h1;
-                        3'h4:
-                            \active_state$next [67] = 1'h0;
-                        3'h5:
-                            \active_state$next [67] = 1'h1;
-                        3'h6:
-                            \active_state$next [67] = 1'h1;
-                        3'h7:
-                            \active_state$next [67] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[68:66])
-                        3'h0:
-                            \active_state$next [67] = 1'h0;
-                        3'h1:
-                            \active_state$next [67] = 1'h1;
-                        3'h2:
-                            \active_state$next [67] = 1'h0;
-                        3'h3:
-                            \active_state$next [67] = 1'h1;
-                        3'h4:
-                            \active_state$next [67] = 1'h0;
-                        3'h5:
-                            \active_state$next [67] = 1'h1;
-                        3'h6:
-                            \active_state$next [67] = 1'h1;
-                        3'h7:
-                            \active_state$next [67] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[68:66])
-                        3'h0:
-                            \active_state$next [67] = 1'h0;
-                        3'h1:
-                            \active_state$next [67] = 1'h1;
-                        3'h2:
-                            \active_state$next [67] = 1'h1;
-                        3'h3:
-                            \active_state$next [67] = 1'h1;
-                        3'h4:
-                            \active_state$next [67] = 1'h0;
-                        3'h5:
-                            \active_state$next [67] = 1'h0;
-                        3'h6:
-                            \active_state$next [67] = 1'h0;
-                        3'h7:
-                            \active_state$next [67] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[69:67])
-                        3'h0:
-                            \active_state$next [68] = 1'h0;
-                        3'h1:
-                            \active_state$next [68] = 1'h1;
-                        3'h2:
-                            \active_state$next [68] = 1'h1;
-                        3'h3:
-                            \active_state$next [68] = 1'h1;
-                        3'h4:
-                            \active_state$next [68] = 1'h1;
-                        3'h5:
-                            \active_state$next [68] = 1'h0;
-                        3'h6:
-                            \active_state$next [68] = 1'h0;
-                        3'h7:
-                            \active_state$next [68] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[69:67])
-                        3'h0:
-                            \active_state$next [68] = 1'h0;
-                        3'h1:
-                            \active_state$next [68] = 1'h1;
-                        3'h2:
-                            \active_state$next [68] = 1'h1;
-                        3'h3:
-                            \active_state$next [68] = 1'h1;
-                        3'h4:
-                            \active_state$next [68] = 1'h0;
-                        3'h5:
-                            \active_state$next [68] = 1'h1;
-                        3'h6:
-                            \active_state$next [68] = 1'h1;
-                        3'h7:
-                            \active_state$next [68] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[69:67])
-                        3'h0:
-                            \active_state$next [68] = 1'h0;
-                        3'h1:
-                            \active_state$next [68] = 1'h1;
-                        3'h2:
-                            \active_state$next [68] = 1'h0;
-                        3'h3:
-                            \active_state$next [68] = 1'h1;
-                        3'h4:
-                            \active_state$next [68] = 1'h0;
-                        3'h5:
-                            \active_state$next [68] = 1'h1;
-                        3'h6:
-                            \active_state$next [68] = 1'h1;
-                        3'h7:
-                            \active_state$next [68] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[69:67])
-                        3'h0:
-                            \active_state$next [68] = 1'h0;
-                        3'h1:
-                            \active_state$next [68] = 1'h1;
-                        3'h2:
-                            \active_state$next [68] = 1'h1;
-                        3'h3:
-                            \active_state$next [68] = 1'h1;
-                        3'h4:
-                            \active_state$next [68] = 1'h0;
-                        3'h5:
-                            \active_state$next [68] = 1'h0;
-                        3'h6:
-                            \active_state$next [68] = 1'h0;
-                        3'h7:
-                            \active_state$next [68] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[70:68])
-                        3'h0:
-                            \active_state$next [69] = 1'h0;
-                        3'h1:
-                            \active_state$next [69] = 1'h1;
-                        3'h2:
-                            \active_state$next [69] = 1'h1;
-                        3'h3:
-                            \active_state$next [69] = 1'h1;
-                        3'h4:
-                            \active_state$next [69] = 1'h1;
-                        3'h5:
-                            \active_state$next [69] = 1'h0;
-                        3'h6:
-                            \active_state$next [69] = 1'h0;
-                        3'h7:
-                            \active_state$next [69] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[70:68])
-                        3'h0:
-                            \active_state$next [69] = 1'h0;
-                        3'h1:
-                            \active_state$next [69] = 1'h1;
-                        3'h2:
-                            \active_state$next [69] = 1'h1;
-                        3'h3:
-                            \active_state$next [69] = 1'h1;
-                        3'h4:
-                            \active_state$next [69] = 1'h0;
-                        3'h5:
-                            \active_state$next [69] = 1'h1;
-                        3'h6:
-                            \active_state$next [69] = 1'h1;
-                        3'h7:
-                            \active_state$next [69] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[70:68])
-                        3'h0:
-                            \active_state$next [69] = 1'h0;
-                        3'h1:
-                            \active_state$next [69] = 1'h1;
-                        3'h2:
-                            \active_state$next [69] = 1'h0;
-                        3'h3:
-                            \active_state$next [69] = 1'h1;
-                        3'h4:
-                            \active_state$next [69] = 1'h0;
-                        3'h5:
-                            \active_state$next [69] = 1'h1;
-                        3'h6:
-                            \active_state$next [69] = 1'h1;
-                        3'h7:
-                            \active_state$next [69] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[70:68])
-                        3'h0:
-                            \active_state$next [69] = 1'h0;
-                        3'h1:
-                            \active_state$next [69] = 1'h1;
-                        3'h2:
-                            \active_state$next [69] = 1'h1;
-                        3'h3:
-                            \active_state$next [69] = 1'h1;
-                        3'h4:
-                            \active_state$next [69] = 1'h0;
-                        3'h5:
-                            \active_state$next [69] = 1'h0;
-                        3'h6:
-                            \active_state$next [69] = 1'h0;
-                        3'h7:
-                            \active_state$next [69] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[71:69])
-                        3'h0:
-                            \active_state$next [70] = 1'h0;
-                        3'h1:
-                            \active_state$next [70] = 1'h1;
-                        3'h2:
-                            \active_state$next [70] = 1'h1;
-                        3'h3:
-                            \active_state$next [70] = 1'h1;
-                        3'h4:
-                            \active_state$next [70] = 1'h1;
-                        3'h5:
-                            \active_state$next [70] = 1'h0;
-                        3'h6:
-                            \active_state$next [70] = 1'h0;
-                        3'h7:
-                            \active_state$next [70] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[71:69])
-                        3'h0:
-                            \active_state$next [70] = 1'h0;
-                        3'h1:
-                            \active_state$next [70] = 1'h1;
-                        3'h2:
-                            \active_state$next [70] = 1'h1;
-                        3'h3:
-                            \active_state$next [70] = 1'h1;
-                        3'h4:
-                            \active_state$next [70] = 1'h0;
-                        3'h5:
-                            \active_state$next [70] = 1'h1;
-                        3'h6:
-                            \active_state$next [70] = 1'h1;
-                        3'h7:
-                            \active_state$next [70] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[71:69])
-                        3'h0:
-                            \active_state$next [70] = 1'h0;
-                        3'h1:
-                            \active_state$next [70] = 1'h1;
-                        3'h2:
-                            \active_state$next [70] = 1'h0;
-                        3'h3:
-                            \active_state$next [70] = 1'h1;
-                        3'h4:
-                            \active_state$next [70] = 1'h0;
-                        3'h5:
-                            \active_state$next [70] = 1'h1;
-                        3'h6:
-                            \active_state$next [70] = 1'h1;
-                        3'h7:
-                            \active_state$next [70] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[71:69])
-                        3'h0:
-                            \active_state$next [70] = 1'h0;
-                        3'h1:
-                            \active_state$next [70] = 1'h1;
-                        3'h2:
-                            \active_state$next [70] = 1'h1;
-                        3'h3:
-                            \active_state$next [70] = 1'h1;
-                        3'h4:
-                            \active_state$next [70] = 1'h0;
-                        3'h5:
-                            \active_state$next [70] = 1'h0;
-                        3'h6:
-                            \active_state$next [70] = 1'h0;
-                        3'h7:
-                            \active_state$next [70] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[72:70])
-                        3'h0:
-                            \active_state$next [71] = 1'h0;
-                        3'h1:
-                            \active_state$next [71] = 1'h1;
-                        3'h2:
-                            \active_state$next [71] = 1'h1;
-                        3'h3:
-                            \active_state$next [71] = 1'h1;
-                        3'h4:
-                            \active_state$next [71] = 1'h1;
-                        3'h5:
-                            \active_state$next [71] = 1'h0;
-                        3'h6:
-                            \active_state$next [71] = 1'h0;
-                        3'h7:
-                            \active_state$next [71] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[72:70])
-                        3'h0:
-                            \active_state$next [71] = 1'h0;
-                        3'h1:
-                            \active_state$next [71] = 1'h1;
-                        3'h2:
-                            \active_state$next [71] = 1'h1;
-                        3'h3:
-                            \active_state$next [71] = 1'h1;
-                        3'h4:
-                            \active_state$next [71] = 1'h0;
-                        3'h5:
-                            \active_state$next [71] = 1'h1;
-                        3'h6:
-                            \active_state$next [71] = 1'h1;
-                        3'h7:
-                            \active_state$next [71] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[72:70])
-                        3'h0:
-                            \active_state$next [71] = 1'h0;
-                        3'h1:
-                            \active_state$next [71] = 1'h1;
-                        3'h2:
-                            \active_state$next [71] = 1'h0;
-                        3'h3:
-                            \active_state$next [71] = 1'h1;
-                        3'h4:
-                            \active_state$next [71] = 1'h0;
-                        3'h5:
-                            \active_state$next [71] = 1'h1;
-                        3'h6:
-                            \active_state$next [71] = 1'h1;
-                        3'h7:
-                            \active_state$next [71] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[72:70])
-                        3'h0:
-                            \active_state$next [71] = 1'h0;
-                        3'h1:
-                            \active_state$next [71] = 1'h1;
-                        3'h2:
-                            \active_state$next [71] = 1'h1;
-                        3'h3:
-                            \active_state$next [71] = 1'h1;
-                        3'h4:
-                            \active_state$next [71] = 1'h0;
-                        3'h5:
-                            \active_state$next [71] = 1'h0;
-                        3'h6:
-                            \active_state$next [71] = 1'h0;
-                        3'h7:
-                            \active_state$next [71] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[73:71])
-                        3'h0:
-                            \active_state$next [72] = 1'h0;
-                        3'h1:
-                            \active_state$next [72] = 1'h1;
-                        3'h2:
-                            \active_state$next [72] = 1'h1;
-                        3'h3:
-                            \active_state$next [72] = 1'h1;
-                        3'h4:
-                            \active_state$next [72] = 1'h1;
-                        3'h5:
-                            \active_state$next [72] = 1'h0;
-                        3'h6:
-                            \active_state$next [72] = 1'h0;
-                        3'h7:
-                            \active_state$next [72] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[73:71])
-                        3'h0:
-                            \active_state$next [72] = 1'h0;
-                        3'h1:
-                            \active_state$next [72] = 1'h1;
-                        3'h2:
-                            \active_state$next [72] = 1'h1;
-                        3'h3:
-                            \active_state$next [72] = 1'h1;
-                        3'h4:
-                            \active_state$next [72] = 1'h0;
-                        3'h5:
-                            \active_state$next [72] = 1'h1;
-                        3'h6:
-                            \active_state$next [72] = 1'h1;
-                        3'h7:
-                            \active_state$next [72] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[73:71])
-                        3'h0:
-                            \active_state$next [72] = 1'h0;
-                        3'h1:
-                            \active_state$next [72] = 1'h1;
-                        3'h2:
-                            \active_state$next [72] = 1'h0;
-                        3'h3:
-                            \active_state$next [72] = 1'h1;
-                        3'h4:
-                            \active_state$next [72] = 1'h0;
-                        3'h5:
-                            \active_state$next [72] = 1'h1;
-                        3'h6:
-                            \active_state$next [72] = 1'h1;
-                        3'h7:
-                            \active_state$next [72] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[73:71])
-                        3'h0:
-                            \active_state$next [72] = 1'h0;
-                        3'h1:
-                            \active_state$next [72] = 1'h1;
-                        3'h2:
-                            \active_state$next [72] = 1'h1;
-                        3'h3:
-                            \active_state$next [72] = 1'h1;
-                        3'h4:
-                            \active_state$next [72] = 1'h0;
-                        3'h5:
-                            \active_state$next [72] = 1'h0;
-                        3'h6:
-                            \active_state$next [72] = 1'h0;
-                        3'h7:
-                            \active_state$next [72] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[74:72])
-                        3'h0:
-                            \active_state$next [73] = 1'h0;
-                        3'h1:
-                            \active_state$next [73] = 1'h1;
-                        3'h2:
-                            \active_state$next [73] = 1'h1;
-                        3'h3:
-                            \active_state$next [73] = 1'h1;
-                        3'h4:
-                            \active_state$next [73] = 1'h1;
-                        3'h5:
-                            \active_state$next [73] = 1'h0;
-                        3'h6:
-                            \active_state$next [73] = 1'h0;
-                        3'h7:
-                            \active_state$next [73] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[74:72])
-                        3'h0:
-                            \active_state$next [73] = 1'h0;
-                        3'h1:
-                            \active_state$next [73] = 1'h1;
-                        3'h2:
-                            \active_state$next [73] = 1'h1;
-                        3'h3:
-                            \active_state$next [73] = 1'h1;
-                        3'h4:
-                            \active_state$next [73] = 1'h0;
-                        3'h5:
-                            \active_state$next [73] = 1'h1;
-                        3'h6:
-                            \active_state$next [73] = 1'h1;
-                        3'h7:
-                            \active_state$next [73] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[74:72])
-                        3'h0:
-                            \active_state$next [73] = 1'h0;
-                        3'h1:
-                            \active_state$next [73] = 1'h1;
-                        3'h2:
-                            \active_state$next [73] = 1'h0;
-                        3'h3:
-                            \active_state$next [73] = 1'h1;
-                        3'h4:
-                            \active_state$next [73] = 1'h0;
-                        3'h5:
-                            \active_state$next [73] = 1'h1;
-                        3'h6:
-                            \active_state$next [73] = 1'h1;
-                        3'h7:
-                            \active_state$next [73] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[74:72])
-                        3'h0:
-                            \active_state$next [73] = 1'h0;
-                        3'h1:
-                            \active_state$next [73] = 1'h1;
-                        3'h2:
-                            \active_state$next [73] = 1'h1;
-                        3'h3:
-                            \active_state$next [73] = 1'h1;
-                        3'h4:
-                            \active_state$next [73] = 1'h0;
-                        3'h5:
-                            \active_state$next [73] = 1'h0;
-                        3'h6:
-                            \active_state$next [73] = 1'h0;
-                        3'h7:
-                            \active_state$next [73] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[75:73])
-                        3'h0:
-                            \active_state$next [74] = 1'h0;
-                        3'h1:
-                            \active_state$next [74] = 1'h1;
-                        3'h2:
-                            \active_state$next [74] = 1'h1;
-                        3'h3:
-                            \active_state$next [74] = 1'h1;
-                        3'h4:
-                            \active_state$next [74] = 1'h1;
-                        3'h5:
-                            \active_state$next [74] = 1'h0;
-                        3'h6:
-                            \active_state$next [74] = 1'h0;
-                        3'h7:
-                            \active_state$next [74] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[75:73])
-                        3'h0:
-                            \active_state$next [74] = 1'h0;
-                        3'h1:
-                            \active_state$next [74] = 1'h1;
-                        3'h2:
-                            \active_state$next [74] = 1'h1;
-                        3'h3:
-                            \active_state$next [74] = 1'h1;
-                        3'h4:
-                            \active_state$next [74] = 1'h0;
-                        3'h5:
-                            \active_state$next [74] = 1'h1;
-                        3'h6:
-                            \active_state$next [74] = 1'h1;
-                        3'h7:
-                            \active_state$next [74] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[75:73])
-                        3'h0:
-                            \active_state$next [74] = 1'h0;
-                        3'h1:
-                            \active_state$next [74] = 1'h1;
-                        3'h2:
-                            \active_state$next [74] = 1'h0;
-                        3'h3:
-                            \active_state$next [74] = 1'h1;
-                        3'h4:
-                            \active_state$next [74] = 1'h0;
-                        3'h5:
-                            \active_state$next [74] = 1'h1;
-                        3'h6:
-                            \active_state$next [74] = 1'h1;
-                        3'h7:
-                            \active_state$next [74] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[75:73])
-                        3'h0:
-                            \active_state$next [74] = 1'h0;
-                        3'h1:
-                            \active_state$next [74] = 1'h1;
-                        3'h2:
-                            \active_state$next [74] = 1'h1;
-                        3'h3:
-                            \active_state$next [74] = 1'h1;
-                        3'h4:
-                            \active_state$next [74] = 1'h0;
-                        3'h5:
-                            \active_state$next [74] = 1'h0;
-                        3'h6:
-                            \active_state$next [74] = 1'h0;
-                        3'h7:
-                            \active_state$next [74] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[76:74])
-                        3'h0:
-                            \active_state$next [75] = 1'h0;
-                        3'h1:
-                            \active_state$next [75] = 1'h1;
-                        3'h2:
-                            \active_state$next [75] = 1'h1;
-                        3'h3:
-                            \active_state$next [75] = 1'h1;
-                        3'h4:
-                            \active_state$next [75] = 1'h1;
-                        3'h5:
-                            \active_state$next [75] = 1'h0;
-                        3'h6:
-                            \active_state$next [75] = 1'h0;
-                        3'h7:
-                            \active_state$next [75] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[76:74])
-                        3'h0:
-                            \active_state$next [75] = 1'h0;
-                        3'h1:
-                            \active_state$next [75] = 1'h1;
-                        3'h2:
-                            \active_state$next [75] = 1'h1;
-                        3'h3:
-                            \active_state$next [75] = 1'h1;
-                        3'h4:
-                            \active_state$next [75] = 1'h0;
-                        3'h5:
-                            \active_state$next [75] = 1'h1;
-                        3'h6:
-                            \active_state$next [75] = 1'h1;
-                        3'h7:
-                            \active_state$next [75] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[76:74])
-                        3'h0:
-                            \active_state$next [75] = 1'h0;
-                        3'h1:
-                            \active_state$next [75] = 1'h1;
-                        3'h2:
-                            \active_state$next [75] = 1'h0;
-                        3'h3:
-                            \active_state$next [75] = 1'h1;
-                        3'h4:
-                            \active_state$next [75] = 1'h0;
-                        3'h5:
-                            \active_state$next [75] = 1'h1;
-                        3'h6:
-                            \active_state$next [75] = 1'h1;
-                        3'h7:
-                            \active_state$next [75] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[76:74])
-                        3'h0:
-                            \active_state$next [75] = 1'h0;
-                        3'h1:
-                            \active_state$next [75] = 1'h1;
-                        3'h2:
-                            \active_state$next [75] = 1'h1;
-                        3'h3:
-                            \active_state$next [75] = 1'h1;
-                        3'h4:
-                            \active_state$next [75] = 1'h0;
-                        3'h5:
-                            \active_state$next [75] = 1'h0;
-                        3'h6:
-                            \active_state$next [75] = 1'h0;
-                        3'h7:
-                            \active_state$next [75] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[77:75])
-                        3'h0:
-                            \active_state$next [76] = 1'h0;
-                        3'h1:
-                            \active_state$next [76] = 1'h1;
-                        3'h2:
-                            \active_state$next [76] = 1'h1;
-                        3'h3:
-                            \active_state$next [76] = 1'h1;
-                        3'h4:
-                            \active_state$next [76] = 1'h1;
-                        3'h5:
-                            \active_state$next [76] = 1'h0;
-                        3'h6:
-                            \active_state$next [76] = 1'h0;
-                        3'h7:
-                            \active_state$next [76] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[77:75])
-                        3'h0:
-                            \active_state$next [76] = 1'h0;
-                        3'h1:
-                            \active_state$next [76] = 1'h1;
-                        3'h2:
-                            \active_state$next [76] = 1'h1;
-                        3'h3:
-                            \active_state$next [76] = 1'h1;
-                        3'h4:
-                            \active_state$next [76] = 1'h0;
-                        3'h5:
-                            \active_state$next [76] = 1'h1;
-                        3'h6:
-                            \active_state$next [76] = 1'h1;
-                        3'h7:
-                            \active_state$next [76] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[77:75])
-                        3'h0:
-                            \active_state$next [76] = 1'h0;
-                        3'h1:
-                            \active_state$next [76] = 1'h1;
-                        3'h2:
-                            \active_state$next [76] = 1'h0;
-                        3'h3:
-                            \active_state$next [76] = 1'h1;
-                        3'h4:
-                            \active_state$next [76] = 1'h0;
-                        3'h5:
-                            \active_state$next [76] = 1'h1;
-                        3'h6:
-                            \active_state$next [76] = 1'h1;
-                        3'h7:
-                            \active_state$next [76] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[77:75])
-                        3'h0:
-                            \active_state$next [76] = 1'h0;
-                        3'h1:
-                            \active_state$next [76] = 1'h1;
-                        3'h2:
-                            \active_state$next [76] = 1'h1;
-                        3'h3:
-                            \active_state$next [76] = 1'h1;
-                        3'h4:
-                            \active_state$next [76] = 1'h0;
-                        3'h5:
-                            \active_state$next [76] = 1'h0;
-                        3'h6:
-                            \active_state$next [76] = 1'h0;
-                        3'h7:
-                            \active_state$next [76] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[78:76])
-                        3'h0:
-                            \active_state$next [77] = 1'h0;
-                        3'h1:
-                            \active_state$next [77] = 1'h1;
-                        3'h2:
-                            \active_state$next [77] = 1'h1;
-                        3'h3:
-                            \active_state$next [77] = 1'h1;
-                        3'h4:
-                            \active_state$next [77] = 1'h1;
-                        3'h5:
-                            \active_state$next [77] = 1'h0;
-                        3'h6:
-                            \active_state$next [77] = 1'h0;
-                        3'h7:
-                            \active_state$next [77] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[78:76])
-                        3'h0:
-                            \active_state$next [77] = 1'h0;
-                        3'h1:
-                            \active_state$next [77] = 1'h1;
-                        3'h2:
-                            \active_state$next [77] = 1'h1;
-                        3'h3:
-                            \active_state$next [77] = 1'h1;
-                        3'h4:
-                            \active_state$next [77] = 1'h0;
-                        3'h5:
-                            \active_state$next [77] = 1'h1;
-                        3'h6:
-                            \active_state$next [77] = 1'h1;
-                        3'h7:
-                            \active_state$next [77] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[78:76])
-                        3'h0:
-                            \active_state$next [77] = 1'h0;
-                        3'h1:
-                            \active_state$next [77] = 1'h1;
-                        3'h2:
-                            \active_state$next [77] = 1'h0;
-                        3'h3:
-                            \active_state$next [77] = 1'h1;
-                        3'h4:
-                            \active_state$next [77] = 1'h0;
-                        3'h5:
-                            \active_state$next [77] = 1'h1;
-                        3'h6:
-                            \active_state$next [77] = 1'h1;
-                        3'h7:
-                            \active_state$next [77] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[78:76])
-                        3'h0:
-                            \active_state$next [77] = 1'h0;
-                        3'h1:
-                            \active_state$next [77] = 1'h1;
-                        3'h2:
-                            \active_state$next [77] = 1'h1;
-                        3'h3:
-                            \active_state$next [77] = 1'h1;
-                        3'h4:
-                            \active_state$next [77] = 1'h0;
-                        3'h5:
-                            \active_state$next [77] = 1'h0;
-                        3'h6:
-                            \active_state$next [77] = 1'h0;
-                        3'h7:
-                            \active_state$next [77] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[79:77])
-                        3'h0:
-                            \active_state$next [78] = 1'h0;
-                        3'h1:
-                            \active_state$next [78] = 1'h1;
-                        3'h2:
-                            \active_state$next [78] = 1'h1;
-                        3'h3:
-                            \active_state$next [78] = 1'h1;
-                        3'h4:
-                            \active_state$next [78] = 1'h1;
-                        3'h5:
-                            \active_state$next [78] = 1'h0;
-                        3'h6:
-                            \active_state$next [78] = 1'h0;
-                        3'h7:
-                            \active_state$next [78] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[79:77])
-                        3'h0:
-                            \active_state$next [78] = 1'h0;
-                        3'h1:
-                            \active_state$next [78] = 1'h1;
-                        3'h2:
-                            \active_state$next [78] = 1'h1;
-                        3'h3:
-                            \active_state$next [78] = 1'h1;
-                        3'h4:
-                            \active_state$next [78] = 1'h0;
-                        3'h5:
-                            \active_state$next [78] = 1'h1;
-                        3'h6:
-                            \active_state$next [78] = 1'h1;
-                        3'h7:
-                            \active_state$next [78] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[79:77])
-                        3'h0:
-                            \active_state$next [78] = 1'h0;
-                        3'h1:
-                            \active_state$next [78] = 1'h1;
-                        3'h2:
-                            \active_state$next [78] = 1'h0;
-                        3'h3:
-                            \active_state$next [78] = 1'h1;
-                        3'h4:
-                            \active_state$next [78] = 1'h0;
-                        3'h5:
-                            \active_state$next [78] = 1'h1;
-                        3'h6:
-                            \active_state$next [78] = 1'h1;
-                        3'h7:
-                            \active_state$next [78] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[79:77])
-                        3'h0:
-                            \active_state$next [78] = 1'h0;
-                        3'h1:
-                            \active_state$next [78] = 1'h1;
-                        3'h2:
-                            \active_state$next [78] = 1'h1;
-                        3'h3:
-                            \active_state$next [78] = 1'h1;
-                        3'h4:
-                            \active_state$next [78] = 1'h0;
-                        3'h5:
-                            \active_state$next [78] = 1'h0;
-                        3'h6:
-                            \active_state$next [78] = 1'h0;
-                        3'h7:
-                            \active_state$next [78] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[80:78])
-                        3'h0:
-                            \active_state$next [79] = 1'h0;
-                        3'h1:
-                            \active_state$next [79] = 1'h1;
-                        3'h2:
-                            \active_state$next [79] = 1'h1;
-                        3'h3:
-                            \active_state$next [79] = 1'h1;
-                        3'h4:
-                            \active_state$next [79] = 1'h1;
-                        3'h5:
-                            \active_state$next [79] = 1'h0;
-                        3'h6:
-                            \active_state$next [79] = 1'h0;
-                        3'h7:
-                            \active_state$next [79] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[80:78])
-                        3'h0:
-                            \active_state$next [79] = 1'h0;
-                        3'h1:
-                            \active_state$next [79] = 1'h1;
-                        3'h2:
-                            \active_state$next [79] = 1'h1;
-                        3'h3:
-                            \active_state$next [79] = 1'h1;
-                        3'h4:
-                            \active_state$next [79] = 1'h0;
-                        3'h5:
-                            \active_state$next [79] = 1'h1;
-                        3'h6:
-                            \active_state$next [79] = 1'h1;
-                        3'h7:
-                            \active_state$next [79] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[80:78])
-                        3'h0:
-                            \active_state$next [79] = 1'h0;
-                        3'h1:
-                            \active_state$next [79] = 1'h1;
-                        3'h2:
-                            \active_state$next [79] = 1'h0;
-                        3'h3:
-                            \active_state$next [79] = 1'h1;
-                        3'h4:
-                            \active_state$next [79] = 1'h0;
-                        3'h5:
-                            \active_state$next [79] = 1'h1;
-                        3'h6:
-                            \active_state$next [79] = 1'h1;
-                        3'h7:
-                            \active_state$next [79] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[80:78])
-                        3'h0:
-                            \active_state$next [79] = 1'h0;
-                        3'h1:
-                            \active_state$next [79] = 1'h1;
-                        3'h2:
-                            \active_state$next [79] = 1'h1;
-                        3'h3:
-                            \active_state$next [79] = 1'h1;
-                        3'h4:
-                            \active_state$next [79] = 1'h0;
-                        3'h5:
-                            \active_state$next [79] = 1'h0;
-                        3'h6:
-                            \active_state$next [79] = 1'h0;
-                        3'h7:
-                            \active_state$next [79] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[81:79])
-                        3'h0:
-                            \active_state$next [80] = 1'h0;
-                        3'h1:
-                            \active_state$next [80] = 1'h1;
-                        3'h2:
-                            \active_state$next [80] = 1'h1;
-                        3'h3:
-                            \active_state$next [80] = 1'h1;
-                        3'h4:
-                            \active_state$next [80] = 1'h1;
-                        3'h5:
-                            \active_state$next [80] = 1'h0;
-                        3'h6:
-                            \active_state$next [80] = 1'h0;
-                        3'h7:
-                            \active_state$next [80] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[81:79])
-                        3'h0:
-                            \active_state$next [80] = 1'h0;
-                        3'h1:
-                            \active_state$next [80] = 1'h1;
-                        3'h2:
-                            \active_state$next [80] = 1'h1;
-                        3'h3:
-                            \active_state$next [80] = 1'h1;
-                        3'h4:
-                            \active_state$next [80] = 1'h0;
-                        3'h5:
-                            \active_state$next [80] = 1'h1;
-                        3'h6:
-                            \active_state$next [80] = 1'h1;
-                        3'h7:
-                            \active_state$next [80] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[81:79])
-                        3'h0:
-                            \active_state$next [80] = 1'h0;
-                        3'h1:
-                            \active_state$next [80] = 1'h1;
-                        3'h2:
-                            \active_state$next [80] = 1'h0;
-                        3'h3:
-                            \active_state$next [80] = 1'h1;
-                        3'h4:
-                            \active_state$next [80] = 1'h0;
-                        3'h5:
-                            \active_state$next [80] = 1'h1;
-                        3'h6:
-                            \active_state$next [80] = 1'h1;
-                        3'h7:
-                            \active_state$next [80] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[81:79])
-                        3'h0:
-                            \active_state$next [80] = 1'h0;
-                        3'h1:
-                            \active_state$next [80] = 1'h1;
-                        3'h2:
-                            \active_state$next [80] = 1'h1;
-                        3'h3:
-                            \active_state$next [80] = 1'h1;
-                        3'h4:
-                            \active_state$next [80] = 1'h0;
-                        3'h5:
-                            \active_state$next [80] = 1'h0;
-                        3'h6:
-                            \active_state$next [80] = 1'h0;
-                        3'h7:
-                            \active_state$next [80] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[82:80])
-                        3'h0:
-                            \active_state$next [81] = 1'h0;
-                        3'h1:
-                            \active_state$next [81] = 1'h1;
-                        3'h2:
-                            \active_state$next [81] = 1'h1;
-                        3'h3:
-                            \active_state$next [81] = 1'h1;
-                        3'h4:
-                            \active_state$next [81] = 1'h1;
-                        3'h5:
-                            \active_state$next [81] = 1'h0;
-                        3'h6:
-                            \active_state$next [81] = 1'h0;
-                        3'h7:
-                            \active_state$next [81] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[82:80])
-                        3'h0:
-                            \active_state$next [81] = 1'h0;
-                        3'h1:
-                            \active_state$next [81] = 1'h1;
-                        3'h2:
-                            \active_state$next [81] = 1'h1;
-                        3'h3:
-                            \active_state$next [81] = 1'h1;
-                        3'h4:
-                            \active_state$next [81] = 1'h0;
-                        3'h5:
-                            \active_state$next [81] = 1'h1;
-                        3'h6:
-                            \active_state$next [81] = 1'h1;
-                        3'h7:
-                            \active_state$next [81] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[82:80])
-                        3'h0:
-                            \active_state$next [81] = 1'h0;
-                        3'h1:
-                            \active_state$next [81] = 1'h1;
-                        3'h2:
-                            \active_state$next [81] = 1'h0;
-                        3'h3:
-                            \active_state$next [81] = 1'h1;
-                        3'h4:
-                            \active_state$next [81] = 1'h0;
-                        3'h5:
-                            \active_state$next [81] = 1'h1;
-                        3'h6:
-                            \active_state$next [81] = 1'h1;
-                        3'h7:
-                            \active_state$next [81] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[82:80])
-                        3'h0:
-                            \active_state$next [81] = 1'h0;
-                        3'h1:
-                            \active_state$next [81] = 1'h1;
-                        3'h2:
-                            \active_state$next [81] = 1'h1;
-                        3'h3:
-                            \active_state$next [81] = 1'h1;
-                        3'h4:
-                            \active_state$next [81] = 1'h0;
-                        3'h5:
-                            \active_state$next [81] = 1'h0;
-                        3'h6:
-                            \active_state$next [81] = 1'h0;
-                        3'h7:
-                            \active_state$next [81] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[83:81])
-                        3'h0:
-                            \active_state$next [82] = 1'h0;
-                        3'h1:
-                            \active_state$next [82] = 1'h1;
-                        3'h2:
-                            \active_state$next [82] = 1'h1;
-                        3'h3:
-                            \active_state$next [82] = 1'h1;
-                        3'h4:
-                            \active_state$next [82] = 1'h1;
-                        3'h5:
-                            \active_state$next [82] = 1'h0;
-                        3'h6:
-                            \active_state$next [82] = 1'h0;
-                        3'h7:
-                            \active_state$next [82] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[83:81])
-                        3'h0:
-                            \active_state$next [82] = 1'h0;
-                        3'h1:
-                            \active_state$next [82] = 1'h1;
-                        3'h2:
-                            \active_state$next [82] = 1'h1;
-                        3'h3:
-                            \active_state$next [82] = 1'h1;
-                        3'h4:
-                            \active_state$next [82] = 1'h0;
-                        3'h5:
-                            \active_state$next [82] = 1'h1;
-                        3'h6:
-                            \active_state$next [82] = 1'h1;
-                        3'h7:
-                            \active_state$next [82] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[83:81])
-                        3'h0:
-                            \active_state$next [82] = 1'h0;
-                        3'h1:
-                            \active_state$next [82] = 1'h1;
-                        3'h2:
-                            \active_state$next [82] = 1'h0;
-                        3'h3:
-                            \active_state$next [82] = 1'h1;
-                        3'h4:
-                            \active_state$next [82] = 1'h0;
-                        3'h5:
-                            \active_state$next [82] = 1'h1;
-                        3'h6:
-                            \active_state$next [82] = 1'h1;
-                        3'h7:
-                            \active_state$next [82] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[83:81])
-                        3'h0:
-                            \active_state$next [82] = 1'h0;
-                        3'h1:
-                            \active_state$next [82] = 1'h1;
-                        3'h2:
-                            \active_state$next [82] = 1'h1;
-                        3'h3:
-                            \active_state$next [82] = 1'h1;
-                        3'h4:
-                            \active_state$next [82] = 1'h0;
-                        3'h5:
-                            \active_state$next [82] = 1'h0;
-                        3'h6:
-                            \active_state$next [82] = 1'h0;
-                        3'h7:
-                            \active_state$next [82] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[84:82])
-                        3'h0:
-                            \active_state$next [83] = 1'h0;
-                        3'h1:
-                            \active_state$next [83] = 1'h1;
-                        3'h2:
-                            \active_state$next [83] = 1'h1;
-                        3'h3:
-                            \active_state$next [83] = 1'h1;
-                        3'h4:
-                            \active_state$next [83] = 1'h1;
-                        3'h5:
-                            \active_state$next [83] = 1'h0;
-                        3'h6:
-                            \active_state$next [83] = 1'h0;
-                        3'h7:
-                            \active_state$next [83] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[84:82])
-                        3'h0:
-                            \active_state$next [83] = 1'h0;
-                        3'h1:
-                            \active_state$next [83] = 1'h1;
-                        3'h2:
-                            \active_state$next [83] = 1'h1;
-                        3'h3:
-                            \active_state$next [83] = 1'h1;
-                        3'h4:
-                            \active_state$next [83] = 1'h0;
-                        3'h5:
-                            \active_state$next [83] = 1'h1;
-                        3'h6:
-                            \active_state$next [83] = 1'h1;
-                        3'h7:
-                            \active_state$next [83] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[84:82])
-                        3'h0:
-                            \active_state$next [83] = 1'h0;
-                        3'h1:
-                            \active_state$next [83] = 1'h1;
-                        3'h2:
-                            \active_state$next [83] = 1'h0;
-                        3'h3:
-                            \active_state$next [83] = 1'h1;
-                        3'h4:
-                            \active_state$next [83] = 1'h0;
-                        3'h5:
-                            \active_state$next [83] = 1'h1;
-                        3'h6:
-                            \active_state$next [83] = 1'h1;
-                        3'h7:
-                            \active_state$next [83] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[84:82])
-                        3'h0:
-                            \active_state$next [83] = 1'h0;
-                        3'h1:
-                            \active_state$next [83] = 1'h1;
-                        3'h2:
-                            \active_state$next [83] = 1'h1;
-                        3'h3:
-                            \active_state$next [83] = 1'h1;
-                        3'h4:
-                            \active_state$next [83] = 1'h0;
-                        3'h5:
-                            \active_state$next [83] = 1'h0;
-                        3'h6:
-                            \active_state$next [83] = 1'h0;
-                        3'h7:
-                            \active_state$next [83] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[85:83])
-                        3'h0:
-                            \active_state$next [84] = 1'h0;
-                        3'h1:
-                            \active_state$next [84] = 1'h1;
-                        3'h2:
-                            \active_state$next [84] = 1'h1;
-                        3'h3:
-                            \active_state$next [84] = 1'h1;
-                        3'h4:
-                            \active_state$next [84] = 1'h1;
-                        3'h5:
-                            \active_state$next [84] = 1'h0;
-                        3'h6:
-                            \active_state$next [84] = 1'h0;
-                        3'h7:
-                            \active_state$next [84] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[85:83])
-                        3'h0:
-                            \active_state$next [84] = 1'h0;
-                        3'h1:
-                            \active_state$next [84] = 1'h1;
-                        3'h2:
-                            \active_state$next [84] = 1'h1;
-                        3'h3:
-                            \active_state$next [84] = 1'h1;
-                        3'h4:
-                            \active_state$next [84] = 1'h0;
-                        3'h5:
-                            \active_state$next [84] = 1'h1;
-                        3'h6:
-                            \active_state$next [84] = 1'h1;
-                        3'h7:
-                            \active_state$next [84] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[85:83])
-                        3'h0:
-                            \active_state$next [84] = 1'h0;
-                        3'h1:
-                            \active_state$next [84] = 1'h1;
-                        3'h2:
-                            \active_state$next [84] = 1'h0;
-                        3'h3:
-                            \active_state$next [84] = 1'h1;
-                        3'h4:
-                            \active_state$next [84] = 1'h0;
-                        3'h5:
-                            \active_state$next [84] = 1'h1;
-                        3'h6:
-                            \active_state$next [84] = 1'h1;
-                        3'h7:
-                            \active_state$next [84] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[85:83])
-                        3'h0:
-                            \active_state$next [84] = 1'h0;
-                        3'h1:
-                            \active_state$next [84] = 1'h1;
-                        3'h2:
-                            \active_state$next [84] = 1'h1;
-                        3'h3:
-                            \active_state$next [84] = 1'h1;
-                        3'h4:
-                            \active_state$next [84] = 1'h0;
-                        3'h5:
-                            \active_state$next [84] = 1'h0;
-                        3'h6:
-                            \active_state$next [84] = 1'h0;
-                        3'h7:
-                            \active_state$next [84] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[86:84])
-                        3'h0:
-                            \active_state$next [85] = 1'h0;
-                        3'h1:
-                            \active_state$next [85] = 1'h1;
-                        3'h2:
-                            \active_state$next [85] = 1'h1;
-                        3'h3:
-                            \active_state$next [85] = 1'h1;
-                        3'h4:
-                            \active_state$next [85] = 1'h1;
-                        3'h5:
-                            \active_state$next [85] = 1'h0;
-                        3'h6:
-                            \active_state$next [85] = 1'h0;
-                        3'h7:
-                            \active_state$next [85] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[86:84])
-                        3'h0:
-                            \active_state$next [85] = 1'h0;
-                        3'h1:
-                            \active_state$next [85] = 1'h1;
-                        3'h2:
-                            \active_state$next [85] = 1'h1;
-                        3'h3:
-                            \active_state$next [85] = 1'h1;
-                        3'h4:
-                            \active_state$next [85] = 1'h0;
-                        3'h5:
-                            \active_state$next [85] = 1'h1;
-                        3'h6:
-                            \active_state$next [85] = 1'h1;
-                        3'h7:
-                            \active_state$next [85] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[86:84])
-                        3'h0:
-                            \active_state$next [85] = 1'h0;
-                        3'h1:
-                            \active_state$next [85] = 1'h1;
-                        3'h2:
-                            \active_state$next [85] = 1'h0;
-                        3'h3:
-                            \active_state$next [85] = 1'h1;
-                        3'h4:
-                            \active_state$next [85] = 1'h0;
-                        3'h5:
-                            \active_state$next [85] = 1'h1;
-                        3'h6:
-                            \active_state$next [85] = 1'h1;
-                        3'h7:
-                            \active_state$next [85] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[86:84])
-                        3'h0:
-                            \active_state$next [85] = 1'h0;
-                        3'h1:
-                            \active_state$next [85] = 1'h1;
-                        3'h2:
-                            \active_state$next [85] = 1'h1;
-                        3'h3:
-                            \active_state$next [85] = 1'h1;
-                        3'h4:
-                            \active_state$next [85] = 1'h0;
-                        3'h5:
-                            \active_state$next [85] = 1'h0;
-                        3'h6:
-                            \active_state$next [85] = 1'h0;
-                        3'h7:
-                            \active_state$next [85] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[87:85])
-                        3'h0:
-                            \active_state$next [86] = 1'h0;
-                        3'h1:
-                            \active_state$next [86] = 1'h1;
-                        3'h2:
-                            \active_state$next [86] = 1'h1;
-                        3'h3:
-                            \active_state$next [86] = 1'h1;
-                        3'h4:
-                            \active_state$next [86] = 1'h1;
-                        3'h5:
-                            \active_state$next [86] = 1'h0;
-                        3'h6:
-                            \active_state$next [86] = 1'h0;
-                        3'h7:
-                            \active_state$next [86] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[87:85])
-                        3'h0:
-                            \active_state$next [86] = 1'h0;
-                        3'h1:
-                            \active_state$next [86] = 1'h1;
-                        3'h2:
-                            \active_state$next [86] = 1'h1;
-                        3'h3:
-                            \active_state$next [86] = 1'h1;
-                        3'h4:
-                            \active_state$next [86] = 1'h0;
-                        3'h5:
-                            \active_state$next [86] = 1'h1;
-                        3'h6:
-                            \active_state$next [86] = 1'h1;
-                        3'h7:
-                            \active_state$next [86] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[87:85])
-                        3'h0:
-                            \active_state$next [86] = 1'h0;
-                        3'h1:
-                            \active_state$next [86] = 1'h1;
-                        3'h2:
-                            \active_state$next [86] = 1'h0;
-                        3'h3:
-                            \active_state$next [86] = 1'h1;
-                        3'h4:
-                            \active_state$next [86] = 1'h0;
-                        3'h5:
-                            \active_state$next [86] = 1'h1;
-                        3'h6:
-                            \active_state$next [86] = 1'h1;
-                        3'h7:
-                            \active_state$next [86] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[87:85])
-                        3'h0:
-                            \active_state$next [86] = 1'h0;
-                        3'h1:
-                            \active_state$next [86] = 1'h1;
-                        3'h2:
-                            \active_state$next [86] = 1'h1;
-                        3'h3:
-                            \active_state$next [86] = 1'h1;
-                        3'h4:
-                            \active_state$next [86] = 1'h0;
-                        3'h5:
-                            \active_state$next [86] = 1'h0;
-                        3'h6:
-                            \active_state$next [86] = 1'h0;
-                        3'h7:
-                            \active_state$next [86] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[88:86])
-                        3'h0:
-                            \active_state$next [87] = 1'h0;
-                        3'h1:
-                            \active_state$next [87] = 1'h1;
-                        3'h2:
-                            \active_state$next [87] = 1'h1;
-                        3'h3:
-                            \active_state$next [87] = 1'h1;
-                        3'h4:
-                            \active_state$next [87] = 1'h1;
-                        3'h5:
-                            \active_state$next [87] = 1'h0;
-                        3'h6:
-                            \active_state$next [87] = 1'h0;
-                        3'h7:
-                            \active_state$next [87] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[88:86])
-                        3'h0:
-                            \active_state$next [87] = 1'h0;
-                        3'h1:
-                            \active_state$next [87] = 1'h1;
-                        3'h2:
-                            \active_state$next [87] = 1'h1;
-                        3'h3:
-                            \active_state$next [87] = 1'h1;
-                        3'h4:
-                            \active_state$next [87] = 1'h0;
-                        3'h5:
-                            \active_state$next [87] = 1'h1;
-                        3'h6:
-                            \active_state$next [87] = 1'h1;
-                        3'h7:
-                            \active_state$next [87] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[88:86])
-                        3'h0:
-                            \active_state$next [87] = 1'h0;
-                        3'h1:
-                            \active_state$next [87] = 1'h1;
-                        3'h2:
-                            \active_state$next [87] = 1'h0;
-                        3'h3:
-                            \active_state$next [87] = 1'h1;
-                        3'h4:
-                            \active_state$next [87] = 1'h0;
-                        3'h5:
-                            \active_state$next [87] = 1'h1;
-                        3'h6:
-                            \active_state$next [87] = 1'h1;
-                        3'h7:
-                            \active_state$next [87] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[88:86])
-                        3'h0:
-                            \active_state$next [87] = 1'h0;
-                        3'h1:
-                            \active_state$next [87] = 1'h1;
-                        3'h2:
-                            \active_state$next [87] = 1'h1;
-                        3'h3:
-                            \active_state$next [87] = 1'h1;
-                        3'h4:
-                            \active_state$next [87] = 1'h0;
-                        3'h5:
-                            \active_state$next [87] = 1'h0;
-                        3'h6:
-                            \active_state$next [87] = 1'h0;
-                        3'h7:
-                            \active_state$next [87] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[89:87])
-                        3'h0:
-                            \active_state$next [88] = 1'h0;
-                        3'h1:
-                            \active_state$next [88] = 1'h1;
-                        3'h2:
-                            \active_state$next [88] = 1'h1;
-                        3'h3:
-                            \active_state$next [88] = 1'h1;
-                        3'h4:
-                            \active_state$next [88] = 1'h1;
-                        3'h5:
-                            \active_state$next [88] = 1'h0;
-                        3'h6:
-                            \active_state$next [88] = 1'h0;
-                        3'h7:
-                            \active_state$next [88] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[89:87])
-                        3'h0:
-                            \active_state$next [88] = 1'h0;
-                        3'h1:
-                            \active_state$next [88] = 1'h1;
-                        3'h2:
-                            \active_state$next [88] = 1'h1;
-                        3'h3:
-                            \active_state$next [88] = 1'h1;
-                        3'h4:
-                            \active_state$next [88] = 1'h0;
-                        3'h5:
-                            \active_state$next [88] = 1'h1;
-                        3'h6:
-                            \active_state$next [88] = 1'h1;
-                        3'h7:
-                            \active_state$next [88] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[89:87])
-                        3'h0:
-                            \active_state$next [88] = 1'h0;
-                        3'h1:
-                            \active_state$next [88] = 1'h1;
-                        3'h2:
-                            \active_state$next [88] = 1'h0;
-                        3'h3:
-                            \active_state$next [88] = 1'h1;
-                        3'h4:
-                            \active_state$next [88] = 1'h0;
-                        3'h5:
-                            \active_state$next [88] = 1'h1;
-                        3'h6:
-                            \active_state$next [88] = 1'h1;
-                        3'h7:
-                            \active_state$next [88] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[89:87])
-                        3'h0:
-                            \active_state$next [88] = 1'h0;
-                        3'h1:
-                            \active_state$next [88] = 1'h1;
-                        3'h2:
-                            \active_state$next [88] = 1'h1;
-                        3'h3:
-                            \active_state$next [88] = 1'h1;
-                        3'h4:
-                            \active_state$next [88] = 1'h0;
-                        3'h5:
-                            \active_state$next [88] = 1'h0;
-                        3'h6:
-                            \active_state$next [88] = 1'h0;
-                        3'h7:
-                            \active_state$next [88] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[90:88])
-                        3'h0:
-                            \active_state$next [89] = 1'h0;
-                        3'h1:
-                            \active_state$next [89] = 1'h1;
-                        3'h2:
-                            \active_state$next [89] = 1'h1;
-                        3'h3:
-                            \active_state$next [89] = 1'h1;
-                        3'h4:
-                            \active_state$next [89] = 1'h1;
-                        3'h5:
-                            \active_state$next [89] = 1'h0;
-                        3'h6:
-                            \active_state$next [89] = 1'h0;
-                        3'h7:
-                            \active_state$next [89] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[90:88])
-                        3'h0:
-                            \active_state$next [89] = 1'h0;
-                        3'h1:
-                            \active_state$next [89] = 1'h1;
-                        3'h2:
-                            \active_state$next [89] = 1'h1;
-                        3'h3:
-                            \active_state$next [89] = 1'h1;
-                        3'h4:
-                            \active_state$next [89] = 1'h0;
-                        3'h5:
-                            \active_state$next [89] = 1'h1;
-                        3'h6:
-                            \active_state$next [89] = 1'h1;
-                        3'h7:
-                            \active_state$next [89] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[90:88])
-                        3'h0:
-                            \active_state$next [89] = 1'h0;
-                        3'h1:
-                            \active_state$next [89] = 1'h1;
-                        3'h2:
-                            \active_state$next [89] = 1'h0;
-                        3'h3:
-                            \active_state$next [89] = 1'h1;
-                        3'h4:
-                            \active_state$next [89] = 1'h0;
-                        3'h5:
-                            \active_state$next [89] = 1'h1;
-                        3'h6:
-                            \active_state$next [89] = 1'h1;
-                        3'h7:
-                            \active_state$next [89] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[90:88])
-                        3'h0:
-                            \active_state$next [89] = 1'h0;
-                        3'h1:
-                            \active_state$next [89] = 1'h1;
-                        3'h2:
-                            \active_state$next [89] = 1'h1;
-                        3'h3:
-                            \active_state$next [89] = 1'h1;
-                        3'h4:
-                            \active_state$next [89] = 1'h0;
-                        3'h5:
-                            \active_state$next [89] = 1'h0;
-                        3'h6:
-                            \active_state$next [89] = 1'h0;
-                        3'h7:
-                            \active_state$next [89] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[91:89])
-                        3'h0:
-                            \active_state$next [90] = 1'h0;
-                        3'h1:
-                            \active_state$next [90] = 1'h1;
-                        3'h2:
-                            \active_state$next [90] = 1'h1;
-                        3'h3:
-                            \active_state$next [90] = 1'h1;
-                        3'h4:
-                            \active_state$next [90] = 1'h1;
-                        3'h5:
-                            \active_state$next [90] = 1'h0;
-                        3'h6:
-                            \active_state$next [90] = 1'h0;
-                        3'h7:
-                            \active_state$next [90] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[91:89])
-                        3'h0:
-                            \active_state$next [90] = 1'h0;
-                        3'h1:
-                            \active_state$next [90] = 1'h1;
-                        3'h2:
-                            \active_state$next [90] = 1'h1;
-                        3'h3:
-                            \active_state$next [90] = 1'h1;
-                        3'h4:
-                            \active_state$next [90] = 1'h0;
-                        3'h5:
-                            \active_state$next [90] = 1'h1;
-                        3'h6:
-                            \active_state$next [90] = 1'h1;
-                        3'h7:
-                            \active_state$next [90] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[91:89])
-                        3'h0:
-                            \active_state$next [90] = 1'h0;
-                        3'h1:
-                            \active_state$next [90] = 1'h1;
-                        3'h2:
-                            \active_state$next [90] = 1'h0;
-                        3'h3:
-                            \active_state$next [90] = 1'h1;
-                        3'h4:
-                            \active_state$next [90] = 1'h0;
-                        3'h5:
-                            \active_state$next [90] = 1'h1;
-                        3'h6:
-                            \active_state$next [90] = 1'h1;
-                        3'h7:
-                            \active_state$next [90] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[91:89])
-                        3'h0:
-                            \active_state$next [90] = 1'h0;
-                        3'h1:
-                            \active_state$next [90] = 1'h1;
-                        3'h2:
-                            \active_state$next [90] = 1'h1;
-                        3'h3:
-                            \active_state$next [90] = 1'h1;
-                        3'h4:
-                            \active_state$next [90] = 1'h0;
-                        3'h5:
-                            \active_state$next [90] = 1'h0;
-                        3'h6:
-                            \active_state$next [90] = 1'h0;
-                        3'h7:
-                            \active_state$next [90] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[92:90])
-                        3'h0:
-                            \active_state$next [91] = 1'h0;
-                        3'h1:
-                            \active_state$next [91] = 1'h1;
-                        3'h2:
-                            \active_state$next [91] = 1'h1;
-                        3'h3:
-                            \active_state$next [91] = 1'h1;
-                        3'h4:
-                            \active_state$next [91] = 1'h1;
-                        3'h5:
-                            \active_state$next [91] = 1'h0;
-                        3'h6:
-                            \active_state$next [91] = 1'h0;
-                        3'h7:
-                            \active_state$next [91] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[92:90])
-                        3'h0:
-                            \active_state$next [91] = 1'h0;
-                        3'h1:
-                            \active_state$next [91] = 1'h1;
-                        3'h2:
-                            \active_state$next [91] = 1'h1;
-                        3'h3:
-                            \active_state$next [91] = 1'h1;
-                        3'h4:
-                            \active_state$next [91] = 1'h0;
-                        3'h5:
-                            \active_state$next [91] = 1'h1;
-                        3'h6:
-                            \active_state$next [91] = 1'h1;
-                        3'h7:
-                            \active_state$next [91] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[92:90])
-                        3'h0:
-                            \active_state$next [91] = 1'h0;
-                        3'h1:
-                            \active_state$next [91] = 1'h1;
-                        3'h2:
-                            \active_state$next [91] = 1'h0;
-                        3'h3:
-                            \active_state$next [91] = 1'h1;
-                        3'h4:
-                            \active_state$next [91] = 1'h0;
-                        3'h5:
-                            \active_state$next [91] = 1'h1;
-                        3'h6:
-                            \active_state$next [91] = 1'h1;
-                        3'h7:
-                            \active_state$next [91] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[92:90])
-                        3'h0:
-                            \active_state$next [91] = 1'h0;
-                        3'h1:
-                            \active_state$next [91] = 1'h1;
-                        3'h2:
-                            \active_state$next [91] = 1'h1;
-                        3'h3:
-                            \active_state$next [91] = 1'h1;
-                        3'h4:
-                            \active_state$next [91] = 1'h0;
-                        3'h5:
-                            \active_state$next [91] = 1'h0;
-                        3'h6:
-                            \active_state$next [91] = 1'h0;
-                        3'h7:
-                            \active_state$next [91] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[93:91])
-                        3'h0:
-                            \active_state$next [92] = 1'h0;
-                        3'h1:
-                            \active_state$next [92] = 1'h1;
-                        3'h2:
-                            \active_state$next [92] = 1'h1;
-                        3'h3:
-                            \active_state$next [92] = 1'h1;
-                        3'h4:
-                            \active_state$next [92] = 1'h1;
-                        3'h5:
-                            \active_state$next [92] = 1'h0;
-                        3'h6:
-                            \active_state$next [92] = 1'h0;
-                        3'h7:
-                            \active_state$next [92] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[93:91])
-                        3'h0:
-                            \active_state$next [92] = 1'h0;
-                        3'h1:
-                            \active_state$next [92] = 1'h1;
-                        3'h2:
-                            \active_state$next [92] = 1'h1;
-                        3'h3:
-                            \active_state$next [92] = 1'h1;
-                        3'h4:
-                            \active_state$next [92] = 1'h0;
-                        3'h5:
-                            \active_state$next [92] = 1'h1;
-                        3'h6:
-                            \active_state$next [92] = 1'h1;
-                        3'h7:
-                            \active_state$next [92] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[93:91])
-                        3'h0:
-                            \active_state$next [92] = 1'h0;
-                        3'h1:
-                            \active_state$next [92] = 1'h1;
-                        3'h2:
-                            \active_state$next [92] = 1'h0;
-                        3'h3:
-                            \active_state$next [92] = 1'h1;
-                        3'h4:
-                            \active_state$next [92] = 1'h0;
-                        3'h5:
-                            \active_state$next [92] = 1'h1;
-                        3'h6:
-                            \active_state$next [92] = 1'h1;
-                        3'h7:
-                            \active_state$next [92] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[93:91])
-                        3'h0:
-                            \active_state$next [92] = 1'h0;
-                        3'h1:
-                            \active_state$next [92] = 1'h1;
-                        3'h2:
-                            \active_state$next [92] = 1'h1;
-                        3'h3:
-                            \active_state$next [92] = 1'h1;
-                        3'h4:
-                            \active_state$next [92] = 1'h0;
-                        3'h5:
-                            \active_state$next [92] = 1'h0;
-                        3'h6:
-                            \active_state$next [92] = 1'h0;
-                        3'h7:
-                            \active_state$next [92] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[94:92])
-                        3'h0:
-                            \active_state$next [93] = 1'h0;
-                        3'h1:
-                            \active_state$next [93] = 1'h1;
-                        3'h2:
-                            \active_state$next [93] = 1'h1;
-                        3'h3:
-                            \active_state$next [93] = 1'h1;
-                        3'h4:
-                            \active_state$next [93] = 1'h1;
-                        3'h5:
-                            \active_state$next [93] = 1'h0;
-                        3'h6:
-                            \active_state$next [93] = 1'h0;
-                        3'h7:
-                            \active_state$next [93] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[94:92])
-                        3'h0:
-                            \active_state$next [93] = 1'h0;
-                        3'h1:
-                            \active_state$next [93] = 1'h1;
-                        3'h2:
-                            \active_state$next [93] = 1'h1;
-                        3'h3:
-                            \active_state$next [93] = 1'h1;
-                        3'h4:
-                            \active_state$next [93] = 1'h0;
-                        3'h5:
-                            \active_state$next [93] = 1'h1;
-                        3'h6:
-                            \active_state$next [93] = 1'h1;
-                        3'h7:
-                            \active_state$next [93] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[94:92])
-                        3'h0:
-                            \active_state$next [93] = 1'h0;
-                        3'h1:
-                            \active_state$next [93] = 1'h1;
-                        3'h2:
-                            \active_state$next [93] = 1'h0;
-                        3'h3:
-                            \active_state$next [93] = 1'h1;
-                        3'h4:
-                            \active_state$next [93] = 1'h0;
-                        3'h5:
-                            \active_state$next [93] = 1'h1;
-                        3'h6:
-                            \active_state$next [93] = 1'h1;
-                        3'h7:
-                            \active_state$next [93] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[94:92])
-                        3'h0:
-                            \active_state$next [93] = 1'h0;
-                        3'h1:
-                            \active_state$next [93] = 1'h1;
-                        3'h2:
-                            \active_state$next [93] = 1'h1;
-                        3'h3:
-                            \active_state$next [93] = 1'h1;
-                        3'h4:
-                            \active_state$next [93] = 1'h0;
-                        3'h5:
-                            \active_state$next [93] = 1'h0;
-                        3'h6:
-                            \active_state$next [93] = 1'h0;
-                        3'h7:
-                            \active_state$next [93] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[95:93])
-                        3'h0:
-                            \active_state$next [94] = 1'h0;
-                        3'h1:
-                            \active_state$next [94] = 1'h1;
-                        3'h2:
-                            \active_state$next [94] = 1'h1;
-                        3'h3:
-                            \active_state$next [94] = 1'h1;
-                        3'h4:
-                            \active_state$next [94] = 1'h1;
-                        3'h5:
-                            \active_state$next [94] = 1'h0;
-                        3'h6:
-                            \active_state$next [94] = 1'h0;
-                        3'h7:
-                            \active_state$next [94] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[95:93])
-                        3'h0:
-                            \active_state$next [94] = 1'h0;
-                        3'h1:
-                            \active_state$next [94] = 1'h1;
-                        3'h2:
-                            \active_state$next [94] = 1'h1;
-                        3'h3:
-                            \active_state$next [94] = 1'h1;
-                        3'h4:
-                            \active_state$next [94] = 1'h0;
-                        3'h5:
-                            \active_state$next [94] = 1'h1;
-                        3'h6:
-                            \active_state$next [94] = 1'h1;
-                        3'h7:
-                            \active_state$next [94] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[95:93])
-                        3'h0:
-                            \active_state$next [94] = 1'h0;
-                        3'h1:
-                            \active_state$next [94] = 1'h1;
-                        3'h2:
-                            \active_state$next [94] = 1'h0;
-                        3'h3:
-                            \active_state$next [94] = 1'h1;
-                        3'h4:
-                            \active_state$next [94] = 1'h0;
-                        3'h5:
-                            \active_state$next [94] = 1'h1;
-                        3'h6:
-                            \active_state$next [94] = 1'h1;
-                        3'h7:
-                            \active_state$next [94] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[95:93])
-                        3'h0:
-                            \active_state$next [94] = 1'h0;
-                        3'h1:
-                            \active_state$next [94] = 1'h1;
-                        3'h2:
-                            \active_state$next [94] = 1'h1;
-                        3'h3:
-                            \active_state$next [94] = 1'h1;
-                        3'h4:
-                            \active_state$next [94] = 1'h0;
-                        3'h5:
-                            \active_state$next [94] = 1'h0;
-                        3'h6:
-                            \active_state$next [94] = 1'h0;
-                        3'h7:
-                            \active_state$next [94] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[96:94])
-                        3'h0:
-                            \active_state$next [95] = 1'h0;
-                        3'h1:
-                            \active_state$next [95] = 1'h1;
-                        3'h2:
-                            \active_state$next [95] = 1'h1;
-                        3'h3:
-                            \active_state$next [95] = 1'h1;
-                        3'h4:
-                            \active_state$next [95] = 1'h1;
-                        3'h5:
-                            \active_state$next [95] = 1'h0;
-                        3'h6:
-                            \active_state$next [95] = 1'h0;
-                        3'h7:
-                            \active_state$next [95] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[96:94])
-                        3'h0:
-                            \active_state$next [95] = 1'h0;
-                        3'h1:
-                            \active_state$next [95] = 1'h1;
-                        3'h2:
-                            \active_state$next [95] = 1'h1;
-                        3'h3:
-                            \active_state$next [95] = 1'h1;
-                        3'h4:
-                            \active_state$next [95] = 1'h0;
-                        3'h5:
-                            \active_state$next [95] = 1'h1;
-                        3'h6:
-                            \active_state$next [95] = 1'h1;
-                        3'h7:
-                            \active_state$next [95] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[96:94])
-                        3'h0:
-                            \active_state$next [95] = 1'h0;
-                        3'h1:
-                            \active_state$next [95] = 1'h1;
-                        3'h2:
-                            \active_state$next [95] = 1'h0;
-                        3'h3:
-                            \active_state$next [95] = 1'h1;
-                        3'h4:
-                            \active_state$next [95] = 1'h0;
-                        3'h5:
-                            \active_state$next [95] = 1'h1;
-                        3'h6:
-                            \active_state$next [95] = 1'h1;
-                        3'h7:
-                            \active_state$next [95] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[96:94])
-                        3'h0:
-                            \active_state$next [95] = 1'h0;
-                        3'h1:
-                            \active_state$next [95] = 1'h1;
-                        3'h2:
-                            \active_state$next [95] = 1'h1;
-                        3'h3:
-                            \active_state$next [95] = 1'h1;
-                        3'h4:
-                            \active_state$next [95] = 1'h0;
-                        3'h5:
-                            \active_state$next [95] = 1'h0;
-                        3'h6:
-                            \active_state$next [95] = 1'h0;
-                        3'h7:
-                            \active_state$next [95] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[97:95])
-                        3'h0:
-                            \active_state$next [96] = 1'h0;
-                        3'h1:
-                            \active_state$next [96] = 1'h1;
-                        3'h2:
-                            \active_state$next [96] = 1'h1;
-                        3'h3:
-                            \active_state$next [96] = 1'h1;
-                        3'h4:
-                            \active_state$next [96] = 1'h1;
-                        3'h5:
-                            \active_state$next [96] = 1'h0;
-                        3'h6:
-                            \active_state$next [96] = 1'h0;
-                        3'h7:
-                            \active_state$next [96] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[97:95])
-                        3'h0:
-                            \active_state$next [96] = 1'h0;
-                        3'h1:
-                            \active_state$next [96] = 1'h1;
-                        3'h2:
-                            \active_state$next [96] = 1'h1;
-                        3'h3:
-                            \active_state$next [96] = 1'h1;
-                        3'h4:
-                            \active_state$next [96] = 1'h0;
-                        3'h5:
-                            \active_state$next [96] = 1'h1;
-                        3'h6:
-                            \active_state$next [96] = 1'h1;
-                        3'h7:
-                            \active_state$next [96] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[97:95])
-                        3'h0:
-                            \active_state$next [96] = 1'h0;
-                        3'h1:
-                            \active_state$next [96] = 1'h1;
-                        3'h2:
-                            \active_state$next [96] = 1'h0;
-                        3'h3:
-                            \active_state$next [96] = 1'h1;
-                        3'h4:
-                            \active_state$next [96] = 1'h0;
-                        3'h5:
-                            \active_state$next [96] = 1'h1;
-                        3'h6:
-                            \active_state$next [96] = 1'h1;
-                        3'h7:
-                            \active_state$next [96] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[97:95])
-                        3'h0:
-                            \active_state$next [96] = 1'h0;
-                        3'h1:
-                            \active_state$next [96] = 1'h1;
-                        3'h2:
-                            \active_state$next [96] = 1'h1;
-                        3'h3:
-                            \active_state$next [96] = 1'h1;
-                        3'h4:
-                            \active_state$next [96] = 1'h0;
-                        3'h5:
-                            \active_state$next [96] = 1'h0;
-                        3'h6:
-                            \active_state$next [96] = 1'h0;
-                        3'h7:
-                            \active_state$next [96] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[98:96])
-                        3'h0:
-                            \active_state$next [97] = 1'h0;
-                        3'h1:
-                            \active_state$next [97] = 1'h1;
-                        3'h2:
-                            \active_state$next [97] = 1'h1;
-                        3'h3:
-                            \active_state$next [97] = 1'h1;
-                        3'h4:
-                            \active_state$next [97] = 1'h1;
-                        3'h5:
-                            \active_state$next [97] = 1'h0;
-                        3'h6:
-                            \active_state$next [97] = 1'h0;
-                        3'h7:
-                            \active_state$next [97] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[98:96])
-                        3'h0:
-                            \active_state$next [97] = 1'h0;
-                        3'h1:
-                            \active_state$next [97] = 1'h1;
-                        3'h2:
-                            \active_state$next [97] = 1'h1;
-                        3'h3:
-                            \active_state$next [97] = 1'h1;
-                        3'h4:
-                            \active_state$next [97] = 1'h0;
-                        3'h5:
-                            \active_state$next [97] = 1'h1;
-                        3'h6:
-                            \active_state$next [97] = 1'h1;
-                        3'h7:
-                            \active_state$next [97] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[98:96])
-                        3'h0:
-                            \active_state$next [97] = 1'h0;
-                        3'h1:
-                            \active_state$next [97] = 1'h1;
-                        3'h2:
-                            \active_state$next [97] = 1'h0;
-                        3'h3:
-                            \active_state$next [97] = 1'h1;
-                        3'h4:
-                            \active_state$next [97] = 1'h0;
-                        3'h5:
-                            \active_state$next [97] = 1'h1;
-                        3'h6:
-                            \active_state$next [97] = 1'h1;
-                        3'h7:
-                            \active_state$next [97] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[98:96])
-                        3'h0:
-                            \active_state$next [97] = 1'h0;
-                        3'h1:
-                            \active_state$next [97] = 1'h1;
-                        3'h2:
-                            \active_state$next [97] = 1'h1;
-                        3'h3:
-                            \active_state$next [97] = 1'h1;
-                        3'h4:
-                            \active_state$next [97] = 1'h0;
-                        3'h5:
-                            \active_state$next [97] = 1'h0;
-                        3'h6:
-                            \active_state$next [97] = 1'h0;
-                        3'h7:
-                            \active_state$next [97] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[99:97])
-                        3'h0:
-                            \active_state$next [98] = 1'h0;
-                        3'h1:
-                            \active_state$next [98] = 1'h1;
-                        3'h2:
-                            \active_state$next [98] = 1'h1;
-                        3'h3:
-                            \active_state$next [98] = 1'h1;
-                        3'h4:
-                            \active_state$next [98] = 1'h1;
-                        3'h5:
-                            \active_state$next [98] = 1'h0;
-                        3'h6:
-                            \active_state$next [98] = 1'h0;
-                        3'h7:
-                            \active_state$next [98] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[99:97])
-                        3'h0:
-                            \active_state$next [98] = 1'h0;
-                        3'h1:
-                            \active_state$next [98] = 1'h1;
-                        3'h2:
-                            \active_state$next [98] = 1'h1;
-                        3'h3:
-                            \active_state$next [98] = 1'h1;
-                        3'h4:
-                            \active_state$next [98] = 1'h0;
-                        3'h5:
-                            \active_state$next [98] = 1'h1;
-                        3'h6:
-                            \active_state$next [98] = 1'h1;
-                        3'h7:
-                            \active_state$next [98] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[99:97])
-                        3'h0:
-                            \active_state$next [98] = 1'h0;
-                        3'h1:
-                            \active_state$next [98] = 1'h1;
-                        3'h2:
-                            \active_state$next [98] = 1'h0;
-                        3'h3:
-                            \active_state$next [98] = 1'h1;
-                        3'h4:
-                            \active_state$next [98] = 1'h0;
-                        3'h5:
-                            \active_state$next [98] = 1'h1;
-                        3'h6:
-                            \active_state$next [98] = 1'h1;
-                        3'h7:
-                            \active_state$next [98] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[99:97])
-                        3'h0:
-                            \active_state$next [98] = 1'h0;
-                        3'h1:
-                            \active_state$next [98] = 1'h1;
-                        3'h2:
-                            \active_state$next [98] = 1'h1;
-                        3'h3:
-                            \active_state$next [98] = 1'h1;
-                        3'h4:
-                            \active_state$next [98] = 1'h0;
-                        3'h5:
-                            \active_state$next [98] = 1'h0;
-                        3'h6:
-                            \active_state$next [98] = 1'h0;
-                        3'h7:
-                            \active_state$next [98] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[100:98])
-                        3'h0:
-                            \active_state$next [99] = 1'h0;
-                        3'h1:
-                            \active_state$next [99] = 1'h1;
-                        3'h2:
-                            \active_state$next [99] = 1'h1;
-                        3'h3:
-                            \active_state$next [99] = 1'h1;
-                        3'h4:
-                            \active_state$next [99] = 1'h1;
-                        3'h5:
-                            \active_state$next [99] = 1'h0;
-                        3'h6:
-                            \active_state$next [99] = 1'h0;
-                        3'h7:
-                            \active_state$next [99] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[100:98])
-                        3'h0:
-                            \active_state$next [99] = 1'h0;
-                        3'h1:
-                            \active_state$next [99] = 1'h1;
-                        3'h2:
-                            \active_state$next [99] = 1'h1;
-                        3'h3:
-                            \active_state$next [99] = 1'h1;
-                        3'h4:
-                            \active_state$next [99] = 1'h0;
-                        3'h5:
-                            \active_state$next [99] = 1'h1;
-                        3'h6:
-                            \active_state$next [99] = 1'h1;
-                        3'h7:
-                            \active_state$next [99] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[100:98])
-                        3'h0:
-                            \active_state$next [99] = 1'h0;
-                        3'h1:
-                            \active_state$next [99] = 1'h1;
-                        3'h2:
-                            \active_state$next [99] = 1'h0;
-                        3'h3:
-                            \active_state$next [99] = 1'h1;
-                        3'h4:
-                            \active_state$next [99] = 1'h0;
-                        3'h5:
-                            \active_state$next [99] = 1'h1;
-                        3'h6:
-                            \active_state$next [99] = 1'h1;
-                        3'h7:
-                            \active_state$next [99] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[100:98])
-                        3'h0:
-                            \active_state$next [99] = 1'h0;
-                        3'h1:
-                            \active_state$next [99] = 1'h1;
-                        3'h2:
-                            \active_state$next [99] = 1'h1;
-                        3'h3:
-                            \active_state$next [99] = 1'h1;
-                        3'h4:
-                            \active_state$next [99] = 1'h0;
-                        3'h5:
-                            \active_state$next [99] = 1'h0;
-                        3'h6:
-                            \active_state$next [99] = 1'h0;
-                        3'h7:
-                            \active_state$next [99] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[101:99])
-                        3'h0:
-                            \active_state$next [100] = 1'h0;
-                        3'h1:
-                            \active_state$next [100] = 1'h1;
-                        3'h2:
-                            \active_state$next [100] = 1'h1;
-                        3'h3:
-                            \active_state$next [100] = 1'h1;
-                        3'h4:
-                            \active_state$next [100] = 1'h1;
-                        3'h5:
-                            \active_state$next [100] = 1'h0;
-                        3'h6:
-                            \active_state$next [100] = 1'h0;
-                        3'h7:
-                            \active_state$next [100] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[101:99])
-                        3'h0:
-                            \active_state$next [100] = 1'h0;
-                        3'h1:
-                            \active_state$next [100] = 1'h1;
-                        3'h2:
-                            \active_state$next [100] = 1'h1;
-                        3'h3:
-                            \active_state$next [100] = 1'h1;
-                        3'h4:
-                            \active_state$next [100] = 1'h0;
-                        3'h5:
-                            \active_state$next [100] = 1'h1;
-                        3'h6:
-                            \active_state$next [100] = 1'h1;
-                        3'h7:
-                            \active_state$next [100] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[101:99])
-                        3'h0:
-                            \active_state$next [100] = 1'h0;
-                        3'h1:
-                            \active_state$next [100] = 1'h1;
-                        3'h2:
-                            \active_state$next [100] = 1'h0;
-                        3'h3:
-                            \active_state$next [100] = 1'h1;
-                        3'h4:
-                            \active_state$next [100] = 1'h0;
-                        3'h5:
-                            \active_state$next [100] = 1'h1;
-                        3'h6:
-                            \active_state$next [100] = 1'h1;
-                        3'h7:
-                            \active_state$next [100] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[101:99])
-                        3'h0:
-                            \active_state$next [100] = 1'h0;
-                        3'h1:
-                            \active_state$next [100] = 1'h1;
-                        3'h2:
-                            \active_state$next [100] = 1'h1;
-                        3'h3:
-                            \active_state$next [100] = 1'h1;
-                        3'h4:
-                            \active_state$next [100] = 1'h0;
-                        3'h5:
-                            \active_state$next [100] = 1'h0;
-                        3'h6:
-                            \active_state$next [100] = 1'h0;
-                        3'h7:
-                            \active_state$next [100] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[102:100])
-                        3'h0:
-                            \active_state$next [101] = 1'h0;
-                        3'h1:
-                            \active_state$next [101] = 1'h1;
-                        3'h2:
-                            \active_state$next [101] = 1'h1;
-                        3'h3:
-                            \active_state$next [101] = 1'h1;
-                        3'h4:
-                            \active_state$next [101] = 1'h1;
-                        3'h5:
-                            \active_state$next [101] = 1'h0;
-                        3'h6:
-                            \active_state$next [101] = 1'h0;
-                        3'h7:
-                            \active_state$next [101] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[102:100])
-                        3'h0:
-                            \active_state$next [101] = 1'h0;
-                        3'h1:
-                            \active_state$next [101] = 1'h1;
-                        3'h2:
-                            \active_state$next [101] = 1'h1;
-                        3'h3:
-                            \active_state$next [101] = 1'h1;
-                        3'h4:
-                            \active_state$next [101] = 1'h0;
-                        3'h5:
-                            \active_state$next [101] = 1'h1;
-                        3'h6:
-                            \active_state$next [101] = 1'h1;
-                        3'h7:
-                            \active_state$next [101] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[102:100])
-                        3'h0:
-                            \active_state$next [101] = 1'h0;
-                        3'h1:
-                            \active_state$next [101] = 1'h1;
-                        3'h2:
-                            \active_state$next [101] = 1'h0;
-                        3'h3:
-                            \active_state$next [101] = 1'h1;
-                        3'h4:
-                            \active_state$next [101] = 1'h0;
-                        3'h5:
-                            \active_state$next [101] = 1'h1;
-                        3'h6:
-                            \active_state$next [101] = 1'h1;
-                        3'h7:
-                            \active_state$next [101] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[102:100])
-                        3'h0:
-                            \active_state$next [101] = 1'h0;
-                        3'h1:
-                            \active_state$next [101] = 1'h1;
-                        3'h2:
-                            \active_state$next [101] = 1'h1;
-                        3'h3:
-                            \active_state$next [101] = 1'h1;
-                        3'h4:
-                            \active_state$next [101] = 1'h0;
-                        3'h5:
-                            \active_state$next [101] = 1'h0;
-                        3'h6:
-                            \active_state$next [101] = 1'h0;
-                        3'h7:
-                            \active_state$next [101] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[103:101])
-                        3'h0:
-                            \active_state$next [102] = 1'h0;
-                        3'h1:
-                            \active_state$next [102] = 1'h1;
-                        3'h2:
-                            \active_state$next [102] = 1'h1;
-                        3'h3:
-                            \active_state$next [102] = 1'h1;
-                        3'h4:
-                            \active_state$next [102] = 1'h1;
-                        3'h5:
-                            \active_state$next [102] = 1'h0;
-                        3'h6:
-                            \active_state$next [102] = 1'h0;
-                        3'h7:
-                            \active_state$next [102] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[103:101])
-                        3'h0:
-                            \active_state$next [102] = 1'h0;
-                        3'h1:
-                            \active_state$next [102] = 1'h1;
-                        3'h2:
-                            \active_state$next [102] = 1'h1;
-                        3'h3:
-                            \active_state$next [102] = 1'h1;
-                        3'h4:
-                            \active_state$next [102] = 1'h0;
-                        3'h5:
-                            \active_state$next [102] = 1'h1;
-                        3'h6:
-                            \active_state$next [102] = 1'h1;
-                        3'h7:
-                            \active_state$next [102] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[103:101])
-                        3'h0:
-                            \active_state$next [102] = 1'h0;
-                        3'h1:
-                            \active_state$next [102] = 1'h1;
-                        3'h2:
-                            \active_state$next [102] = 1'h0;
-                        3'h3:
-                            \active_state$next [102] = 1'h1;
-                        3'h4:
-                            \active_state$next [102] = 1'h0;
-                        3'h5:
-                            \active_state$next [102] = 1'h1;
-                        3'h6:
-                            \active_state$next [102] = 1'h1;
-                        3'h7:
-                            \active_state$next [102] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[103:101])
-                        3'h0:
-                            \active_state$next [102] = 1'h0;
-                        3'h1:
-                            \active_state$next [102] = 1'h1;
-                        3'h2:
-                            \active_state$next [102] = 1'h1;
-                        3'h3:
-                            \active_state$next [102] = 1'h1;
-                        3'h4:
-                            \active_state$next [102] = 1'h0;
-                        3'h5:
-                            \active_state$next [102] = 1'h0;
-                        3'h6:
-                            \active_state$next [102] = 1'h0;
-                        3'h7:
-                            \active_state$next [102] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[104:102])
-                        3'h0:
-                            \active_state$next [103] = 1'h0;
-                        3'h1:
-                            \active_state$next [103] = 1'h1;
-                        3'h2:
-                            \active_state$next [103] = 1'h1;
-                        3'h3:
-                            \active_state$next [103] = 1'h1;
-                        3'h4:
-                            \active_state$next [103] = 1'h1;
-                        3'h5:
-                            \active_state$next [103] = 1'h0;
-                        3'h6:
-                            \active_state$next [103] = 1'h0;
-                        3'h7:
-                            \active_state$next [103] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[104:102])
-                        3'h0:
-                            \active_state$next [103] = 1'h0;
-                        3'h1:
-                            \active_state$next [103] = 1'h1;
-                        3'h2:
-                            \active_state$next [103] = 1'h1;
-                        3'h3:
-                            \active_state$next [103] = 1'h1;
-                        3'h4:
-                            \active_state$next [103] = 1'h0;
-                        3'h5:
-                            \active_state$next [103] = 1'h1;
-                        3'h6:
-                            \active_state$next [103] = 1'h1;
-                        3'h7:
-                            \active_state$next [103] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[104:102])
-                        3'h0:
-                            \active_state$next [103] = 1'h0;
-                        3'h1:
-                            \active_state$next [103] = 1'h1;
-                        3'h2:
-                            \active_state$next [103] = 1'h0;
-                        3'h3:
-                            \active_state$next [103] = 1'h1;
-                        3'h4:
-                            \active_state$next [103] = 1'h0;
-                        3'h5:
-                            \active_state$next [103] = 1'h1;
-                        3'h6:
-                            \active_state$next [103] = 1'h1;
-                        3'h7:
-                            \active_state$next [103] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[104:102])
-                        3'h0:
-                            \active_state$next [103] = 1'h0;
-                        3'h1:
-                            \active_state$next [103] = 1'h1;
-                        3'h2:
-                            \active_state$next [103] = 1'h1;
-                        3'h3:
-                            \active_state$next [103] = 1'h1;
-                        3'h4:
-                            \active_state$next [103] = 1'h0;
-                        3'h5:
-                            \active_state$next [103] = 1'h0;
-                        3'h6:
-                            \active_state$next [103] = 1'h0;
-                        3'h7:
-                            \active_state$next [103] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[105:103])
-                        3'h0:
-                            \active_state$next [104] = 1'h0;
-                        3'h1:
-                            \active_state$next [104] = 1'h1;
-                        3'h2:
-                            \active_state$next [104] = 1'h1;
-                        3'h3:
-                            \active_state$next [104] = 1'h1;
-                        3'h4:
-                            \active_state$next [104] = 1'h1;
-                        3'h5:
-                            \active_state$next [104] = 1'h0;
-                        3'h6:
-                            \active_state$next [104] = 1'h0;
-                        3'h7:
-                            \active_state$next [104] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[105:103])
-                        3'h0:
-                            \active_state$next [104] = 1'h0;
-                        3'h1:
-                            \active_state$next [104] = 1'h1;
-                        3'h2:
-                            \active_state$next [104] = 1'h1;
-                        3'h3:
-                            \active_state$next [104] = 1'h1;
-                        3'h4:
-                            \active_state$next [104] = 1'h0;
-                        3'h5:
-                            \active_state$next [104] = 1'h1;
-                        3'h6:
-                            \active_state$next [104] = 1'h1;
-                        3'h7:
-                            \active_state$next [104] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[105:103])
-                        3'h0:
-                            \active_state$next [104] = 1'h0;
-                        3'h1:
-                            \active_state$next [104] = 1'h1;
-                        3'h2:
-                            \active_state$next [104] = 1'h0;
-                        3'h3:
-                            \active_state$next [104] = 1'h1;
-                        3'h4:
-                            \active_state$next [104] = 1'h0;
-                        3'h5:
-                            \active_state$next [104] = 1'h1;
-                        3'h6:
-                            \active_state$next [104] = 1'h1;
-                        3'h7:
-                            \active_state$next [104] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[105:103])
-                        3'h0:
-                            \active_state$next [104] = 1'h0;
-                        3'h1:
-                            \active_state$next [104] = 1'h1;
-                        3'h2:
-                            \active_state$next [104] = 1'h1;
-                        3'h3:
-                            \active_state$next [104] = 1'h1;
-                        3'h4:
-                            \active_state$next [104] = 1'h0;
-                        3'h5:
-                            \active_state$next [104] = 1'h0;
-                        3'h6:
-                            \active_state$next [104] = 1'h0;
-                        3'h7:
-                            \active_state$next [104] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[106:104])
-                        3'h0:
-                            \active_state$next [105] = 1'h0;
-                        3'h1:
-                            \active_state$next [105] = 1'h1;
-                        3'h2:
-                            \active_state$next [105] = 1'h1;
-                        3'h3:
-                            \active_state$next [105] = 1'h1;
-                        3'h4:
-                            \active_state$next [105] = 1'h1;
-                        3'h5:
-                            \active_state$next [105] = 1'h0;
-                        3'h6:
-                            \active_state$next [105] = 1'h0;
-                        3'h7:
-                            \active_state$next [105] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[106:104])
-                        3'h0:
-                            \active_state$next [105] = 1'h0;
-                        3'h1:
-                            \active_state$next [105] = 1'h1;
-                        3'h2:
-                            \active_state$next [105] = 1'h1;
-                        3'h3:
-                            \active_state$next [105] = 1'h1;
-                        3'h4:
-                            \active_state$next [105] = 1'h0;
-                        3'h5:
-                            \active_state$next [105] = 1'h1;
-                        3'h6:
-                            \active_state$next [105] = 1'h1;
-                        3'h7:
-                            \active_state$next [105] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[106:104])
-                        3'h0:
-                            \active_state$next [105] = 1'h0;
-                        3'h1:
-                            \active_state$next [105] = 1'h1;
-                        3'h2:
-                            \active_state$next [105] = 1'h0;
-                        3'h3:
-                            \active_state$next [105] = 1'h1;
-                        3'h4:
-                            \active_state$next [105] = 1'h0;
-                        3'h5:
-                            \active_state$next [105] = 1'h1;
-                        3'h6:
-                            \active_state$next [105] = 1'h1;
-                        3'h7:
-                            \active_state$next [105] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[106:104])
-                        3'h0:
-                            \active_state$next [105] = 1'h0;
-                        3'h1:
-                            \active_state$next [105] = 1'h1;
-                        3'h2:
-                            \active_state$next [105] = 1'h1;
-                        3'h3:
-                            \active_state$next [105] = 1'h1;
-                        3'h4:
-                            \active_state$next [105] = 1'h0;
-                        3'h5:
-                            \active_state$next [105] = 1'h0;
-                        3'h6:
-                            \active_state$next [105] = 1'h0;
-                        3'h7:
-                            \active_state$next [105] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[107:105])
-                        3'h0:
-                            \active_state$next [106] = 1'h0;
-                        3'h1:
-                            \active_state$next [106] = 1'h1;
-                        3'h2:
-                            \active_state$next [106] = 1'h1;
-                        3'h3:
-                            \active_state$next [106] = 1'h1;
-                        3'h4:
-                            \active_state$next [106] = 1'h1;
-                        3'h5:
-                            \active_state$next [106] = 1'h0;
-                        3'h6:
-                            \active_state$next [106] = 1'h0;
-                        3'h7:
-                            \active_state$next [106] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[107:105])
-                        3'h0:
-                            \active_state$next [106] = 1'h0;
-                        3'h1:
-                            \active_state$next [106] = 1'h1;
-                        3'h2:
-                            \active_state$next [106] = 1'h1;
-                        3'h3:
-                            \active_state$next [106] = 1'h1;
-                        3'h4:
-                            \active_state$next [106] = 1'h0;
-                        3'h5:
-                            \active_state$next [106] = 1'h1;
-                        3'h6:
-                            \active_state$next [106] = 1'h1;
-                        3'h7:
-                            \active_state$next [106] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[107:105])
-                        3'h0:
-                            \active_state$next [106] = 1'h0;
-                        3'h1:
-                            \active_state$next [106] = 1'h1;
-                        3'h2:
-                            \active_state$next [106] = 1'h0;
-                        3'h3:
-                            \active_state$next [106] = 1'h1;
-                        3'h4:
-                            \active_state$next [106] = 1'h0;
-                        3'h5:
-                            \active_state$next [106] = 1'h1;
-                        3'h6:
-                            \active_state$next [106] = 1'h1;
-                        3'h7:
-                            \active_state$next [106] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[107:105])
-                        3'h0:
-                            \active_state$next [106] = 1'h0;
-                        3'h1:
-                            \active_state$next [106] = 1'h1;
-                        3'h2:
-                            \active_state$next [106] = 1'h1;
-                        3'h3:
-                            \active_state$next [106] = 1'h1;
-                        3'h4:
-                            \active_state$next [106] = 1'h0;
-                        3'h5:
-                            \active_state$next [106] = 1'h0;
-                        3'h6:
-                            \active_state$next [106] = 1'h0;
-                        3'h7:
-                            \active_state$next [106] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[108:106])
-                        3'h0:
-                            \active_state$next [107] = 1'h0;
-                        3'h1:
-                            \active_state$next [107] = 1'h1;
-                        3'h2:
-                            \active_state$next [107] = 1'h1;
-                        3'h3:
-                            \active_state$next [107] = 1'h1;
-                        3'h4:
-                            \active_state$next [107] = 1'h1;
-                        3'h5:
-                            \active_state$next [107] = 1'h0;
-                        3'h6:
-                            \active_state$next [107] = 1'h0;
-                        3'h7:
-                            \active_state$next [107] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[108:106])
-                        3'h0:
-                            \active_state$next [107] = 1'h0;
-                        3'h1:
-                            \active_state$next [107] = 1'h1;
-                        3'h2:
-                            \active_state$next [107] = 1'h1;
-                        3'h3:
-                            \active_state$next [107] = 1'h1;
-                        3'h4:
-                            \active_state$next [107] = 1'h0;
-                        3'h5:
-                            \active_state$next [107] = 1'h1;
-                        3'h6:
-                            \active_state$next [107] = 1'h1;
-                        3'h7:
-                            \active_state$next [107] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[108:106])
-                        3'h0:
-                            \active_state$next [107] = 1'h0;
-                        3'h1:
-                            \active_state$next [107] = 1'h1;
-                        3'h2:
-                            \active_state$next [107] = 1'h0;
-                        3'h3:
-                            \active_state$next [107] = 1'h1;
-                        3'h4:
-                            \active_state$next [107] = 1'h0;
-                        3'h5:
-                            \active_state$next [107] = 1'h1;
-                        3'h6:
-                            \active_state$next [107] = 1'h1;
-                        3'h7:
-                            \active_state$next [107] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[108:106])
-                        3'h0:
-                            \active_state$next [107] = 1'h0;
-                        3'h1:
-                            \active_state$next [107] = 1'h1;
-                        3'h2:
-                            \active_state$next [107] = 1'h1;
-                        3'h3:
-                            \active_state$next [107] = 1'h1;
-                        3'h4:
-                            \active_state$next [107] = 1'h0;
-                        3'h5:
-                            \active_state$next [107] = 1'h0;
-                        3'h6:
-                            \active_state$next [107] = 1'h0;
-                        3'h7:
-                            \active_state$next [107] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[109:107])
-                        3'h0:
-                            \active_state$next [108] = 1'h0;
-                        3'h1:
-                            \active_state$next [108] = 1'h1;
-                        3'h2:
-                            \active_state$next [108] = 1'h1;
-                        3'h3:
-                            \active_state$next [108] = 1'h1;
-                        3'h4:
-                            \active_state$next [108] = 1'h1;
-                        3'h5:
-                            \active_state$next [108] = 1'h0;
-                        3'h6:
-                            \active_state$next [108] = 1'h0;
-                        3'h7:
-                            \active_state$next [108] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[109:107])
-                        3'h0:
-                            \active_state$next [108] = 1'h0;
-                        3'h1:
-                            \active_state$next [108] = 1'h1;
-                        3'h2:
-                            \active_state$next [108] = 1'h1;
-                        3'h3:
-                            \active_state$next [108] = 1'h1;
-                        3'h4:
-                            \active_state$next [108] = 1'h0;
-                        3'h5:
-                            \active_state$next [108] = 1'h1;
-                        3'h6:
-                            \active_state$next [108] = 1'h1;
-                        3'h7:
-                            \active_state$next [108] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[109:107])
-                        3'h0:
-                            \active_state$next [108] = 1'h0;
-                        3'h1:
-                            \active_state$next [108] = 1'h1;
-                        3'h2:
-                            \active_state$next [108] = 1'h0;
-                        3'h3:
-                            \active_state$next [108] = 1'h1;
-                        3'h4:
-                            \active_state$next [108] = 1'h0;
-                        3'h5:
-                            \active_state$next [108] = 1'h1;
-                        3'h6:
-                            \active_state$next [108] = 1'h1;
-                        3'h7:
-                            \active_state$next [108] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[109:107])
-                        3'h0:
-                            \active_state$next [108] = 1'h0;
-                        3'h1:
-                            \active_state$next [108] = 1'h1;
-                        3'h2:
-                            \active_state$next [108] = 1'h1;
-                        3'h3:
-                            \active_state$next [108] = 1'h1;
-                        3'h4:
-                            \active_state$next [108] = 1'h0;
-                        3'h5:
-                            \active_state$next [108] = 1'h0;
-                        3'h6:
-                            \active_state$next [108] = 1'h0;
-                        3'h7:
-                            \active_state$next [108] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[110:108])
-                        3'h0:
-                            \active_state$next [109] = 1'h0;
-                        3'h1:
-                            \active_state$next [109] = 1'h1;
-                        3'h2:
-                            \active_state$next [109] = 1'h1;
-                        3'h3:
-                            \active_state$next [109] = 1'h1;
-                        3'h4:
-                            \active_state$next [109] = 1'h1;
-                        3'h5:
-                            \active_state$next [109] = 1'h0;
-                        3'h6:
-                            \active_state$next [109] = 1'h0;
-                        3'h7:
-                            \active_state$next [109] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[110:108])
-                        3'h0:
-                            \active_state$next [109] = 1'h0;
-                        3'h1:
-                            \active_state$next [109] = 1'h1;
-                        3'h2:
-                            \active_state$next [109] = 1'h1;
-                        3'h3:
-                            \active_state$next [109] = 1'h1;
-                        3'h4:
-                            \active_state$next [109] = 1'h0;
-                        3'h5:
-                            \active_state$next [109] = 1'h1;
-                        3'h6:
-                            \active_state$next [109] = 1'h1;
-                        3'h7:
-                            \active_state$next [109] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[110:108])
-                        3'h0:
-                            \active_state$next [109] = 1'h0;
-                        3'h1:
-                            \active_state$next [109] = 1'h1;
-                        3'h2:
-                            \active_state$next [109] = 1'h0;
-                        3'h3:
-                            \active_state$next [109] = 1'h1;
-                        3'h4:
-                            \active_state$next [109] = 1'h0;
-                        3'h5:
-                            \active_state$next [109] = 1'h1;
-                        3'h6:
-                            \active_state$next [109] = 1'h1;
-                        3'h7:
-                            \active_state$next [109] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[110:108])
-                        3'h0:
-                            \active_state$next [109] = 1'h0;
-                        3'h1:
-                            \active_state$next [109] = 1'h1;
-                        3'h2:
-                            \active_state$next [109] = 1'h1;
-                        3'h3:
-                            \active_state$next [109] = 1'h1;
-                        3'h4:
-                            \active_state$next [109] = 1'h0;
-                        3'h5:
-                            \active_state$next [109] = 1'h0;
-                        3'h6:
-                            \active_state$next [109] = 1'h0;
-                        3'h7:
-                            \active_state$next [109] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[111:109])
-                        3'h0:
-                            \active_state$next [110] = 1'h0;
-                        3'h1:
-                            \active_state$next [110] = 1'h1;
-                        3'h2:
-                            \active_state$next [110] = 1'h1;
-                        3'h3:
-                            \active_state$next [110] = 1'h1;
-                        3'h4:
-                            \active_state$next [110] = 1'h1;
-                        3'h5:
-                            \active_state$next [110] = 1'h0;
-                        3'h6:
-                            \active_state$next [110] = 1'h0;
-                        3'h7:
-                            \active_state$next [110] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[111:109])
-                        3'h0:
-                            \active_state$next [110] = 1'h0;
-                        3'h1:
-                            \active_state$next [110] = 1'h1;
-                        3'h2:
-                            \active_state$next [110] = 1'h1;
-                        3'h3:
-                            \active_state$next [110] = 1'h1;
-                        3'h4:
-                            \active_state$next [110] = 1'h0;
-                        3'h5:
-                            \active_state$next [110] = 1'h1;
-                        3'h6:
-                            \active_state$next [110] = 1'h1;
-                        3'h7:
-                            \active_state$next [110] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[111:109])
-                        3'h0:
-                            \active_state$next [110] = 1'h0;
-                        3'h1:
-                            \active_state$next [110] = 1'h1;
-                        3'h2:
-                            \active_state$next [110] = 1'h0;
-                        3'h3:
-                            \active_state$next [110] = 1'h1;
-                        3'h4:
-                            \active_state$next [110] = 1'h0;
-                        3'h5:
-                            \active_state$next [110] = 1'h1;
-                        3'h6:
-                            \active_state$next [110] = 1'h1;
-                        3'h7:
-                            \active_state$next [110] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[111:109])
-                        3'h0:
-                            \active_state$next [110] = 1'h0;
-                        3'h1:
-                            \active_state$next [110] = 1'h1;
-                        3'h2:
-                            \active_state$next [110] = 1'h1;
-                        3'h3:
-                            \active_state$next [110] = 1'h1;
-                        3'h4:
-                            \active_state$next [110] = 1'h0;
-                        3'h5:
-                            \active_state$next [110] = 1'h0;
-                        3'h6:
-                            \active_state$next [110] = 1'h0;
-                        3'h7:
-                            \active_state$next [110] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[112:110])
-                        3'h0:
-                            \active_state$next [111] = 1'h0;
-                        3'h1:
-                            \active_state$next [111] = 1'h1;
-                        3'h2:
-                            \active_state$next [111] = 1'h1;
-                        3'h3:
-                            \active_state$next [111] = 1'h1;
-                        3'h4:
-                            \active_state$next [111] = 1'h1;
-                        3'h5:
-                            \active_state$next [111] = 1'h0;
-                        3'h6:
-                            \active_state$next [111] = 1'h0;
-                        3'h7:
-                            \active_state$next [111] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[112:110])
-                        3'h0:
-                            \active_state$next [111] = 1'h0;
-                        3'h1:
-                            \active_state$next [111] = 1'h1;
-                        3'h2:
-                            \active_state$next [111] = 1'h1;
-                        3'h3:
-                            \active_state$next [111] = 1'h1;
-                        3'h4:
-                            \active_state$next [111] = 1'h0;
-                        3'h5:
-                            \active_state$next [111] = 1'h1;
-                        3'h6:
-                            \active_state$next [111] = 1'h1;
-                        3'h7:
-                            \active_state$next [111] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[112:110])
-                        3'h0:
-                            \active_state$next [111] = 1'h0;
-                        3'h1:
-                            \active_state$next [111] = 1'h1;
-                        3'h2:
-                            \active_state$next [111] = 1'h0;
-                        3'h3:
-                            \active_state$next [111] = 1'h1;
-                        3'h4:
-                            \active_state$next [111] = 1'h0;
-                        3'h5:
-                            \active_state$next [111] = 1'h1;
-                        3'h6:
-                            \active_state$next [111] = 1'h1;
-                        3'h7:
-                            \active_state$next [111] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[112:110])
-                        3'h0:
-                            \active_state$next [111] = 1'h0;
-                        3'h1:
-                            \active_state$next [111] = 1'h1;
-                        3'h2:
-                            \active_state$next [111] = 1'h1;
-                        3'h3:
-                            \active_state$next [111] = 1'h1;
-                        3'h4:
-                            \active_state$next [111] = 1'h0;
-                        3'h5:
-                            \active_state$next [111] = 1'h0;
-                        3'h6:
-                            \active_state$next [111] = 1'h0;
-                        3'h7:
-                            \active_state$next [111] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[113:111])
-                        3'h0:
-                            \active_state$next [112] = 1'h0;
-                        3'h1:
-                            \active_state$next [112] = 1'h1;
-                        3'h2:
-                            \active_state$next [112] = 1'h1;
-                        3'h3:
-                            \active_state$next [112] = 1'h1;
-                        3'h4:
-                            \active_state$next [112] = 1'h1;
-                        3'h5:
-                            \active_state$next [112] = 1'h0;
-                        3'h6:
-                            \active_state$next [112] = 1'h0;
-                        3'h7:
-                            \active_state$next [112] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[113:111])
-                        3'h0:
-                            \active_state$next [112] = 1'h0;
-                        3'h1:
-                            \active_state$next [112] = 1'h1;
-                        3'h2:
-                            \active_state$next [112] = 1'h1;
-                        3'h3:
-                            \active_state$next [112] = 1'h1;
-                        3'h4:
-                            \active_state$next [112] = 1'h0;
-                        3'h5:
-                            \active_state$next [112] = 1'h1;
-                        3'h6:
-                            \active_state$next [112] = 1'h1;
-                        3'h7:
-                            \active_state$next [112] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[113:111])
-                        3'h0:
-                            \active_state$next [112] = 1'h0;
-                        3'h1:
-                            \active_state$next [112] = 1'h1;
-                        3'h2:
-                            \active_state$next [112] = 1'h0;
-                        3'h3:
-                            \active_state$next [112] = 1'h1;
-                        3'h4:
-                            \active_state$next [112] = 1'h0;
-                        3'h5:
-                            \active_state$next [112] = 1'h1;
-                        3'h6:
-                            \active_state$next [112] = 1'h1;
-                        3'h7:
-                            \active_state$next [112] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[113:111])
-                        3'h0:
-                            \active_state$next [112] = 1'h0;
-                        3'h1:
-                            \active_state$next [112] = 1'h1;
-                        3'h2:
-                            \active_state$next [112] = 1'h1;
-                        3'h3:
-                            \active_state$next [112] = 1'h1;
-                        3'h4:
-                            \active_state$next [112] = 1'h0;
-                        3'h5:
-                            \active_state$next [112] = 1'h0;
-                        3'h6:
-                            \active_state$next [112] = 1'h0;
-                        3'h7:
-                            \active_state$next [112] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[114:112])
-                        3'h0:
-                            \active_state$next [113] = 1'h0;
-                        3'h1:
-                            \active_state$next [113] = 1'h1;
-                        3'h2:
-                            \active_state$next [113] = 1'h1;
-                        3'h3:
-                            \active_state$next [113] = 1'h1;
-                        3'h4:
-                            \active_state$next [113] = 1'h1;
-                        3'h5:
-                            \active_state$next [113] = 1'h0;
-                        3'h6:
-                            \active_state$next [113] = 1'h0;
-                        3'h7:
-                            \active_state$next [113] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[114:112])
-                        3'h0:
-                            \active_state$next [113] = 1'h0;
-                        3'h1:
-                            \active_state$next [113] = 1'h1;
-                        3'h2:
-                            \active_state$next [113] = 1'h1;
-                        3'h3:
-                            \active_state$next [113] = 1'h1;
-                        3'h4:
-                            \active_state$next [113] = 1'h0;
-                        3'h5:
-                            \active_state$next [113] = 1'h1;
-                        3'h6:
-                            \active_state$next [113] = 1'h1;
-                        3'h7:
-                            \active_state$next [113] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[114:112])
-                        3'h0:
-                            \active_state$next [113] = 1'h0;
-                        3'h1:
-                            \active_state$next [113] = 1'h1;
-                        3'h2:
-                            \active_state$next [113] = 1'h0;
-                        3'h3:
-                            \active_state$next [113] = 1'h1;
-                        3'h4:
-                            \active_state$next [113] = 1'h0;
-                        3'h5:
-                            \active_state$next [113] = 1'h1;
-                        3'h6:
-                            \active_state$next [113] = 1'h1;
-                        3'h7:
-                            \active_state$next [113] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[114:112])
-                        3'h0:
-                            \active_state$next [113] = 1'h0;
-                        3'h1:
-                            \active_state$next [113] = 1'h1;
-                        3'h2:
-                            \active_state$next [113] = 1'h1;
-                        3'h3:
-                            \active_state$next [113] = 1'h1;
-                        3'h4:
-                            \active_state$next [113] = 1'h0;
-                        3'h5:
-                            \active_state$next [113] = 1'h0;
-                        3'h6:
-                            \active_state$next [113] = 1'h0;
-                        3'h7:
-                            \active_state$next [113] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[115:113])
-                        3'h0:
-                            \active_state$next [114] = 1'h0;
-                        3'h1:
-                            \active_state$next [114] = 1'h1;
-                        3'h2:
-                            \active_state$next [114] = 1'h1;
-                        3'h3:
-                            \active_state$next [114] = 1'h1;
-                        3'h4:
-                            \active_state$next [114] = 1'h1;
-                        3'h5:
-                            \active_state$next [114] = 1'h0;
-                        3'h6:
-                            \active_state$next [114] = 1'h0;
-                        3'h7:
-                            \active_state$next [114] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[115:113])
-                        3'h0:
-                            \active_state$next [114] = 1'h0;
-                        3'h1:
-                            \active_state$next [114] = 1'h1;
-                        3'h2:
-                            \active_state$next [114] = 1'h1;
-                        3'h3:
-                            \active_state$next [114] = 1'h1;
-                        3'h4:
-                            \active_state$next [114] = 1'h0;
-                        3'h5:
-                            \active_state$next [114] = 1'h1;
-                        3'h6:
-                            \active_state$next [114] = 1'h1;
-                        3'h7:
-                            \active_state$next [114] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[115:113])
-                        3'h0:
-                            \active_state$next [114] = 1'h0;
-                        3'h1:
-                            \active_state$next [114] = 1'h1;
-                        3'h2:
-                            \active_state$next [114] = 1'h0;
-                        3'h3:
-                            \active_state$next [114] = 1'h1;
-                        3'h4:
-                            \active_state$next [114] = 1'h0;
-                        3'h5:
-                            \active_state$next [114] = 1'h1;
-                        3'h6:
-                            \active_state$next [114] = 1'h1;
-                        3'h7:
-                            \active_state$next [114] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[115:113])
-                        3'h0:
-                            \active_state$next [114] = 1'h0;
-                        3'h1:
-                            \active_state$next [114] = 1'h1;
-                        3'h2:
-                            \active_state$next [114] = 1'h1;
-                        3'h3:
-                            \active_state$next [114] = 1'h1;
-                        3'h4:
-                            \active_state$next [114] = 1'h0;
-                        3'h5:
-                            \active_state$next [114] = 1'h0;
-                        3'h6:
-                            \active_state$next [114] = 1'h0;
-                        3'h7:
-                            \active_state$next [114] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[116:114])
-                        3'h0:
-                            \active_state$next [115] = 1'h0;
-                        3'h1:
-                            \active_state$next [115] = 1'h1;
-                        3'h2:
-                            \active_state$next [115] = 1'h1;
-                        3'h3:
-                            \active_state$next [115] = 1'h1;
-                        3'h4:
-                            \active_state$next [115] = 1'h1;
-                        3'h5:
-                            \active_state$next [115] = 1'h0;
-                        3'h6:
-                            \active_state$next [115] = 1'h0;
-                        3'h7:
-                            \active_state$next [115] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[116:114])
-                        3'h0:
-                            \active_state$next [115] = 1'h0;
-                        3'h1:
-                            \active_state$next [115] = 1'h1;
-                        3'h2:
-                            \active_state$next [115] = 1'h1;
-                        3'h3:
-                            \active_state$next [115] = 1'h1;
-                        3'h4:
-                            \active_state$next [115] = 1'h0;
-                        3'h5:
-                            \active_state$next [115] = 1'h1;
-                        3'h6:
-                            \active_state$next [115] = 1'h1;
-                        3'h7:
-                            \active_state$next [115] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[116:114])
-                        3'h0:
-                            \active_state$next [115] = 1'h0;
-                        3'h1:
-                            \active_state$next [115] = 1'h1;
-                        3'h2:
-                            \active_state$next [115] = 1'h0;
-                        3'h3:
-                            \active_state$next [115] = 1'h1;
-                        3'h4:
-                            \active_state$next [115] = 1'h0;
-                        3'h5:
-                            \active_state$next [115] = 1'h1;
-                        3'h6:
-                            \active_state$next [115] = 1'h1;
-                        3'h7:
-                            \active_state$next [115] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[116:114])
-                        3'h0:
-                            \active_state$next [115] = 1'h0;
-                        3'h1:
-                            \active_state$next [115] = 1'h1;
-                        3'h2:
-                            \active_state$next [115] = 1'h1;
-                        3'h3:
-                            \active_state$next [115] = 1'h1;
-                        3'h4:
-                            \active_state$next [115] = 1'h0;
-                        3'h5:
-                            \active_state$next [115] = 1'h0;
-                        3'h6:
-                            \active_state$next [115] = 1'h0;
-                        3'h7:
-                            \active_state$next [115] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[117:115])
-                        3'h0:
-                            \active_state$next [116] = 1'h0;
-                        3'h1:
-                            \active_state$next [116] = 1'h1;
-                        3'h2:
-                            \active_state$next [116] = 1'h1;
-                        3'h3:
-                            \active_state$next [116] = 1'h1;
-                        3'h4:
-                            \active_state$next [116] = 1'h1;
-                        3'h5:
-                            \active_state$next [116] = 1'h0;
-                        3'h6:
-                            \active_state$next [116] = 1'h0;
-                        3'h7:
-                            \active_state$next [116] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[117:115])
-                        3'h0:
-                            \active_state$next [116] = 1'h0;
-                        3'h1:
-                            \active_state$next [116] = 1'h1;
-                        3'h2:
-                            \active_state$next [116] = 1'h1;
-                        3'h3:
-                            \active_state$next [116] = 1'h1;
-                        3'h4:
-                            \active_state$next [116] = 1'h0;
-                        3'h5:
-                            \active_state$next [116] = 1'h1;
-                        3'h6:
-                            \active_state$next [116] = 1'h1;
-                        3'h7:
-                            \active_state$next [116] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[117:115])
-                        3'h0:
-                            \active_state$next [116] = 1'h0;
-                        3'h1:
-                            \active_state$next [116] = 1'h1;
-                        3'h2:
-                            \active_state$next [116] = 1'h0;
-                        3'h3:
-                            \active_state$next [116] = 1'h1;
-                        3'h4:
-                            \active_state$next [116] = 1'h0;
-                        3'h5:
-                            \active_state$next [116] = 1'h1;
-                        3'h6:
-                            \active_state$next [116] = 1'h1;
-                        3'h7:
-                            \active_state$next [116] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[117:115])
-                        3'h0:
-                            \active_state$next [116] = 1'h0;
-                        3'h1:
-                            \active_state$next [116] = 1'h1;
-                        3'h2:
-                            \active_state$next [116] = 1'h1;
-                        3'h3:
-                            \active_state$next [116] = 1'h1;
-                        3'h4:
-                            \active_state$next [116] = 1'h0;
-                        3'h5:
-                            \active_state$next [116] = 1'h0;
-                        3'h6:
-                            \active_state$next [116] = 1'h0;
-                        3'h7:
-                            \active_state$next [116] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[118:116])
-                        3'h0:
-                            \active_state$next [117] = 1'h0;
-                        3'h1:
-                            \active_state$next [117] = 1'h1;
-                        3'h2:
-                            \active_state$next [117] = 1'h1;
-                        3'h3:
-                            \active_state$next [117] = 1'h1;
-                        3'h4:
-                            \active_state$next [117] = 1'h1;
-                        3'h5:
-                            \active_state$next [117] = 1'h0;
-                        3'h6:
-                            \active_state$next [117] = 1'h0;
-                        3'h7:
-                            \active_state$next [117] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[118:116])
-                        3'h0:
-                            \active_state$next [117] = 1'h0;
-                        3'h1:
-                            \active_state$next [117] = 1'h1;
-                        3'h2:
-                            \active_state$next [117] = 1'h1;
-                        3'h3:
-                            \active_state$next [117] = 1'h1;
-                        3'h4:
-                            \active_state$next [117] = 1'h0;
-                        3'h5:
-                            \active_state$next [117] = 1'h1;
-                        3'h6:
-                            \active_state$next [117] = 1'h1;
-                        3'h7:
-                            \active_state$next [117] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[118:116])
-                        3'h0:
-                            \active_state$next [117] = 1'h0;
-                        3'h1:
-                            \active_state$next [117] = 1'h1;
-                        3'h2:
-                            \active_state$next [117] = 1'h0;
-                        3'h3:
-                            \active_state$next [117] = 1'h1;
-                        3'h4:
-                            \active_state$next [117] = 1'h0;
-                        3'h5:
-                            \active_state$next [117] = 1'h1;
-                        3'h6:
-                            \active_state$next [117] = 1'h1;
-                        3'h7:
-                            \active_state$next [117] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[118:116])
-                        3'h0:
-                            \active_state$next [117] = 1'h0;
-                        3'h1:
-                            \active_state$next [117] = 1'h1;
-                        3'h2:
-                            \active_state$next [117] = 1'h1;
-                        3'h3:
-                            \active_state$next [117] = 1'h1;
-                        3'h4:
-                            \active_state$next [117] = 1'h0;
-                        3'h5:
-                            \active_state$next [117] = 1'h0;
-                        3'h6:
-                            \active_state$next [117] = 1'h0;
-                        3'h7:
-                            \active_state$next [117] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[119:117])
-                        3'h0:
-                            \active_state$next [118] = 1'h0;
-                        3'h1:
-                            \active_state$next [118] = 1'h1;
-                        3'h2:
-                            \active_state$next [118] = 1'h1;
-                        3'h3:
-                            \active_state$next [118] = 1'h1;
-                        3'h4:
-                            \active_state$next [118] = 1'h1;
-                        3'h5:
-                            \active_state$next [118] = 1'h0;
-                        3'h6:
-                            \active_state$next [118] = 1'h0;
-                        3'h7:
-                            \active_state$next [118] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[119:117])
-                        3'h0:
-                            \active_state$next [118] = 1'h0;
-                        3'h1:
-                            \active_state$next [118] = 1'h1;
-                        3'h2:
-                            \active_state$next [118] = 1'h1;
-                        3'h3:
-                            \active_state$next [118] = 1'h1;
-                        3'h4:
-                            \active_state$next [118] = 1'h0;
-                        3'h5:
-                            \active_state$next [118] = 1'h1;
-                        3'h6:
-                            \active_state$next [118] = 1'h1;
-                        3'h7:
-                            \active_state$next [118] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[119:117])
-                        3'h0:
-                            \active_state$next [118] = 1'h0;
-                        3'h1:
-                            \active_state$next [118] = 1'h1;
-                        3'h2:
-                            \active_state$next [118] = 1'h0;
-                        3'h3:
-                            \active_state$next [118] = 1'h1;
-                        3'h4:
-                            \active_state$next [118] = 1'h0;
-                        3'h5:
-                            \active_state$next [118] = 1'h1;
-                        3'h6:
-                            \active_state$next [118] = 1'h1;
-                        3'h7:
-                            \active_state$next [118] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[119:117])
-                        3'h0:
-                            \active_state$next [118] = 1'h0;
-                        3'h1:
-                            \active_state$next [118] = 1'h1;
-                        3'h2:
-                            \active_state$next [118] = 1'h1;
-                        3'h3:
-                            \active_state$next [118] = 1'h1;
-                        3'h4:
-                            \active_state$next [118] = 1'h0;
-                        3'h5:
-                            \active_state$next [118] = 1'h0;
-                        3'h6:
-                            \active_state$next [118] = 1'h0;
-                        3'h7:
-                            \active_state$next [118] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[120:118])
-                        3'h0:
-                            \active_state$next [119] = 1'h0;
-                        3'h1:
-                            \active_state$next [119] = 1'h1;
-                        3'h2:
-                            \active_state$next [119] = 1'h1;
-                        3'h3:
-                            \active_state$next [119] = 1'h1;
-                        3'h4:
-                            \active_state$next [119] = 1'h1;
-                        3'h5:
-                            \active_state$next [119] = 1'h0;
-                        3'h6:
-                            \active_state$next [119] = 1'h0;
-                        3'h7:
-                            \active_state$next [119] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[120:118])
-                        3'h0:
-                            \active_state$next [119] = 1'h0;
-                        3'h1:
-                            \active_state$next [119] = 1'h1;
-                        3'h2:
-                            \active_state$next [119] = 1'h1;
-                        3'h3:
-                            \active_state$next [119] = 1'h1;
-                        3'h4:
-                            \active_state$next [119] = 1'h0;
-                        3'h5:
-                            \active_state$next [119] = 1'h1;
-                        3'h6:
-                            \active_state$next [119] = 1'h1;
-                        3'h7:
-                            \active_state$next [119] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[120:118])
-                        3'h0:
-                            \active_state$next [119] = 1'h0;
-                        3'h1:
-                            \active_state$next [119] = 1'h1;
-                        3'h2:
-                            \active_state$next [119] = 1'h0;
-                        3'h3:
-                            \active_state$next [119] = 1'h1;
-                        3'h4:
-                            \active_state$next [119] = 1'h0;
-                        3'h5:
-                            \active_state$next [119] = 1'h1;
-                        3'h6:
-                            \active_state$next [119] = 1'h1;
-                        3'h7:
-                            \active_state$next [119] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[120:118])
-                        3'h0:
-                            \active_state$next [119] = 1'h0;
-                        3'h1:
-                            \active_state$next [119] = 1'h1;
-                        3'h2:
-                            \active_state$next [119] = 1'h1;
-                        3'h3:
-                            \active_state$next [119] = 1'h1;
-                        3'h4:
-                            \active_state$next [119] = 1'h0;
-                        3'h5:
-                            \active_state$next [119] = 1'h0;
-                        3'h6:
-                            \active_state$next [119] = 1'h0;
-                        3'h7:
-                            \active_state$next [119] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[121:119])
-                        3'h0:
-                            \active_state$next [120] = 1'h0;
-                        3'h1:
-                            \active_state$next [120] = 1'h1;
-                        3'h2:
-                            \active_state$next [120] = 1'h1;
-                        3'h3:
-                            \active_state$next [120] = 1'h1;
-                        3'h4:
-                            \active_state$next [120] = 1'h1;
-                        3'h5:
-                            \active_state$next [120] = 1'h0;
-                        3'h6:
-                            \active_state$next [120] = 1'h0;
-                        3'h7:
-                            \active_state$next [120] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[121:119])
-                        3'h0:
-                            \active_state$next [120] = 1'h0;
-                        3'h1:
-                            \active_state$next [120] = 1'h1;
-                        3'h2:
-                            \active_state$next [120] = 1'h1;
-                        3'h3:
-                            \active_state$next [120] = 1'h1;
-                        3'h4:
-                            \active_state$next [120] = 1'h0;
-                        3'h5:
-                            \active_state$next [120] = 1'h1;
-                        3'h6:
-                            \active_state$next [120] = 1'h1;
-                        3'h7:
-                            \active_state$next [120] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[121:119])
-                        3'h0:
-                            \active_state$next [120] = 1'h0;
-                        3'h1:
-                            \active_state$next [120] = 1'h1;
-                        3'h2:
-                            \active_state$next [120] = 1'h0;
-                        3'h3:
-                            \active_state$next [120] = 1'h1;
-                        3'h4:
-                            \active_state$next [120] = 1'h0;
-                        3'h5:
-                            \active_state$next [120] = 1'h1;
-                        3'h6:
-                            \active_state$next [120] = 1'h1;
-                        3'h7:
-                            \active_state$next [120] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[121:119])
-                        3'h0:
-                            \active_state$next [120] = 1'h0;
-                        3'h1:
-                            \active_state$next [120] = 1'h1;
-                        3'h2:
-                            \active_state$next [120] = 1'h1;
-                        3'h3:
-                            \active_state$next [120] = 1'h1;
-                        3'h4:
-                            \active_state$next [120] = 1'h0;
-                        3'h5:
-                            \active_state$next [120] = 1'h0;
-                        3'h6:
-                            \active_state$next [120] = 1'h0;
-                        3'h7:
-                            \active_state$next [120] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[122:120])
-                        3'h0:
-                            \active_state$next [121] = 1'h0;
-                        3'h1:
-                            \active_state$next [121] = 1'h1;
-                        3'h2:
-                            \active_state$next [121] = 1'h1;
-                        3'h3:
-                            \active_state$next [121] = 1'h1;
-                        3'h4:
-                            \active_state$next [121] = 1'h1;
-                        3'h5:
-                            \active_state$next [121] = 1'h0;
-                        3'h6:
-                            \active_state$next [121] = 1'h0;
-                        3'h7:
-                            \active_state$next [121] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[122:120])
-                        3'h0:
-                            \active_state$next [121] = 1'h0;
-                        3'h1:
-                            \active_state$next [121] = 1'h1;
-                        3'h2:
-                            \active_state$next [121] = 1'h1;
-                        3'h3:
-                            \active_state$next [121] = 1'h1;
-                        3'h4:
-                            \active_state$next [121] = 1'h0;
-                        3'h5:
-                            \active_state$next [121] = 1'h1;
-                        3'h6:
-                            \active_state$next [121] = 1'h1;
-                        3'h7:
-                            \active_state$next [121] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[122:120])
-                        3'h0:
-                            \active_state$next [121] = 1'h0;
-                        3'h1:
-                            \active_state$next [121] = 1'h1;
-                        3'h2:
-                            \active_state$next [121] = 1'h0;
-                        3'h3:
-                            \active_state$next [121] = 1'h1;
-                        3'h4:
-                            \active_state$next [121] = 1'h0;
-                        3'h5:
-                            \active_state$next [121] = 1'h1;
-                        3'h6:
-                            \active_state$next [121] = 1'h1;
-                        3'h7:
-                            \active_state$next [121] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[122:120])
-                        3'h0:
-                            \active_state$next [121] = 1'h0;
-                        3'h1:
-                            \active_state$next [121] = 1'h1;
-                        3'h2:
-                            \active_state$next [121] = 1'h1;
-                        3'h3:
-                            \active_state$next [121] = 1'h1;
-                        3'h4:
-                            \active_state$next [121] = 1'h0;
-                        3'h5:
-                            \active_state$next [121] = 1'h0;
-                        3'h6:
-                            \active_state$next [121] = 1'h0;
-                        3'h7:
-                            \active_state$next [121] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[123:121])
-                        3'h0:
-                            \active_state$next [122] = 1'h0;
-                        3'h1:
-                            \active_state$next [122] = 1'h1;
-                        3'h2:
-                            \active_state$next [122] = 1'h1;
-                        3'h3:
-                            \active_state$next [122] = 1'h1;
-                        3'h4:
-                            \active_state$next [122] = 1'h1;
-                        3'h5:
-                            \active_state$next [122] = 1'h0;
-                        3'h6:
-                            \active_state$next [122] = 1'h0;
-                        3'h7:
-                            \active_state$next [122] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[123:121])
-                        3'h0:
-                            \active_state$next [122] = 1'h0;
-                        3'h1:
-                            \active_state$next [122] = 1'h1;
-                        3'h2:
-                            \active_state$next [122] = 1'h1;
-                        3'h3:
-                            \active_state$next [122] = 1'h1;
-                        3'h4:
-                            \active_state$next [122] = 1'h0;
-                        3'h5:
-                            \active_state$next [122] = 1'h1;
-                        3'h6:
-                            \active_state$next [122] = 1'h1;
-                        3'h7:
-                            \active_state$next [122] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[123:121])
-                        3'h0:
-                            \active_state$next [122] = 1'h0;
-                        3'h1:
-                            \active_state$next [122] = 1'h1;
-                        3'h2:
-                            \active_state$next [122] = 1'h0;
-                        3'h3:
-                            \active_state$next [122] = 1'h1;
-                        3'h4:
-                            \active_state$next [122] = 1'h0;
-                        3'h5:
-                            \active_state$next [122] = 1'h1;
-                        3'h6:
-                            \active_state$next [122] = 1'h1;
-                        3'h7:
-                            \active_state$next [122] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[123:121])
-                        3'h0:
-                            \active_state$next [122] = 1'h0;
-                        3'h1:
-                            \active_state$next [122] = 1'h1;
-                        3'h2:
-                            \active_state$next [122] = 1'h1;
-                        3'h3:
-                            \active_state$next [122] = 1'h1;
-                        3'h4:
-                            \active_state$next [122] = 1'h0;
-                        3'h5:
-                            \active_state$next [122] = 1'h0;
-                        3'h6:
-                            \active_state$next [122] = 1'h0;
-                        3'h7:
-                            \active_state$next [122] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[124:122])
-                        3'h0:
-                            \active_state$next [123] = 1'h0;
-                        3'h1:
-                            \active_state$next [123] = 1'h1;
-                        3'h2:
-                            \active_state$next [123] = 1'h1;
-                        3'h3:
-                            \active_state$next [123] = 1'h1;
-                        3'h4:
-                            \active_state$next [123] = 1'h1;
-                        3'h5:
-                            \active_state$next [123] = 1'h0;
-                        3'h6:
-                            \active_state$next [123] = 1'h0;
-                        3'h7:
-                            \active_state$next [123] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[124:122])
-                        3'h0:
-                            \active_state$next [123] = 1'h0;
-                        3'h1:
-                            \active_state$next [123] = 1'h1;
-                        3'h2:
-                            \active_state$next [123] = 1'h1;
-                        3'h3:
-                            \active_state$next [123] = 1'h1;
-                        3'h4:
-                            \active_state$next [123] = 1'h0;
-                        3'h5:
-                            \active_state$next [123] = 1'h1;
-                        3'h6:
-                            \active_state$next [123] = 1'h1;
-                        3'h7:
-                            \active_state$next [123] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[124:122])
-                        3'h0:
-                            \active_state$next [123] = 1'h0;
-                        3'h1:
-                            \active_state$next [123] = 1'h1;
-                        3'h2:
-                            \active_state$next [123] = 1'h0;
-                        3'h3:
-                            \active_state$next [123] = 1'h1;
-                        3'h4:
-                            \active_state$next [123] = 1'h0;
-                        3'h5:
-                            \active_state$next [123] = 1'h1;
-                        3'h6:
-                            \active_state$next [123] = 1'h1;
-                        3'h7:
-                            \active_state$next [123] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[124:122])
-                        3'h0:
-                            \active_state$next [123] = 1'h0;
-                        3'h1:
-                            \active_state$next [123] = 1'h1;
-                        3'h2:
-                            \active_state$next [123] = 1'h1;
-                        3'h3:
-                            \active_state$next [123] = 1'h1;
-                        3'h4:
-                            \active_state$next [123] = 1'h0;
-                        3'h5:
-                            \active_state$next [123] = 1'h0;
-                        3'h6:
-                            \active_state$next [123] = 1'h0;
-                        3'h7:
-                            \active_state$next [123] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[125:123])
-                        3'h0:
-                            \active_state$next [124] = 1'h0;
-                        3'h1:
-                            \active_state$next [124] = 1'h1;
-                        3'h2:
-                            \active_state$next [124] = 1'h1;
-                        3'h3:
-                            \active_state$next [124] = 1'h1;
-                        3'h4:
-                            \active_state$next [124] = 1'h1;
-                        3'h5:
-                            \active_state$next [124] = 1'h0;
-                        3'h6:
-                            \active_state$next [124] = 1'h0;
-                        3'h7:
-                            \active_state$next [124] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[125:123])
-                        3'h0:
-                            \active_state$next [124] = 1'h0;
-                        3'h1:
-                            \active_state$next [124] = 1'h1;
-                        3'h2:
-                            \active_state$next [124] = 1'h1;
-                        3'h3:
-                            \active_state$next [124] = 1'h1;
-                        3'h4:
-                            \active_state$next [124] = 1'h0;
-                        3'h5:
-                            \active_state$next [124] = 1'h1;
-                        3'h6:
-                            \active_state$next [124] = 1'h1;
-                        3'h7:
-                            \active_state$next [124] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[125:123])
-                        3'h0:
-                            \active_state$next [124] = 1'h0;
-                        3'h1:
-                            \active_state$next [124] = 1'h1;
-                        3'h2:
-                            \active_state$next [124] = 1'h0;
-                        3'h3:
-                            \active_state$next [124] = 1'h1;
-                        3'h4:
-                            \active_state$next [124] = 1'h0;
-                        3'h5:
-                            \active_state$next [124] = 1'h1;
-                        3'h6:
-                            \active_state$next [124] = 1'h1;
-                        3'h7:
-                            \active_state$next [124] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[125:123])
-                        3'h0:
-                            \active_state$next [124] = 1'h0;
-                        3'h1:
-                            \active_state$next [124] = 1'h1;
-                        3'h2:
-                            \active_state$next [124] = 1'h1;
-                        3'h3:
-                            \active_state$next [124] = 1'h1;
-                        3'h4:
-                            \active_state$next [124] = 1'h0;
-                        3'h5:
-                            \active_state$next [124] = 1'h0;
-                        3'h6:
-                            \active_state$next [124] = 1'h0;
-                        3'h7:
-                            \active_state$next [124] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[126:124])
-                        3'h0:
-                            \active_state$next [125] = 1'h0;
-                        3'h1:
-                            \active_state$next [125] = 1'h1;
-                        3'h2:
-                            \active_state$next [125] = 1'h1;
-                        3'h3:
-                            \active_state$next [125] = 1'h1;
-                        3'h4:
-                            \active_state$next [125] = 1'h1;
-                        3'h5:
-                            \active_state$next [125] = 1'h0;
-                        3'h6:
-                            \active_state$next [125] = 1'h0;
-                        3'h7:
-                            \active_state$next [125] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[126:124])
-                        3'h0:
-                            \active_state$next [125] = 1'h0;
-                        3'h1:
-                            \active_state$next [125] = 1'h1;
-                        3'h2:
-                            \active_state$next [125] = 1'h1;
-                        3'h3:
-                            \active_state$next [125] = 1'h1;
-                        3'h4:
-                            \active_state$next [125] = 1'h0;
-                        3'h5:
-                            \active_state$next [125] = 1'h1;
-                        3'h6:
-                            \active_state$next [125] = 1'h1;
-                        3'h7:
-                            \active_state$next [125] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[126:124])
-                        3'h0:
-                            \active_state$next [125] = 1'h0;
-                        3'h1:
-                            \active_state$next [125] = 1'h1;
-                        3'h2:
-                            \active_state$next [125] = 1'h0;
-                        3'h3:
-                            \active_state$next [125] = 1'h1;
-                        3'h4:
-                            \active_state$next [125] = 1'h0;
-                        3'h5:
-                            \active_state$next [125] = 1'h1;
-                        3'h6:
-                            \active_state$next [125] = 1'h1;
-                        3'h7:
-                            \active_state$next [125] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[126:124])
-                        3'h0:
-                            \active_state$next [125] = 1'h0;
-                        3'h1:
-                            \active_state$next [125] = 1'h1;
-                        3'h2:
-                            \active_state$next [125] = 1'h1;
-                        3'h3:
-                            \active_state$next [125] = 1'h1;
-                        3'h4:
-                            \active_state$next [125] = 1'h0;
-                        3'h5:
-                            \active_state$next [125] = 1'h0;
-                        3'h6:
-                            \active_state$next [125] = 1'h0;
-                        3'h7:
-                            \active_state$next [125] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[127:125])
-                        3'h0:
-                            \active_state$next [126] = 1'h0;
-                        3'h1:
-                            \active_state$next [126] = 1'h1;
-                        3'h2:
-                            \active_state$next [126] = 1'h1;
-                        3'h3:
-                            \active_state$next [126] = 1'h1;
-                        3'h4:
-                            \active_state$next [126] = 1'h1;
-                        3'h5:
-                            \active_state$next [126] = 1'h0;
-                        3'h6:
-                            \active_state$next [126] = 1'h0;
-                        3'h7:
-                            \active_state$next [126] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[127:125])
-                        3'h0:
-                            \active_state$next [126] = 1'h0;
-                        3'h1:
-                            \active_state$next [126] = 1'h1;
-                        3'h2:
-                            \active_state$next [126] = 1'h1;
-                        3'h3:
-                            \active_state$next [126] = 1'h1;
-                        3'h4:
-                            \active_state$next [126] = 1'h0;
-                        3'h5:
-                            \active_state$next [126] = 1'h1;
-                        3'h6:
-                            \active_state$next [126] = 1'h1;
-                        3'h7:
-                            \active_state$next [126] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[127:125])
-                        3'h0:
-                            \active_state$next [126] = 1'h0;
-                        3'h1:
-                            \active_state$next [126] = 1'h1;
-                        3'h2:
-                            \active_state$next [126] = 1'h0;
-                        3'h3:
-                            \active_state$next [126] = 1'h1;
-                        3'h4:
-                            \active_state$next [126] = 1'h0;
-                        3'h5:
-                            \active_state$next [126] = 1'h1;
-                        3'h6:
-                            \active_state$next [126] = 1'h1;
-                        3'h7:
-                            \active_state$next [126] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[127:125])
-                        3'h0:
-                            \active_state$next [126] = 1'h0;
-                        3'h1:
-                            \active_state$next [126] = 1'h1;
-                        3'h2:
-                            \active_state$next [126] = 1'h1;
-                        3'h3:
-                            \active_state$next [126] = 1'h1;
-                        3'h4:
-                            \active_state$next [126] = 1'h0;
-                        3'h5:
-                            \active_state$next [126] = 1'h0;
-                        3'h6:
-                            \active_state$next [126] = 1'h0;
-                        3'h7:
-                            \active_state$next [126] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[128:126])
-                        3'h0:
-                            \active_state$next [127] = 1'h0;
-                        3'h1:
-                            \active_state$next [127] = 1'h1;
-                        3'h2:
-                            \active_state$next [127] = 1'h1;
-                        3'h3:
-                            \active_state$next [127] = 1'h1;
-                        3'h4:
-                            \active_state$next [127] = 1'h1;
-                        3'h5:
-                            \active_state$next [127] = 1'h0;
-                        3'h6:
-                            \active_state$next [127] = 1'h0;
-                        3'h7:
-                            \active_state$next [127] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[128:126])
-                        3'h0:
-                            \active_state$next [127] = 1'h0;
-                        3'h1:
-                            \active_state$next [127] = 1'h1;
-                        3'h2:
-                            \active_state$next [127] = 1'h1;
-                        3'h3:
-                            \active_state$next [127] = 1'h1;
-                        3'h4:
-                            \active_state$next [127] = 1'h0;
-                        3'h5:
-                            \active_state$next [127] = 1'h1;
-                        3'h6:
-                            \active_state$next [127] = 1'h1;
-                        3'h7:
-                            \active_state$next [127] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[128:126])
-                        3'h0:
-                            \active_state$next [127] = 1'h0;
-                        3'h1:
-                            \active_state$next [127] = 1'h1;
-                        3'h2:
-                            \active_state$next [127] = 1'h0;
-                        3'h3:
-                            \active_state$next [127] = 1'h1;
-                        3'h4:
-                            \active_state$next [127] = 1'h0;
-                        3'h5:
-                            \active_state$next [127] = 1'h1;
-                        3'h6:
-                            \active_state$next [127] = 1'h1;
-                        3'h7:
-                            \active_state$next [127] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[128:126])
-                        3'h0:
-                            \active_state$next [127] = 1'h0;
-                        3'h1:
-                            \active_state$next [127] = 1'h1;
-                        3'h2:
-                            \active_state$next [127] = 1'h1;
-                        3'h3:
-                            \active_state$next [127] = 1'h1;
-                        3'h4:
-                            \active_state$next [127] = 1'h0;
-                        3'h5:
-                            \active_state$next [127] = 1'h0;
-                        3'h6:
-                            \active_state$next [127] = 1'h0;
-                        3'h7:
-                            \active_state$next [127] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[129:127])
-                        3'h0:
-                            \active_state$next [128] = 1'h0;
-                        3'h1:
-                            \active_state$next [128] = 1'h1;
-                        3'h2:
-                            \active_state$next [128] = 1'h1;
-                        3'h3:
-                            \active_state$next [128] = 1'h1;
-                        3'h4:
-                            \active_state$next [128] = 1'h1;
-                        3'h5:
-                            \active_state$next [128] = 1'h0;
-                        3'h6:
-                            \active_state$next [128] = 1'h0;
-                        3'h7:
-                            \active_state$next [128] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[129:127])
-                        3'h0:
-                            \active_state$next [128] = 1'h0;
-                        3'h1:
-                            \active_state$next [128] = 1'h1;
-                        3'h2:
-                            \active_state$next [128] = 1'h1;
-                        3'h3:
-                            \active_state$next [128] = 1'h1;
-                        3'h4:
-                            \active_state$next [128] = 1'h0;
-                        3'h5:
-                            \active_state$next [128] = 1'h1;
-                        3'h6:
-                            \active_state$next [128] = 1'h1;
-                        3'h7:
-                            \active_state$next [128] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[129:127])
-                        3'h0:
-                            \active_state$next [128] = 1'h0;
-                        3'h1:
-                            \active_state$next [128] = 1'h1;
-                        3'h2:
-                            \active_state$next [128] = 1'h0;
-                        3'h3:
-                            \active_state$next [128] = 1'h1;
-                        3'h4:
-                            \active_state$next [128] = 1'h0;
-                        3'h5:
-                            \active_state$next [128] = 1'h1;
-                        3'h6:
-                            \active_state$next [128] = 1'h1;
-                        3'h7:
-                            \active_state$next [128] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[129:127])
-                        3'h0:
-                            \active_state$next [128] = 1'h0;
-                        3'h1:
-                            \active_state$next [128] = 1'h1;
-                        3'h2:
-                            \active_state$next [128] = 1'h1;
-                        3'h3:
-                            \active_state$next [128] = 1'h1;
-                        3'h4:
-                            \active_state$next [128] = 1'h0;
-                        3'h5:
-                            \active_state$next [128] = 1'h0;
-                        3'h6:
-                            \active_state$next [128] = 1'h0;
-                        3'h7:
-                            \active_state$next [128] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[130:128])
-                        3'h0:
-                            \active_state$next [129] = 1'h0;
-                        3'h1:
-                            \active_state$next [129] = 1'h1;
-                        3'h2:
-                            \active_state$next [129] = 1'h1;
-                        3'h3:
-                            \active_state$next [129] = 1'h1;
-                        3'h4:
-                            \active_state$next [129] = 1'h1;
-                        3'h5:
-                            \active_state$next [129] = 1'h0;
-                        3'h6:
-                            \active_state$next [129] = 1'h0;
-                        3'h7:
-                            \active_state$next [129] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[130:128])
-                        3'h0:
-                            \active_state$next [129] = 1'h0;
-                        3'h1:
-                            \active_state$next [129] = 1'h1;
-                        3'h2:
-                            \active_state$next [129] = 1'h1;
-                        3'h3:
-                            \active_state$next [129] = 1'h1;
-                        3'h4:
-                            \active_state$next [129] = 1'h0;
-                        3'h5:
-                            \active_state$next [129] = 1'h1;
-                        3'h6:
-                            \active_state$next [129] = 1'h1;
-                        3'h7:
-                            \active_state$next [129] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[130:128])
-                        3'h0:
-                            \active_state$next [129] = 1'h0;
-                        3'h1:
-                            \active_state$next [129] = 1'h1;
-                        3'h2:
-                            \active_state$next [129] = 1'h0;
-                        3'h3:
-                            \active_state$next [129] = 1'h1;
-                        3'h4:
-                            \active_state$next [129] = 1'h0;
-                        3'h5:
-                            \active_state$next [129] = 1'h1;
-                        3'h6:
-                            \active_state$next [129] = 1'h1;
-                        3'h7:
-                            \active_state$next [129] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[130:128])
-                        3'h0:
-                            \active_state$next [129] = 1'h0;
-                        3'h1:
-                            \active_state$next [129] = 1'h1;
-                        3'h2:
-                            \active_state$next [129] = 1'h1;
-                        3'h3:
-                            \active_state$next [129] = 1'h1;
-                        3'h4:
-                            \active_state$next [129] = 1'h0;
-                        3'h5:
-                            \active_state$next [129] = 1'h0;
-                        3'h6:
-                            \active_state$next [129] = 1'h0;
-                        3'h7:
-                            \active_state$next [129] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[131:129])
-                        3'h0:
-                            \active_state$next [130] = 1'h0;
-                        3'h1:
-                            \active_state$next [130] = 1'h1;
-                        3'h2:
-                            \active_state$next [130] = 1'h1;
-                        3'h3:
-                            \active_state$next [130] = 1'h1;
-                        3'h4:
-                            \active_state$next [130] = 1'h1;
-                        3'h5:
-                            \active_state$next [130] = 1'h0;
-                        3'h6:
-                            \active_state$next [130] = 1'h0;
-                        3'h7:
-                            \active_state$next [130] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[131:129])
-                        3'h0:
-                            \active_state$next [130] = 1'h0;
-                        3'h1:
-                            \active_state$next [130] = 1'h1;
-                        3'h2:
-                            \active_state$next [130] = 1'h1;
-                        3'h3:
-                            \active_state$next [130] = 1'h1;
-                        3'h4:
-                            \active_state$next [130] = 1'h0;
-                        3'h5:
-                            \active_state$next [130] = 1'h1;
-                        3'h6:
-                            \active_state$next [130] = 1'h1;
-                        3'h7:
-                            \active_state$next [130] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[131:129])
-                        3'h0:
-                            \active_state$next [130] = 1'h0;
-                        3'h1:
-                            \active_state$next [130] = 1'h1;
-                        3'h2:
-                            \active_state$next [130] = 1'h0;
-                        3'h3:
-                            \active_state$next [130] = 1'h1;
-                        3'h4:
-                            \active_state$next [130] = 1'h0;
-                        3'h5:
-                            \active_state$next [130] = 1'h1;
-                        3'h6:
-                            \active_state$next [130] = 1'h1;
-                        3'h7:
-                            \active_state$next [130] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[131:129])
-                        3'h0:
-                            \active_state$next [130] = 1'h0;
-                        3'h1:
-                            \active_state$next [130] = 1'h1;
-                        3'h2:
-                            \active_state$next [130] = 1'h1;
-                        3'h3:
-                            \active_state$next [130] = 1'h1;
-                        3'h4:
-                            \active_state$next [130] = 1'h0;
-                        3'h5:
-                            \active_state$next [130] = 1'h0;
-                        3'h6:
-                            \active_state$next [130] = 1'h0;
-                        3'h7:
-                            \active_state$next [130] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[132:130])
-                        3'h0:
-                            \active_state$next [131] = 1'h0;
-                        3'h1:
-                            \active_state$next [131] = 1'h1;
-                        3'h2:
-                            \active_state$next [131] = 1'h1;
-                        3'h3:
-                            \active_state$next [131] = 1'h1;
-                        3'h4:
-                            \active_state$next [131] = 1'h1;
-                        3'h5:
-                            \active_state$next [131] = 1'h0;
-                        3'h6:
-                            \active_state$next [131] = 1'h0;
-                        3'h7:
-                            \active_state$next [131] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[132:130])
-                        3'h0:
-                            \active_state$next [131] = 1'h0;
-                        3'h1:
-                            \active_state$next [131] = 1'h1;
-                        3'h2:
-                            \active_state$next [131] = 1'h1;
-                        3'h3:
-                            \active_state$next [131] = 1'h1;
-                        3'h4:
-                            \active_state$next [131] = 1'h0;
-                        3'h5:
-                            \active_state$next [131] = 1'h1;
-                        3'h6:
-                            \active_state$next [131] = 1'h1;
-                        3'h7:
-                            \active_state$next [131] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[132:130])
-                        3'h0:
-                            \active_state$next [131] = 1'h0;
-                        3'h1:
-                            \active_state$next [131] = 1'h1;
-                        3'h2:
-                            \active_state$next [131] = 1'h0;
-                        3'h3:
-                            \active_state$next [131] = 1'h1;
-                        3'h4:
-                            \active_state$next [131] = 1'h0;
-                        3'h5:
-                            \active_state$next [131] = 1'h1;
-                        3'h6:
-                            \active_state$next [131] = 1'h1;
-                        3'h7:
-                            \active_state$next [131] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[132:130])
-                        3'h0:
-                            \active_state$next [131] = 1'h0;
-                        3'h1:
-                            \active_state$next [131] = 1'h1;
-                        3'h2:
-                            \active_state$next [131] = 1'h1;
-                        3'h3:
-                            \active_state$next [131] = 1'h1;
-                        3'h4:
-                            \active_state$next [131] = 1'h0;
-                        3'h5:
-                            \active_state$next [131] = 1'h0;
-                        3'h6:
-                            \active_state$next [131] = 1'h0;
-                        3'h7:
-                            \active_state$next [131] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[133:131])
-                        3'h0:
-                            \active_state$next [132] = 1'h0;
-                        3'h1:
-                            \active_state$next [132] = 1'h1;
-                        3'h2:
-                            \active_state$next [132] = 1'h1;
-                        3'h3:
-                            \active_state$next [132] = 1'h1;
-                        3'h4:
-                            \active_state$next [132] = 1'h1;
-                        3'h5:
-                            \active_state$next [132] = 1'h0;
-                        3'h6:
-                            \active_state$next [132] = 1'h0;
-                        3'h7:
-                            \active_state$next [132] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[133:131])
-                        3'h0:
-                            \active_state$next [132] = 1'h0;
-                        3'h1:
-                            \active_state$next [132] = 1'h1;
-                        3'h2:
-                            \active_state$next [132] = 1'h1;
-                        3'h3:
-                            \active_state$next [132] = 1'h1;
-                        3'h4:
-                            \active_state$next [132] = 1'h0;
-                        3'h5:
-                            \active_state$next [132] = 1'h1;
-                        3'h6:
-                            \active_state$next [132] = 1'h1;
-                        3'h7:
-                            \active_state$next [132] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[133:131])
-                        3'h0:
-                            \active_state$next [132] = 1'h0;
-                        3'h1:
-                            \active_state$next [132] = 1'h1;
-                        3'h2:
-                            \active_state$next [132] = 1'h0;
-                        3'h3:
-                            \active_state$next [132] = 1'h1;
-                        3'h4:
-                            \active_state$next [132] = 1'h0;
-                        3'h5:
-                            \active_state$next [132] = 1'h1;
-                        3'h6:
-                            \active_state$next [132] = 1'h1;
-                        3'h7:
-                            \active_state$next [132] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[133:131])
-                        3'h0:
-                            \active_state$next [132] = 1'h0;
-                        3'h1:
-                            \active_state$next [132] = 1'h1;
-                        3'h2:
-                            \active_state$next [132] = 1'h1;
-                        3'h3:
-                            \active_state$next [132] = 1'h1;
-                        3'h4:
-                            \active_state$next [132] = 1'h0;
-                        3'h5:
-                            \active_state$next [132] = 1'h0;
-                        3'h6:
-                            \active_state$next [132] = 1'h0;
-                        3'h7:
-                            \active_state$next [132] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[134:132])
-                        3'h0:
-                            \active_state$next [133] = 1'h0;
-                        3'h1:
-                            \active_state$next [133] = 1'h1;
-                        3'h2:
-                            \active_state$next [133] = 1'h1;
-                        3'h3:
-                            \active_state$next [133] = 1'h1;
-                        3'h4:
-                            \active_state$next [133] = 1'h1;
-                        3'h5:
-                            \active_state$next [133] = 1'h0;
-                        3'h6:
-                            \active_state$next [133] = 1'h0;
-                        3'h7:
-                            \active_state$next [133] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[134:132])
-                        3'h0:
-                            \active_state$next [133] = 1'h0;
-                        3'h1:
-                            \active_state$next [133] = 1'h1;
-                        3'h2:
-                            \active_state$next [133] = 1'h1;
-                        3'h3:
-                            \active_state$next [133] = 1'h1;
-                        3'h4:
-                            \active_state$next [133] = 1'h0;
-                        3'h5:
-                            \active_state$next [133] = 1'h1;
-                        3'h6:
-                            \active_state$next [133] = 1'h1;
-                        3'h7:
-                            \active_state$next [133] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[134:132])
-                        3'h0:
-                            \active_state$next [133] = 1'h0;
-                        3'h1:
-                            \active_state$next [133] = 1'h1;
-                        3'h2:
-                            \active_state$next [133] = 1'h0;
-                        3'h3:
-                            \active_state$next [133] = 1'h1;
-                        3'h4:
-                            \active_state$next [133] = 1'h0;
-                        3'h5:
-                            \active_state$next [133] = 1'h1;
-                        3'h6:
-                            \active_state$next [133] = 1'h1;
-                        3'h7:
-                            \active_state$next [133] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[134:132])
-                        3'h0:
-                            \active_state$next [133] = 1'h0;
-                        3'h1:
-                            \active_state$next [133] = 1'h1;
-                        3'h2:
-                            \active_state$next [133] = 1'h1;
-                        3'h3:
-                            \active_state$next [133] = 1'h1;
-                        3'h4:
-                            \active_state$next [133] = 1'h0;
-                        3'h5:
-                            \active_state$next [133] = 1'h0;
-                        3'h6:
-                            \active_state$next [133] = 1'h0;
-                        3'h7:
-                            \active_state$next [133] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[135:133])
-                        3'h0:
-                            \active_state$next [134] = 1'h0;
-                        3'h1:
-                            \active_state$next [134] = 1'h1;
-                        3'h2:
-                            \active_state$next [134] = 1'h1;
-                        3'h3:
-                            \active_state$next [134] = 1'h1;
-                        3'h4:
-                            \active_state$next [134] = 1'h1;
-                        3'h5:
-                            \active_state$next [134] = 1'h0;
-                        3'h6:
-                            \active_state$next [134] = 1'h0;
-                        3'h7:
-                            \active_state$next [134] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[135:133])
-                        3'h0:
-                            \active_state$next [134] = 1'h0;
-                        3'h1:
-                            \active_state$next [134] = 1'h1;
-                        3'h2:
-                            \active_state$next [134] = 1'h1;
-                        3'h3:
-                            \active_state$next [134] = 1'h1;
-                        3'h4:
-                            \active_state$next [134] = 1'h0;
-                        3'h5:
-                            \active_state$next [134] = 1'h1;
-                        3'h6:
-                            \active_state$next [134] = 1'h1;
-                        3'h7:
-                            \active_state$next [134] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[135:133])
-                        3'h0:
-                            \active_state$next [134] = 1'h0;
-                        3'h1:
-                            \active_state$next [134] = 1'h1;
-                        3'h2:
-                            \active_state$next [134] = 1'h0;
-                        3'h3:
-                            \active_state$next [134] = 1'h1;
-                        3'h4:
-                            \active_state$next [134] = 1'h0;
-                        3'h5:
-                            \active_state$next [134] = 1'h1;
-                        3'h6:
-                            \active_state$next [134] = 1'h1;
-                        3'h7:
-                            \active_state$next [134] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[135:133])
-                        3'h0:
-                            \active_state$next [134] = 1'h0;
-                        3'h1:
-                            \active_state$next [134] = 1'h1;
-                        3'h2:
-                            \active_state$next [134] = 1'h1;
-                        3'h3:
-                            \active_state$next [134] = 1'h1;
-                        3'h4:
-                            \active_state$next [134] = 1'h0;
-                        3'h5:
-                            \active_state$next [134] = 1'h0;
-                        3'h6:
-                            \active_state$next [134] = 1'h0;
-                        3'h7:
-                            \active_state$next [134] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[136:134])
-                        3'h0:
-                            \active_state$next [135] = 1'h0;
-                        3'h1:
-                            \active_state$next [135] = 1'h1;
-                        3'h2:
-                            \active_state$next [135] = 1'h1;
-                        3'h3:
-                            \active_state$next [135] = 1'h1;
-                        3'h4:
-                            \active_state$next [135] = 1'h1;
-                        3'h5:
-                            \active_state$next [135] = 1'h0;
-                        3'h6:
-                            \active_state$next [135] = 1'h0;
-                        3'h7:
-                            \active_state$next [135] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[136:134])
-                        3'h0:
-                            \active_state$next [135] = 1'h0;
-                        3'h1:
-                            \active_state$next [135] = 1'h1;
-                        3'h2:
-                            \active_state$next [135] = 1'h1;
-                        3'h3:
-                            \active_state$next [135] = 1'h1;
-                        3'h4:
-                            \active_state$next [135] = 1'h0;
-                        3'h5:
-                            \active_state$next [135] = 1'h1;
-                        3'h6:
-                            \active_state$next [135] = 1'h1;
-                        3'h7:
-                            \active_state$next [135] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[136:134])
-                        3'h0:
-                            \active_state$next [135] = 1'h0;
-                        3'h1:
-                            \active_state$next [135] = 1'h1;
-                        3'h2:
-                            \active_state$next [135] = 1'h0;
-                        3'h3:
-                            \active_state$next [135] = 1'h1;
-                        3'h4:
-                            \active_state$next [135] = 1'h0;
-                        3'h5:
-                            \active_state$next [135] = 1'h1;
-                        3'h6:
-                            \active_state$next [135] = 1'h1;
-                        3'h7:
-                            \active_state$next [135] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[136:134])
-                        3'h0:
-                            \active_state$next [135] = 1'h0;
-                        3'h1:
-                            \active_state$next [135] = 1'h1;
-                        3'h2:
-                            \active_state$next [135] = 1'h1;
-                        3'h3:
-                            \active_state$next [135] = 1'h1;
-                        3'h4:
-                            \active_state$next [135] = 1'h0;
-                        3'h5:
-                            \active_state$next [135] = 1'h0;
-                        3'h6:
-                            \active_state$next [135] = 1'h0;
-                        3'h7:
-                            \active_state$next [135] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[137:135])
-                        3'h0:
-                            \active_state$next [136] = 1'h0;
-                        3'h1:
-                            \active_state$next [136] = 1'h1;
-                        3'h2:
-                            \active_state$next [136] = 1'h1;
-                        3'h3:
-                            \active_state$next [136] = 1'h1;
-                        3'h4:
-                            \active_state$next [136] = 1'h1;
-                        3'h5:
-                            \active_state$next [136] = 1'h0;
-                        3'h6:
-                            \active_state$next [136] = 1'h0;
-                        3'h7:
-                            \active_state$next [136] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[137:135])
-                        3'h0:
-                            \active_state$next [136] = 1'h0;
-                        3'h1:
-                            \active_state$next [136] = 1'h1;
-                        3'h2:
-                            \active_state$next [136] = 1'h1;
-                        3'h3:
-                            \active_state$next [136] = 1'h1;
-                        3'h4:
-                            \active_state$next [136] = 1'h0;
-                        3'h5:
-                            \active_state$next [136] = 1'h1;
-                        3'h6:
-                            \active_state$next [136] = 1'h1;
-                        3'h7:
-                            \active_state$next [136] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[137:135])
-                        3'h0:
-                            \active_state$next [136] = 1'h0;
-                        3'h1:
-                            \active_state$next [136] = 1'h1;
-                        3'h2:
-                            \active_state$next [136] = 1'h0;
-                        3'h3:
-                            \active_state$next [136] = 1'h1;
-                        3'h4:
-                            \active_state$next [136] = 1'h0;
-                        3'h5:
-                            \active_state$next [136] = 1'h1;
-                        3'h6:
-                            \active_state$next [136] = 1'h1;
-                        3'h7:
-                            \active_state$next [136] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[137:135])
-                        3'h0:
-                            \active_state$next [136] = 1'h0;
-                        3'h1:
-                            \active_state$next [136] = 1'h1;
-                        3'h2:
-                            \active_state$next [136] = 1'h1;
-                        3'h3:
-                            \active_state$next [136] = 1'h1;
-                        3'h4:
-                            \active_state$next [136] = 1'h0;
-                        3'h5:
-                            \active_state$next [136] = 1'h0;
-                        3'h6:
-                            \active_state$next [136] = 1'h0;
-                        3'h7:
-                            \active_state$next [136] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[138:136])
-                        3'h0:
-                            \active_state$next [137] = 1'h0;
-                        3'h1:
-                            \active_state$next [137] = 1'h1;
-                        3'h2:
-                            \active_state$next [137] = 1'h1;
-                        3'h3:
-                            \active_state$next [137] = 1'h1;
-                        3'h4:
-                            \active_state$next [137] = 1'h1;
-                        3'h5:
-                            \active_state$next [137] = 1'h0;
-                        3'h6:
-                            \active_state$next [137] = 1'h0;
-                        3'h7:
-                            \active_state$next [137] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[138:136])
-                        3'h0:
-                            \active_state$next [137] = 1'h0;
-                        3'h1:
-                            \active_state$next [137] = 1'h1;
-                        3'h2:
-                            \active_state$next [137] = 1'h1;
-                        3'h3:
-                            \active_state$next [137] = 1'h1;
-                        3'h4:
-                            \active_state$next [137] = 1'h0;
-                        3'h5:
-                            \active_state$next [137] = 1'h1;
-                        3'h6:
-                            \active_state$next [137] = 1'h1;
-                        3'h7:
-                            \active_state$next [137] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[138:136])
-                        3'h0:
-                            \active_state$next [137] = 1'h0;
-                        3'h1:
-                            \active_state$next [137] = 1'h1;
-                        3'h2:
-                            \active_state$next [137] = 1'h0;
-                        3'h3:
-                            \active_state$next [137] = 1'h1;
-                        3'h4:
-                            \active_state$next [137] = 1'h0;
-                        3'h5:
-                            \active_state$next [137] = 1'h1;
-                        3'h6:
-                            \active_state$next [137] = 1'h1;
-                        3'h7:
-                            \active_state$next [137] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[138:136])
-                        3'h0:
-                            \active_state$next [137] = 1'h0;
-                        3'h1:
-                            \active_state$next [137] = 1'h1;
-                        3'h2:
-                            \active_state$next [137] = 1'h1;
-                        3'h3:
-                            \active_state$next [137] = 1'h1;
-                        3'h4:
-                            \active_state$next [137] = 1'h0;
-                        3'h5:
-                            \active_state$next [137] = 1'h0;
-                        3'h6:
-                            \active_state$next [137] = 1'h0;
-                        3'h7:
-                            \active_state$next [137] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[139:137])
-                        3'h0:
-                            \active_state$next [138] = 1'h0;
-                        3'h1:
-                            \active_state$next [138] = 1'h1;
-                        3'h2:
-                            \active_state$next [138] = 1'h1;
-                        3'h3:
-                            \active_state$next [138] = 1'h1;
-                        3'h4:
-                            \active_state$next [138] = 1'h1;
-                        3'h5:
-                            \active_state$next [138] = 1'h0;
-                        3'h6:
-                            \active_state$next [138] = 1'h0;
-                        3'h7:
-                            \active_state$next [138] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[139:137])
-                        3'h0:
-                            \active_state$next [138] = 1'h0;
-                        3'h1:
-                            \active_state$next [138] = 1'h1;
-                        3'h2:
-                            \active_state$next [138] = 1'h1;
-                        3'h3:
-                            \active_state$next [138] = 1'h1;
-                        3'h4:
-                            \active_state$next [138] = 1'h0;
-                        3'h5:
-                            \active_state$next [138] = 1'h1;
-                        3'h6:
-                            \active_state$next [138] = 1'h1;
-                        3'h7:
-                            \active_state$next [138] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[139:137])
-                        3'h0:
-                            \active_state$next [138] = 1'h0;
-                        3'h1:
-                            \active_state$next [138] = 1'h1;
-                        3'h2:
-                            \active_state$next [138] = 1'h0;
-                        3'h3:
-                            \active_state$next [138] = 1'h1;
-                        3'h4:
-                            \active_state$next [138] = 1'h0;
-                        3'h5:
-                            \active_state$next [138] = 1'h1;
-                        3'h6:
-                            \active_state$next [138] = 1'h1;
-                        3'h7:
-                            \active_state$next [138] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[139:137])
-                        3'h0:
-                            \active_state$next [138] = 1'h0;
-                        3'h1:
-                            \active_state$next [138] = 1'h1;
-                        3'h2:
-                            \active_state$next [138] = 1'h1;
-                        3'h3:
-                            \active_state$next [138] = 1'h1;
-                        3'h4:
-                            \active_state$next [138] = 1'h0;
-                        3'h5:
-                            \active_state$next [138] = 1'h0;
-                        3'h6:
-                            \active_state$next [138] = 1'h0;
-                        3'h7:
-                            \active_state$next [138] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[140:138])
-                        3'h0:
-                            \active_state$next [139] = 1'h0;
-                        3'h1:
-                            \active_state$next [139] = 1'h1;
-                        3'h2:
-                            \active_state$next [139] = 1'h1;
-                        3'h3:
-                            \active_state$next [139] = 1'h1;
-                        3'h4:
-                            \active_state$next [139] = 1'h1;
-                        3'h5:
-                            \active_state$next [139] = 1'h0;
-                        3'h6:
-                            \active_state$next [139] = 1'h0;
-                        3'h7:
-                            \active_state$next [139] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[140:138])
-                        3'h0:
-                            \active_state$next [139] = 1'h0;
-                        3'h1:
-                            \active_state$next [139] = 1'h1;
-                        3'h2:
-                            \active_state$next [139] = 1'h1;
-                        3'h3:
-                            \active_state$next [139] = 1'h1;
-                        3'h4:
-                            \active_state$next [139] = 1'h0;
-                        3'h5:
-                            \active_state$next [139] = 1'h1;
-                        3'h6:
-                            \active_state$next [139] = 1'h1;
-                        3'h7:
-                            \active_state$next [139] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[140:138])
-                        3'h0:
-                            \active_state$next [139] = 1'h0;
-                        3'h1:
-                            \active_state$next [139] = 1'h1;
-                        3'h2:
-                            \active_state$next [139] = 1'h0;
-                        3'h3:
-                            \active_state$next [139] = 1'h1;
-                        3'h4:
-                            \active_state$next [139] = 1'h0;
-                        3'h5:
-                            \active_state$next [139] = 1'h1;
-                        3'h6:
-                            \active_state$next [139] = 1'h1;
-                        3'h7:
-                            \active_state$next [139] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[140:138])
-                        3'h0:
-                            \active_state$next [139] = 1'h0;
-                        3'h1:
-                            \active_state$next [139] = 1'h1;
-                        3'h2:
-                            \active_state$next [139] = 1'h1;
-                        3'h3:
-                            \active_state$next [139] = 1'h1;
-                        3'h4:
-                            \active_state$next [139] = 1'h0;
-                        3'h5:
-                            \active_state$next [139] = 1'h0;
-                        3'h6:
-                            \active_state$next [139] = 1'h0;
-                        3'h7:
-                            \active_state$next [139] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[141:139])
-                        3'h0:
-                            \active_state$next [140] = 1'h0;
-                        3'h1:
-                            \active_state$next [140] = 1'h1;
-                        3'h2:
-                            \active_state$next [140] = 1'h1;
-                        3'h3:
-                            \active_state$next [140] = 1'h1;
-                        3'h4:
-                            \active_state$next [140] = 1'h1;
-                        3'h5:
-                            \active_state$next [140] = 1'h0;
-                        3'h6:
-                            \active_state$next [140] = 1'h0;
-                        3'h7:
-                            \active_state$next [140] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[141:139])
-                        3'h0:
-                            \active_state$next [140] = 1'h0;
-                        3'h1:
-                            \active_state$next [140] = 1'h1;
-                        3'h2:
-                            \active_state$next [140] = 1'h1;
-                        3'h3:
-                            \active_state$next [140] = 1'h1;
-                        3'h4:
-                            \active_state$next [140] = 1'h0;
-                        3'h5:
-                            \active_state$next [140] = 1'h1;
-                        3'h6:
-                            \active_state$next [140] = 1'h1;
-                        3'h7:
-                            \active_state$next [140] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[141:139])
-                        3'h0:
-                            \active_state$next [140] = 1'h0;
-                        3'h1:
-                            \active_state$next [140] = 1'h1;
-                        3'h2:
-                            \active_state$next [140] = 1'h0;
-                        3'h3:
-                            \active_state$next [140] = 1'h1;
-                        3'h4:
-                            \active_state$next [140] = 1'h0;
-                        3'h5:
-                            \active_state$next [140] = 1'h1;
-                        3'h6:
-                            \active_state$next [140] = 1'h1;
-                        3'h7:
-                            \active_state$next [140] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[141:139])
-                        3'h0:
-                            \active_state$next [140] = 1'h0;
-                        3'h1:
-                            \active_state$next [140] = 1'h1;
-                        3'h2:
-                            \active_state$next [140] = 1'h1;
-                        3'h3:
-                            \active_state$next [140] = 1'h1;
-                        3'h4:
-                            \active_state$next [140] = 1'h0;
-                        3'h5:
-                            \active_state$next [140] = 1'h0;
-                        3'h6:
-                            \active_state$next [140] = 1'h0;
-                        3'h7:
-                            \active_state$next [140] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[142:140])
-                        3'h0:
-                            \active_state$next [141] = 1'h0;
-                        3'h1:
-                            \active_state$next [141] = 1'h1;
-                        3'h2:
-                            \active_state$next [141] = 1'h1;
-                        3'h3:
-                            \active_state$next [141] = 1'h1;
-                        3'h4:
-                            \active_state$next [141] = 1'h1;
-                        3'h5:
-                            \active_state$next [141] = 1'h0;
-                        3'h6:
-                            \active_state$next [141] = 1'h0;
-                        3'h7:
-                            \active_state$next [141] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[142:140])
-                        3'h0:
-                            \active_state$next [141] = 1'h0;
-                        3'h1:
-                            \active_state$next [141] = 1'h1;
-                        3'h2:
-                            \active_state$next [141] = 1'h1;
-                        3'h3:
-                            \active_state$next [141] = 1'h1;
-                        3'h4:
-                            \active_state$next [141] = 1'h0;
-                        3'h5:
-                            \active_state$next [141] = 1'h1;
-                        3'h6:
-                            \active_state$next [141] = 1'h1;
-                        3'h7:
-                            \active_state$next [141] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[142:140])
-                        3'h0:
-                            \active_state$next [141] = 1'h0;
-                        3'h1:
-                            \active_state$next [141] = 1'h1;
-                        3'h2:
-                            \active_state$next [141] = 1'h0;
-                        3'h3:
-                            \active_state$next [141] = 1'h1;
-                        3'h4:
-                            \active_state$next [141] = 1'h0;
-                        3'h5:
-                            \active_state$next [141] = 1'h1;
-                        3'h6:
-                            \active_state$next [141] = 1'h1;
-                        3'h7:
-                            \active_state$next [141] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[142:140])
-                        3'h0:
-                            \active_state$next [141] = 1'h0;
-                        3'h1:
-                            \active_state$next [141] = 1'h1;
-                        3'h2:
-                            \active_state$next [141] = 1'h1;
-                        3'h3:
-                            \active_state$next [141] = 1'h1;
-                        3'h4:
-                            \active_state$next [141] = 1'h0;
-                        3'h5:
-                            \active_state$next [141] = 1'h0;
-                        3'h6:
-                            \active_state$next [141] = 1'h0;
-                        3'h7:
-                            \active_state$next [141] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[143:141])
-                        3'h0:
-                            \active_state$next [142] = 1'h0;
-                        3'h1:
-                            \active_state$next [142] = 1'h1;
-                        3'h2:
-                            \active_state$next [142] = 1'h1;
-                        3'h3:
-                            \active_state$next [142] = 1'h1;
-                        3'h4:
-                            \active_state$next [142] = 1'h1;
-                        3'h5:
-                            \active_state$next [142] = 1'h0;
-                        3'h6:
-                            \active_state$next [142] = 1'h0;
-                        3'h7:
-                            \active_state$next [142] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[143:141])
-                        3'h0:
-                            \active_state$next [142] = 1'h0;
-                        3'h1:
-                            \active_state$next [142] = 1'h1;
-                        3'h2:
-                            \active_state$next [142] = 1'h1;
-                        3'h3:
-                            \active_state$next [142] = 1'h1;
-                        3'h4:
-                            \active_state$next [142] = 1'h0;
-                        3'h5:
-                            \active_state$next [142] = 1'h1;
-                        3'h6:
-                            \active_state$next [142] = 1'h1;
-                        3'h7:
-                            \active_state$next [142] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[143:141])
-                        3'h0:
-                            \active_state$next [142] = 1'h0;
-                        3'h1:
-                            \active_state$next [142] = 1'h1;
-                        3'h2:
-                            \active_state$next [142] = 1'h0;
-                        3'h3:
-                            \active_state$next [142] = 1'h1;
-                        3'h4:
-                            \active_state$next [142] = 1'h0;
-                        3'h5:
-                            \active_state$next [142] = 1'h1;
-                        3'h6:
-                            \active_state$next [142] = 1'h1;
-                        3'h7:
-                            \active_state$next [142] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[143:141])
-                        3'h0:
-                            \active_state$next [142] = 1'h0;
-                        3'h1:
-                            \active_state$next [142] = 1'h1;
-                        3'h2:
-                            \active_state$next [142] = 1'h1;
-                        3'h3:
-                            \active_state$next [142] = 1'h1;
-                        3'h4:
-                            \active_state$next [142] = 1'h0;
-                        3'h5:
-                            \active_state$next [142] = 1'h0;
-                        3'h6:
-                            \active_state$next [142] = 1'h0;
-                        3'h7:
-                            \active_state$next [142] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[144:142])
-                        3'h0:
-                            \active_state$next [143] = 1'h0;
-                        3'h1:
-                            \active_state$next [143] = 1'h1;
-                        3'h2:
-                            \active_state$next [143] = 1'h1;
-                        3'h3:
-                            \active_state$next [143] = 1'h1;
-                        3'h4:
-                            \active_state$next [143] = 1'h1;
-                        3'h5:
-                            \active_state$next [143] = 1'h0;
-                        3'h6:
-                            \active_state$next [143] = 1'h0;
-                        3'h7:
-                            \active_state$next [143] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[144:142])
-                        3'h0:
-                            \active_state$next [143] = 1'h0;
-                        3'h1:
-                            \active_state$next [143] = 1'h1;
-                        3'h2:
-                            \active_state$next [143] = 1'h1;
-                        3'h3:
-                            \active_state$next [143] = 1'h1;
-                        3'h4:
-                            \active_state$next [143] = 1'h0;
-                        3'h5:
-                            \active_state$next [143] = 1'h1;
-                        3'h6:
-                            \active_state$next [143] = 1'h1;
-                        3'h7:
-                            \active_state$next [143] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[144:142])
-                        3'h0:
-                            \active_state$next [143] = 1'h0;
-                        3'h1:
-                            \active_state$next [143] = 1'h1;
-                        3'h2:
-                            \active_state$next [143] = 1'h0;
-                        3'h3:
-                            \active_state$next [143] = 1'h1;
-                        3'h4:
-                            \active_state$next [143] = 1'h0;
-                        3'h5:
-                            \active_state$next [143] = 1'h1;
-                        3'h6:
-                            \active_state$next [143] = 1'h1;
-                        3'h7:
-                            \active_state$next [143] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[144:142])
-                        3'h0:
-                            \active_state$next [143] = 1'h0;
-                        3'h1:
-                            \active_state$next [143] = 1'h1;
-                        3'h2:
-                            \active_state$next [143] = 1'h1;
-                        3'h3:
-                            \active_state$next [143] = 1'h1;
-                        3'h4:
-                            \active_state$next [143] = 1'h0;
-                        3'h5:
-                            \active_state$next [143] = 1'h0;
-                        3'h6:
-                            \active_state$next [143] = 1'h0;
-                        3'h7:
-                            \active_state$next [143] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[145:143])
-                        3'h0:
-                            \active_state$next [144] = 1'h0;
-                        3'h1:
-                            \active_state$next [144] = 1'h1;
-                        3'h2:
-                            \active_state$next [144] = 1'h1;
-                        3'h3:
-                            \active_state$next [144] = 1'h1;
-                        3'h4:
-                            \active_state$next [144] = 1'h1;
-                        3'h5:
-                            \active_state$next [144] = 1'h0;
-                        3'h6:
-                            \active_state$next [144] = 1'h0;
-                        3'h7:
-                            \active_state$next [144] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[145:143])
-                        3'h0:
-                            \active_state$next [144] = 1'h0;
-                        3'h1:
-                            \active_state$next [144] = 1'h1;
-                        3'h2:
-                            \active_state$next [144] = 1'h1;
-                        3'h3:
-                            \active_state$next [144] = 1'h1;
-                        3'h4:
-                            \active_state$next [144] = 1'h0;
-                        3'h5:
-                            \active_state$next [144] = 1'h1;
-                        3'h6:
-                            \active_state$next [144] = 1'h1;
-                        3'h7:
-                            \active_state$next [144] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[145:143])
-                        3'h0:
-                            \active_state$next [144] = 1'h0;
-                        3'h1:
-                            \active_state$next [144] = 1'h1;
-                        3'h2:
-                            \active_state$next [144] = 1'h0;
-                        3'h3:
-                            \active_state$next [144] = 1'h1;
-                        3'h4:
-                            \active_state$next [144] = 1'h0;
-                        3'h5:
-                            \active_state$next [144] = 1'h1;
-                        3'h6:
-                            \active_state$next [144] = 1'h1;
-                        3'h7:
-                            \active_state$next [144] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[145:143])
-                        3'h0:
-                            \active_state$next [144] = 1'h0;
-                        3'h1:
-                            \active_state$next [144] = 1'h1;
-                        3'h2:
-                            \active_state$next [144] = 1'h1;
-                        3'h3:
-                            \active_state$next [144] = 1'h1;
-                        3'h4:
-                            \active_state$next [144] = 1'h0;
-                        3'h5:
-                            \active_state$next [144] = 1'h0;
-                        3'h6:
-                            \active_state$next [144] = 1'h0;
-                        3'h7:
-                            \active_state$next [144] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[146:144])
-                        3'h0:
-                            \active_state$next [145] = 1'h0;
-                        3'h1:
-                            \active_state$next [145] = 1'h1;
-                        3'h2:
-                            \active_state$next [145] = 1'h1;
-                        3'h3:
-                            \active_state$next [145] = 1'h1;
-                        3'h4:
-                            \active_state$next [145] = 1'h1;
-                        3'h5:
-                            \active_state$next [145] = 1'h0;
-                        3'h6:
-                            \active_state$next [145] = 1'h0;
-                        3'h7:
-                            \active_state$next [145] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[146:144])
-                        3'h0:
-                            \active_state$next [145] = 1'h0;
-                        3'h1:
-                            \active_state$next [145] = 1'h1;
-                        3'h2:
-                            \active_state$next [145] = 1'h1;
-                        3'h3:
-                            \active_state$next [145] = 1'h1;
-                        3'h4:
-                            \active_state$next [145] = 1'h0;
-                        3'h5:
-                            \active_state$next [145] = 1'h1;
-                        3'h6:
-                            \active_state$next [145] = 1'h1;
-                        3'h7:
-                            \active_state$next [145] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[146:144])
-                        3'h0:
-                            \active_state$next [145] = 1'h0;
-                        3'h1:
-                            \active_state$next [145] = 1'h1;
-                        3'h2:
-                            \active_state$next [145] = 1'h0;
-                        3'h3:
-                            \active_state$next [145] = 1'h1;
-                        3'h4:
-                            \active_state$next [145] = 1'h0;
-                        3'h5:
-                            \active_state$next [145] = 1'h1;
-                        3'h6:
-                            \active_state$next [145] = 1'h1;
-                        3'h7:
-                            \active_state$next [145] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[146:144])
-                        3'h0:
-                            \active_state$next [145] = 1'h0;
-                        3'h1:
-                            \active_state$next [145] = 1'h1;
-                        3'h2:
-                            \active_state$next [145] = 1'h1;
-                        3'h3:
-                            \active_state$next [145] = 1'h1;
-                        3'h4:
-                            \active_state$next [145] = 1'h0;
-                        3'h5:
-                            \active_state$next [145] = 1'h0;
-                        3'h6:
-                            \active_state$next [145] = 1'h0;
-                        3'h7:
-                            \active_state$next [145] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[147:145])
-                        3'h0:
-                            \active_state$next [146] = 1'h0;
-                        3'h1:
-                            \active_state$next [146] = 1'h1;
-                        3'h2:
-                            \active_state$next [146] = 1'h1;
-                        3'h3:
-                            \active_state$next [146] = 1'h1;
-                        3'h4:
-                            \active_state$next [146] = 1'h1;
-                        3'h5:
-                            \active_state$next [146] = 1'h0;
-                        3'h6:
-                            \active_state$next [146] = 1'h0;
-                        3'h7:
-                            \active_state$next [146] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[147:145])
-                        3'h0:
-                            \active_state$next [146] = 1'h0;
-                        3'h1:
-                            \active_state$next [146] = 1'h1;
-                        3'h2:
-                            \active_state$next [146] = 1'h1;
-                        3'h3:
-                            \active_state$next [146] = 1'h1;
-                        3'h4:
-                            \active_state$next [146] = 1'h0;
-                        3'h5:
-                            \active_state$next [146] = 1'h1;
-                        3'h6:
-                            \active_state$next [146] = 1'h1;
-                        3'h7:
-                            \active_state$next [146] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[147:145])
-                        3'h0:
-                            \active_state$next [146] = 1'h0;
-                        3'h1:
-                            \active_state$next [146] = 1'h1;
-                        3'h2:
-                            \active_state$next [146] = 1'h0;
-                        3'h3:
-                            \active_state$next [146] = 1'h1;
-                        3'h4:
-                            \active_state$next [146] = 1'h0;
-                        3'h5:
-                            \active_state$next [146] = 1'h1;
-                        3'h6:
-                            \active_state$next [146] = 1'h1;
-                        3'h7:
-                            \active_state$next [146] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[147:145])
-                        3'h0:
-                            \active_state$next [146] = 1'h0;
-                        3'h1:
-                            \active_state$next [146] = 1'h1;
-                        3'h2:
-                            \active_state$next [146] = 1'h1;
-                        3'h3:
-                            \active_state$next [146] = 1'h1;
-                        3'h4:
-                            \active_state$next [146] = 1'h0;
-                        3'h5:
-                            \active_state$next [146] = 1'h0;
-                        3'h6:
-                            \active_state$next [146] = 1'h0;
-                        3'h7:
-                            \active_state$next [146] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[148:146])
-                        3'h0:
-                            \active_state$next [147] = 1'h0;
-                        3'h1:
-                            \active_state$next [147] = 1'h1;
-                        3'h2:
-                            \active_state$next [147] = 1'h1;
-                        3'h3:
-                            \active_state$next [147] = 1'h1;
-                        3'h4:
-                            \active_state$next [147] = 1'h1;
-                        3'h5:
-                            \active_state$next [147] = 1'h0;
-                        3'h6:
-                            \active_state$next [147] = 1'h0;
-                        3'h7:
-                            \active_state$next [147] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[148:146])
-                        3'h0:
-                            \active_state$next [147] = 1'h0;
-                        3'h1:
-                            \active_state$next [147] = 1'h1;
-                        3'h2:
-                            \active_state$next [147] = 1'h1;
-                        3'h3:
-                            \active_state$next [147] = 1'h1;
-                        3'h4:
-                            \active_state$next [147] = 1'h0;
-                        3'h5:
-                            \active_state$next [147] = 1'h1;
-                        3'h6:
-                            \active_state$next [147] = 1'h1;
-                        3'h7:
-                            \active_state$next [147] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[148:146])
-                        3'h0:
-                            \active_state$next [147] = 1'h0;
-                        3'h1:
-                            \active_state$next [147] = 1'h1;
-                        3'h2:
-                            \active_state$next [147] = 1'h0;
-                        3'h3:
-                            \active_state$next [147] = 1'h1;
-                        3'h4:
-                            \active_state$next [147] = 1'h0;
-                        3'h5:
-                            \active_state$next [147] = 1'h1;
-                        3'h6:
-                            \active_state$next [147] = 1'h1;
-                        3'h7:
-                            \active_state$next [147] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[148:146])
-                        3'h0:
-                            \active_state$next [147] = 1'h0;
-                        3'h1:
-                            \active_state$next [147] = 1'h1;
-                        3'h2:
-                            \active_state$next [147] = 1'h1;
-                        3'h3:
-                            \active_state$next [147] = 1'h1;
-                        3'h4:
-                            \active_state$next [147] = 1'h0;
-                        3'h5:
-                            \active_state$next [147] = 1'h0;
-                        3'h6:
-                            \active_state$next [147] = 1'h0;
-                        3'h7:
-                            \active_state$next [147] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[149:147])
-                        3'h0:
-                            \active_state$next [148] = 1'h0;
-                        3'h1:
-                            \active_state$next [148] = 1'h1;
-                        3'h2:
-                            \active_state$next [148] = 1'h1;
-                        3'h3:
-                            \active_state$next [148] = 1'h1;
-                        3'h4:
-                            \active_state$next [148] = 1'h1;
-                        3'h5:
-                            \active_state$next [148] = 1'h0;
-                        3'h6:
-                            \active_state$next [148] = 1'h0;
-                        3'h7:
-                            \active_state$next [148] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[149:147])
-                        3'h0:
-                            \active_state$next [148] = 1'h0;
-                        3'h1:
-                            \active_state$next [148] = 1'h1;
-                        3'h2:
-                            \active_state$next [148] = 1'h1;
-                        3'h3:
-                            \active_state$next [148] = 1'h1;
-                        3'h4:
-                            \active_state$next [148] = 1'h0;
-                        3'h5:
-                            \active_state$next [148] = 1'h1;
-                        3'h6:
-                            \active_state$next [148] = 1'h1;
-                        3'h7:
-                            \active_state$next [148] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[149:147])
-                        3'h0:
-                            \active_state$next [148] = 1'h0;
-                        3'h1:
-                            \active_state$next [148] = 1'h1;
-                        3'h2:
-                            \active_state$next [148] = 1'h0;
-                        3'h3:
-                            \active_state$next [148] = 1'h1;
-                        3'h4:
-                            \active_state$next [148] = 1'h0;
-                        3'h5:
-                            \active_state$next [148] = 1'h1;
-                        3'h6:
-                            \active_state$next [148] = 1'h1;
-                        3'h7:
-                            \active_state$next [148] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[149:147])
-                        3'h0:
-                            \active_state$next [148] = 1'h0;
-                        3'h1:
-                            \active_state$next [148] = 1'h1;
-                        3'h2:
-                            \active_state$next [148] = 1'h1;
-                        3'h3:
-                            \active_state$next [148] = 1'h1;
-                        3'h4:
-                            \active_state$next [148] = 1'h0;
-                        3'h5:
-                            \active_state$next [148] = 1'h0;
-                        3'h6:
-                            \active_state$next [148] = 1'h0;
-                        3'h7:
-                            \active_state$next [148] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[150:148])
-                        3'h0:
-                            \active_state$next [149] = 1'h0;
-                        3'h1:
-                            \active_state$next [149] = 1'h1;
-                        3'h2:
-                            \active_state$next [149] = 1'h1;
-                        3'h3:
-                            \active_state$next [149] = 1'h1;
-                        3'h4:
-                            \active_state$next [149] = 1'h1;
-                        3'h5:
-                            \active_state$next [149] = 1'h0;
-                        3'h6:
-                            \active_state$next [149] = 1'h0;
-                        3'h7:
-                            \active_state$next [149] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[150:148])
-                        3'h0:
-                            \active_state$next [149] = 1'h0;
-                        3'h1:
-                            \active_state$next [149] = 1'h1;
-                        3'h2:
-                            \active_state$next [149] = 1'h1;
-                        3'h3:
-                            \active_state$next [149] = 1'h1;
-                        3'h4:
-                            \active_state$next [149] = 1'h0;
-                        3'h5:
-                            \active_state$next [149] = 1'h1;
-                        3'h6:
-                            \active_state$next [149] = 1'h1;
-                        3'h7:
-                            \active_state$next [149] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[150:148])
-                        3'h0:
-                            \active_state$next [149] = 1'h0;
-                        3'h1:
-                            \active_state$next [149] = 1'h1;
-                        3'h2:
-                            \active_state$next [149] = 1'h0;
-                        3'h3:
-                            \active_state$next [149] = 1'h1;
-                        3'h4:
-                            \active_state$next [149] = 1'h0;
-                        3'h5:
-                            \active_state$next [149] = 1'h1;
-                        3'h6:
-                            \active_state$next [149] = 1'h1;
-                        3'h7:
-                            \active_state$next [149] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[150:148])
-                        3'h0:
-                            \active_state$next [149] = 1'h0;
-                        3'h1:
-                            \active_state$next [149] = 1'h1;
-                        3'h2:
-                            \active_state$next [149] = 1'h1;
-                        3'h3:
-                            \active_state$next [149] = 1'h1;
-                        3'h4:
-                            \active_state$next [149] = 1'h0;
-                        3'h5:
-                            \active_state$next [149] = 1'h0;
-                        3'h6:
-                            \active_state$next [149] = 1'h0;
-                        3'h7:
-                            \active_state$next [149] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[151:149])
-                        3'h0:
-                            \active_state$next [150] = 1'h0;
-                        3'h1:
-                            \active_state$next [150] = 1'h1;
-                        3'h2:
-                            \active_state$next [150] = 1'h1;
-                        3'h3:
-                            \active_state$next [150] = 1'h1;
-                        3'h4:
-                            \active_state$next [150] = 1'h1;
-                        3'h5:
-                            \active_state$next [150] = 1'h0;
-                        3'h6:
-                            \active_state$next [150] = 1'h0;
-                        3'h7:
-                            \active_state$next [150] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[151:149])
-                        3'h0:
-                            \active_state$next [150] = 1'h0;
-                        3'h1:
-                            \active_state$next [150] = 1'h1;
-                        3'h2:
-                            \active_state$next [150] = 1'h1;
-                        3'h3:
-                            \active_state$next [150] = 1'h1;
-                        3'h4:
-                            \active_state$next [150] = 1'h0;
-                        3'h5:
-                            \active_state$next [150] = 1'h1;
-                        3'h6:
-                            \active_state$next [150] = 1'h1;
-                        3'h7:
-                            \active_state$next [150] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[151:149])
-                        3'h0:
-                            \active_state$next [150] = 1'h0;
-                        3'h1:
-                            \active_state$next [150] = 1'h1;
-                        3'h2:
-                            \active_state$next [150] = 1'h0;
-                        3'h3:
-                            \active_state$next [150] = 1'h1;
-                        3'h4:
-                            \active_state$next [150] = 1'h0;
-                        3'h5:
-                            \active_state$next [150] = 1'h1;
-                        3'h6:
-                            \active_state$next [150] = 1'h1;
-                        3'h7:
-                            \active_state$next [150] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[151:149])
-                        3'h0:
-                            \active_state$next [150] = 1'h0;
-                        3'h1:
-                            \active_state$next [150] = 1'h1;
-                        3'h2:
-                            \active_state$next [150] = 1'h1;
-                        3'h3:
-                            \active_state$next [150] = 1'h1;
-                        3'h4:
-                            \active_state$next [150] = 1'h0;
-                        3'h5:
-                            \active_state$next [150] = 1'h0;
-                        3'h6:
-                            \active_state$next [150] = 1'h0;
-                        3'h7:
-                            \active_state$next [150] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[152:150])
-                        3'h0:
-                            \active_state$next [151] = 1'h0;
-                        3'h1:
-                            \active_state$next [151] = 1'h1;
-                        3'h2:
-                            \active_state$next [151] = 1'h1;
-                        3'h3:
-                            \active_state$next [151] = 1'h1;
-                        3'h4:
-                            \active_state$next [151] = 1'h1;
-                        3'h5:
-                            \active_state$next [151] = 1'h0;
-                        3'h6:
-                            \active_state$next [151] = 1'h0;
-                        3'h7:
-                            \active_state$next [151] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[152:150])
-                        3'h0:
-                            \active_state$next [151] = 1'h0;
-                        3'h1:
-                            \active_state$next [151] = 1'h1;
-                        3'h2:
-                            \active_state$next [151] = 1'h1;
-                        3'h3:
-                            \active_state$next [151] = 1'h1;
-                        3'h4:
-                            \active_state$next [151] = 1'h0;
-                        3'h5:
-                            \active_state$next [151] = 1'h1;
-                        3'h6:
-                            \active_state$next [151] = 1'h1;
-                        3'h7:
-                            \active_state$next [151] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[152:150])
-                        3'h0:
-                            \active_state$next [151] = 1'h0;
-                        3'h1:
-                            \active_state$next [151] = 1'h1;
-                        3'h2:
-                            \active_state$next [151] = 1'h0;
-                        3'h3:
-                            \active_state$next [151] = 1'h1;
-                        3'h4:
-                            \active_state$next [151] = 1'h0;
-                        3'h5:
-                            \active_state$next [151] = 1'h1;
-                        3'h6:
-                            \active_state$next [151] = 1'h1;
-                        3'h7:
-                            \active_state$next [151] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[152:150])
-                        3'h0:
-                            \active_state$next [151] = 1'h0;
-                        3'h1:
-                            \active_state$next [151] = 1'h1;
-                        3'h2:
-                            \active_state$next [151] = 1'h1;
-                        3'h3:
-                            \active_state$next [151] = 1'h1;
-                        3'h4:
-                            \active_state$next [151] = 1'h0;
-                        3'h5:
-                            \active_state$next [151] = 1'h0;
-                        3'h6:
-                            \active_state$next [151] = 1'h0;
-                        3'h7:
-                            \active_state$next [151] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[153:151])
-                        3'h0:
-                            \active_state$next [152] = 1'h0;
-                        3'h1:
-                            \active_state$next [152] = 1'h1;
-                        3'h2:
-                            \active_state$next [152] = 1'h1;
-                        3'h3:
-                            \active_state$next [152] = 1'h1;
-                        3'h4:
-                            \active_state$next [152] = 1'h1;
-                        3'h5:
-                            \active_state$next [152] = 1'h0;
-                        3'h6:
-                            \active_state$next [152] = 1'h0;
-                        3'h7:
-                            \active_state$next [152] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[153:151])
-                        3'h0:
-                            \active_state$next [152] = 1'h0;
-                        3'h1:
-                            \active_state$next [152] = 1'h1;
-                        3'h2:
-                            \active_state$next [152] = 1'h1;
-                        3'h3:
-                            \active_state$next [152] = 1'h1;
-                        3'h4:
-                            \active_state$next [152] = 1'h0;
-                        3'h5:
-                            \active_state$next [152] = 1'h1;
-                        3'h6:
-                            \active_state$next [152] = 1'h1;
-                        3'h7:
-                            \active_state$next [152] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[153:151])
-                        3'h0:
-                            \active_state$next [152] = 1'h0;
-                        3'h1:
-                            \active_state$next [152] = 1'h1;
-                        3'h2:
-                            \active_state$next [152] = 1'h0;
-                        3'h3:
-                            \active_state$next [152] = 1'h1;
-                        3'h4:
-                            \active_state$next [152] = 1'h0;
-                        3'h5:
-                            \active_state$next [152] = 1'h1;
-                        3'h6:
-                            \active_state$next [152] = 1'h1;
-                        3'h7:
-                            \active_state$next [152] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[153:151])
-                        3'h0:
-                            \active_state$next [152] = 1'h0;
-                        3'h1:
-                            \active_state$next [152] = 1'h1;
-                        3'h2:
-                            \active_state$next [152] = 1'h1;
-                        3'h3:
-                            \active_state$next [152] = 1'h1;
-                        3'h4:
-                            \active_state$next [152] = 1'h0;
-                        3'h5:
-                            \active_state$next [152] = 1'h0;
-                        3'h6:
-                            \active_state$next [152] = 1'h0;
-                        3'h7:
-                            \active_state$next [152] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[154:152])
-                        3'h0:
-                            \active_state$next [153] = 1'h0;
-                        3'h1:
-                            \active_state$next [153] = 1'h1;
-                        3'h2:
-                            \active_state$next [153] = 1'h1;
-                        3'h3:
-                            \active_state$next [153] = 1'h1;
-                        3'h4:
-                            \active_state$next [153] = 1'h1;
-                        3'h5:
-                            \active_state$next [153] = 1'h0;
-                        3'h6:
-                            \active_state$next [153] = 1'h0;
-                        3'h7:
-                            \active_state$next [153] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[154:152])
-                        3'h0:
-                            \active_state$next [153] = 1'h0;
-                        3'h1:
-                            \active_state$next [153] = 1'h1;
-                        3'h2:
-                            \active_state$next [153] = 1'h1;
-                        3'h3:
-                            \active_state$next [153] = 1'h1;
-                        3'h4:
-                            \active_state$next [153] = 1'h0;
-                        3'h5:
-                            \active_state$next [153] = 1'h1;
-                        3'h6:
-                            \active_state$next [153] = 1'h1;
-                        3'h7:
-                            \active_state$next [153] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[154:152])
-                        3'h0:
-                            \active_state$next [153] = 1'h0;
-                        3'h1:
-                            \active_state$next [153] = 1'h1;
-                        3'h2:
-                            \active_state$next [153] = 1'h0;
-                        3'h3:
-                            \active_state$next [153] = 1'h1;
-                        3'h4:
-                            \active_state$next [153] = 1'h0;
-                        3'h5:
-                            \active_state$next [153] = 1'h1;
-                        3'h6:
-                            \active_state$next [153] = 1'h1;
-                        3'h7:
-                            \active_state$next [153] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[154:152])
-                        3'h0:
-                            \active_state$next [153] = 1'h0;
-                        3'h1:
-                            \active_state$next [153] = 1'h1;
-                        3'h2:
-                            \active_state$next [153] = 1'h1;
-                        3'h3:
-                            \active_state$next [153] = 1'h1;
-                        3'h4:
-                            \active_state$next [153] = 1'h0;
-                        3'h5:
-                            \active_state$next [153] = 1'h0;
-                        3'h6:
-                            \active_state$next [153] = 1'h0;
-                        3'h7:
-                            \active_state$next [153] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[155:153])
-                        3'h0:
-                            \active_state$next [154] = 1'h0;
-                        3'h1:
-                            \active_state$next [154] = 1'h1;
-                        3'h2:
-                            \active_state$next [154] = 1'h1;
-                        3'h3:
-                            \active_state$next [154] = 1'h1;
-                        3'h4:
-                            \active_state$next [154] = 1'h1;
-                        3'h5:
-                            \active_state$next [154] = 1'h0;
-                        3'h6:
-                            \active_state$next [154] = 1'h0;
-                        3'h7:
-                            \active_state$next [154] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[155:153])
-                        3'h0:
-                            \active_state$next [154] = 1'h0;
-                        3'h1:
-                            \active_state$next [154] = 1'h1;
-                        3'h2:
-                            \active_state$next [154] = 1'h1;
-                        3'h3:
-                            \active_state$next [154] = 1'h1;
-                        3'h4:
-                            \active_state$next [154] = 1'h0;
-                        3'h5:
-                            \active_state$next [154] = 1'h1;
-                        3'h6:
-                            \active_state$next [154] = 1'h1;
-                        3'h7:
-                            \active_state$next [154] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[155:153])
-                        3'h0:
-                            \active_state$next [154] = 1'h0;
-                        3'h1:
-                            \active_state$next [154] = 1'h1;
-                        3'h2:
-                            \active_state$next [154] = 1'h0;
-                        3'h3:
-                            \active_state$next [154] = 1'h1;
-                        3'h4:
-                            \active_state$next [154] = 1'h0;
-                        3'h5:
-                            \active_state$next [154] = 1'h1;
-                        3'h6:
-                            \active_state$next [154] = 1'h1;
-                        3'h7:
-                            \active_state$next [154] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[155:153])
-                        3'h0:
-                            \active_state$next [154] = 1'h0;
-                        3'h1:
-                            \active_state$next [154] = 1'h1;
-                        3'h2:
-                            \active_state$next [154] = 1'h1;
-                        3'h3:
-                            \active_state$next [154] = 1'h1;
-                        3'h4:
-                            \active_state$next [154] = 1'h0;
-                        3'h5:
-                            \active_state$next [154] = 1'h0;
-                        3'h6:
-                            \active_state$next [154] = 1'h0;
-                        3'h7:
-                            \active_state$next [154] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[156:154])
-                        3'h0:
-                            \active_state$next [155] = 1'h0;
-                        3'h1:
-                            \active_state$next [155] = 1'h1;
-                        3'h2:
-                            \active_state$next [155] = 1'h1;
-                        3'h3:
-                            \active_state$next [155] = 1'h1;
-                        3'h4:
-                            \active_state$next [155] = 1'h1;
-                        3'h5:
-                            \active_state$next [155] = 1'h0;
-                        3'h6:
-                            \active_state$next [155] = 1'h0;
-                        3'h7:
-                            \active_state$next [155] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[156:154])
-                        3'h0:
-                            \active_state$next [155] = 1'h0;
-                        3'h1:
-                            \active_state$next [155] = 1'h1;
-                        3'h2:
-                            \active_state$next [155] = 1'h1;
-                        3'h3:
-                            \active_state$next [155] = 1'h1;
-                        3'h4:
-                            \active_state$next [155] = 1'h0;
-                        3'h5:
-                            \active_state$next [155] = 1'h1;
-                        3'h6:
-                            \active_state$next [155] = 1'h1;
-                        3'h7:
-                            \active_state$next [155] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[156:154])
-                        3'h0:
-                            \active_state$next [155] = 1'h0;
-                        3'h1:
-                            \active_state$next [155] = 1'h1;
-                        3'h2:
-                            \active_state$next [155] = 1'h0;
-                        3'h3:
-                            \active_state$next [155] = 1'h1;
-                        3'h4:
-                            \active_state$next [155] = 1'h0;
-                        3'h5:
-                            \active_state$next [155] = 1'h1;
-                        3'h6:
-                            \active_state$next [155] = 1'h1;
-                        3'h7:
-                            \active_state$next [155] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[156:154])
-                        3'h0:
-                            \active_state$next [155] = 1'h0;
-                        3'h1:
-                            \active_state$next [155] = 1'h1;
-                        3'h2:
-                            \active_state$next [155] = 1'h1;
-                        3'h3:
-                            \active_state$next [155] = 1'h1;
-                        3'h4:
-                            \active_state$next [155] = 1'h0;
-                        3'h5:
-                            \active_state$next [155] = 1'h0;
-                        3'h6:
-                            \active_state$next [155] = 1'h0;
-                        3'h7:
-                            \active_state$next [155] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[157:155])
-                        3'h0:
-                            \active_state$next [156] = 1'h0;
-                        3'h1:
-                            \active_state$next [156] = 1'h1;
-                        3'h2:
-                            \active_state$next [156] = 1'h1;
-                        3'h3:
-                            \active_state$next [156] = 1'h1;
-                        3'h4:
-                            \active_state$next [156] = 1'h1;
-                        3'h5:
-                            \active_state$next [156] = 1'h0;
-                        3'h6:
-                            \active_state$next [156] = 1'h0;
-                        3'h7:
-                            \active_state$next [156] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[157:155])
-                        3'h0:
-                            \active_state$next [156] = 1'h0;
-                        3'h1:
-                            \active_state$next [156] = 1'h1;
-                        3'h2:
-                            \active_state$next [156] = 1'h1;
-                        3'h3:
-                            \active_state$next [156] = 1'h1;
-                        3'h4:
-                            \active_state$next [156] = 1'h0;
-                        3'h5:
-                            \active_state$next [156] = 1'h1;
-                        3'h6:
-                            \active_state$next [156] = 1'h1;
-                        3'h7:
-                            \active_state$next [156] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[157:155])
-                        3'h0:
-                            \active_state$next [156] = 1'h0;
-                        3'h1:
-                            \active_state$next [156] = 1'h1;
-                        3'h2:
-                            \active_state$next [156] = 1'h0;
-                        3'h3:
-                            \active_state$next [156] = 1'h1;
-                        3'h4:
-                            \active_state$next [156] = 1'h0;
-                        3'h5:
-                            \active_state$next [156] = 1'h1;
-                        3'h6:
-                            \active_state$next [156] = 1'h1;
-                        3'h7:
-                            \active_state$next [156] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[157:155])
-                        3'h0:
-                            \active_state$next [156] = 1'h0;
-                        3'h1:
-                            \active_state$next [156] = 1'h1;
-                        3'h2:
-                            \active_state$next [156] = 1'h1;
-                        3'h3:
-                            \active_state$next [156] = 1'h1;
-                        3'h4:
-                            \active_state$next [156] = 1'h0;
-                        3'h5:
-                            \active_state$next [156] = 1'h0;
-                        3'h6:
-                            \active_state$next [156] = 1'h0;
-                        3'h7:
-                            \active_state$next [156] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[158:156])
-                        3'h0:
-                            \active_state$next [157] = 1'h0;
-                        3'h1:
-                            \active_state$next [157] = 1'h1;
-                        3'h2:
-                            \active_state$next [157] = 1'h1;
-                        3'h3:
-                            \active_state$next [157] = 1'h1;
-                        3'h4:
-                            \active_state$next [157] = 1'h1;
-                        3'h5:
-                            \active_state$next [157] = 1'h0;
-                        3'h6:
-                            \active_state$next [157] = 1'h0;
-                        3'h7:
-                            \active_state$next [157] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[158:156])
-                        3'h0:
-                            \active_state$next [157] = 1'h0;
-                        3'h1:
-                            \active_state$next [157] = 1'h1;
-                        3'h2:
-                            \active_state$next [157] = 1'h1;
-                        3'h3:
-                            \active_state$next [157] = 1'h1;
-                        3'h4:
-                            \active_state$next [157] = 1'h0;
-                        3'h5:
-                            \active_state$next [157] = 1'h1;
-                        3'h6:
-                            \active_state$next [157] = 1'h1;
-                        3'h7:
-                            \active_state$next [157] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[158:156])
-                        3'h0:
-                            \active_state$next [157] = 1'h0;
-                        3'h1:
-                            \active_state$next [157] = 1'h1;
-                        3'h2:
-                            \active_state$next [157] = 1'h0;
-                        3'h3:
-                            \active_state$next [157] = 1'h1;
-                        3'h4:
-                            \active_state$next [157] = 1'h0;
-                        3'h5:
-                            \active_state$next [157] = 1'h1;
-                        3'h6:
-                            \active_state$next [157] = 1'h1;
-                        3'h7:
-                            \active_state$next [157] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[158:156])
-                        3'h0:
-                            \active_state$next [157] = 1'h0;
-                        3'h1:
-                            \active_state$next [157] = 1'h1;
-                        3'h2:
-                            \active_state$next [157] = 1'h1;
-                        3'h3:
-                            \active_state$next [157] = 1'h1;
-                        3'h4:
-                            \active_state$next [157] = 1'h0;
-                        3'h5:
-                            \active_state$next [157] = 1'h0;
-                        3'h6:
-                            \active_state$next [157] = 1'h0;
-                        3'h7:
-                            \active_state$next [157] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[159:157])
-                        3'h0:
-                            \active_state$next [158] = 1'h0;
-                        3'h1:
-                            \active_state$next [158] = 1'h1;
-                        3'h2:
-                            \active_state$next [158] = 1'h1;
-                        3'h3:
-                            \active_state$next [158] = 1'h1;
-                        3'h4:
-                            \active_state$next [158] = 1'h1;
-                        3'h5:
-                            \active_state$next [158] = 1'h0;
-                        3'h6:
-                            \active_state$next [158] = 1'h0;
-                        3'h7:
-                            \active_state$next [158] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[159:157])
-                        3'h0:
-                            \active_state$next [158] = 1'h0;
-                        3'h1:
-                            \active_state$next [158] = 1'h1;
-                        3'h2:
-                            \active_state$next [158] = 1'h1;
-                        3'h3:
-                            \active_state$next [158] = 1'h1;
-                        3'h4:
-                            \active_state$next [158] = 1'h0;
-                        3'h5:
-                            \active_state$next [158] = 1'h1;
-                        3'h6:
-                            \active_state$next [158] = 1'h1;
-                        3'h7:
-                            \active_state$next [158] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[159:157])
-                        3'h0:
-                            \active_state$next [158] = 1'h0;
-                        3'h1:
-                            \active_state$next [158] = 1'h1;
-                        3'h2:
-                            \active_state$next [158] = 1'h0;
-                        3'h3:
-                            \active_state$next [158] = 1'h1;
-                        3'h4:
-                            \active_state$next [158] = 1'h0;
-                        3'h5:
-                            \active_state$next [158] = 1'h1;
-                        3'h6:
-                            \active_state$next [158] = 1'h1;
-                        3'h7:
-                            \active_state$next [158] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez (active_state[159:157])
-                        3'h0:
-                            \active_state$next [158] = 1'h0;
-                        3'h1:
-                            \active_state$next [158] = 1'h1;
-                        3'h2:
-                            \active_state$next [158] = 1'h1;
-                        3'h3:
-                            \active_state$next [158] = 1'h1;
-                        3'h4:
-                            \active_state$next [158] = 1'h0;
-                        3'h5:
-                            \active_state$next [158] = 1'h0;
-                        3'h6:
-                            \active_state$next [158] = 1'h0;
-                        3'h7:
-                            \active_state$next [158] = 1'h0;
-                      endcase
-                endcase
-                (* full_case = 32'd1 *)
-                casez (automata)
-                  2'h0:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[0], active_state[159:158] })
-                        3'h0:
-                            \active_state$next [159] = 1'h0;
-                        3'h1:
-                            \active_state$next [159] = 1'h1;
-                        3'h2:
-                            \active_state$next [159] = 1'h1;
-                        3'h3:
-                            \active_state$next [159] = 1'h1;
-                        3'h4:
-                            \active_state$next [159] = 1'h1;
-                        3'h5:
-                            \active_state$next [159] = 1'h0;
-                        3'h6:
-                            \active_state$next [159] = 1'h0;
-                        3'h7:
-                            \active_state$next [159] = 1'h0;
-                      endcase
-                  2'h1:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[0], active_state[159:158] })
-                        3'h0:
-                            \active_state$next [159] = 1'h0;
-                        3'h1:
-                            \active_state$next [159] = 1'h1;
-                        3'h2:
-                            \active_state$next [159] = 1'h1;
-                        3'h3:
-                            \active_state$next [159] = 1'h1;
-                        3'h4:
-                            \active_state$next [159] = 1'h0;
-                        3'h5:
-                            \active_state$next [159] = 1'h1;
-                        3'h6:
-                            \active_state$next [159] = 1'h1;
-                        3'h7:
-                            \active_state$next [159] = 1'h0;
-                      endcase
-                  2'h2:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[0], active_state[159:158] })
-                        3'h0:
-                            \active_state$next [159] = 1'h0;
-                        3'h1:
-                            \active_state$next [159] = 1'h1;
-                        3'h2:
-                            \active_state$next [159] = 1'h0;
-                        3'h3:
-                            \active_state$next [159] = 1'h1;
-                        3'h4:
-                            \active_state$next [159] = 1'h0;
-                        3'h5:
-                            \active_state$next [159] = 1'h1;
-                        3'h6:
-                            \active_state$next [159] = 1'h1;
-                        3'h7:
-                            \active_state$next [159] = 1'h0;
-                      endcase
-                  2'h3:
-                      (* full_case = 32'd1 *)
-                      casez ({ active_state[0], active_state[159:158] })
-                        3'h0:
-                            \active_state$next [159] = 1'h0;
-                        3'h1:
-                            \active_state$next [159] = 1'h1;
-                        3'h2:
-                            \active_state$next [159] = 1'h1;
-                        3'h3:
-                            \active_state$next [159] = 1'h1;
-                        3'h4:
-                            \active_state$next [159] = 1'h0;
-                        3'h5:
-                            \active_state$next [159] = 1'h0;
-                        3'h6:
-                            \active_state$next [159] = 1'h0;
-                        3'h7:
-                            \active_state$next [159] = 1'h0;
-                      endcase
+                casez ({ active_state[1:0], active_state[159] })
+                  3'h0:
+                      \active_state$next [0] = automata_table[0];
+                  3'h1:
+                      \active_state$next [0] = automata_table[1];
+                  3'h2:
+                      \active_state$next [0] = automata_table[2];
+                  3'h3:
+                      \active_state$next [0] = automata_table[3];
+                  3'h4:
+                      \active_state$next [0] = automata_table[4];
+                  3'h5:
+                      \active_state$next [0] = automata_table[5];
+                  3'h6:
+                      \active_state$next [0] = automata_table[6];
+                  3'h7:
+                      \active_state$next [0] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[2:0])
+                  3'h0:
+                      \active_state$next [1] = automata_table[0];
+                  3'h1:
+                      \active_state$next [1] = automata_table[1];
+                  3'h2:
+                      \active_state$next [1] = automata_table[2];
+                  3'h3:
+                      \active_state$next [1] = automata_table[3];
+                  3'h4:
+                      \active_state$next [1] = automata_table[4];
+                  3'h5:
+                      \active_state$next [1] = automata_table[5];
+                  3'h6:
+                      \active_state$next [1] = automata_table[6];
+                  3'h7:
+                      \active_state$next [1] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[3:1])
+                  3'h0:
+                      \active_state$next [2] = automata_table[0];
+                  3'h1:
+                      \active_state$next [2] = automata_table[1];
+                  3'h2:
+                      \active_state$next [2] = automata_table[2];
+                  3'h3:
+                      \active_state$next [2] = automata_table[3];
+                  3'h4:
+                      \active_state$next [2] = automata_table[4];
+                  3'h5:
+                      \active_state$next [2] = automata_table[5];
+                  3'h6:
+                      \active_state$next [2] = automata_table[6];
+                  3'h7:
+                      \active_state$next [2] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[4:2])
+                  3'h0:
+                      \active_state$next [3] = automata_table[0];
+                  3'h1:
+                      \active_state$next [3] = automata_table[1];
+                  3'h2:
+                      \active_state$next [3] = automata_table[2];
+                  3'h3:
+                      \active_state$next [3] = automata_table[3];
+                  3'h4:
+                      \active_state$next [3] = automata_table[4];
+                  3'h5:
+                      \active_state$next [3] = automata_table[5];
+                  3'h6:
+                      \active_state$next [3] = automata_table[6];
+                  3'h7:
+                      \active_state$next [3] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[5:3])
+                  3'h0:
+                      \active_state$next [4] = automata_table[0];
+                  3'h1:
+                      \active_state$next [4] = automata_table[1];
+                  3'h2:
+                      \active_state$next [4] = automata_table[2];
+                  3'h3:
+                      \active_state$next [4] = automata_table[3];
+                  3'h4:
+                      \active_state$next [4] = automata_table[4];
+                  3'h5:
+                      \active_state$next [4] = automata_table[5];
+                  3'h6:
+                      \active_state$next [4] = automata_table[6];
+                  3'h7:
+                      \active_state$next [4] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[6:4])
+                  3'h0:
+                      \active_state$next [5] = automata_table[0];
+                  3'h1:
+                      \active_state$next [5] = automata_table[1];
+                  3'h2:
+                      \active_state$next [5] = automata_table[2];
+                  3'h3:
+                      \active_state$next [5] = automata_table[3];
+                  3'h4:
+                      \active_state$next [5] = automata_table[4];
+                  3'h5:
+                      \active_state$next [5] = automata_table[5];
+                  3'h6:
+                      \active_state$next [5] = automata_table[6];
+                  3'h7:
+                      \active_state$next [5] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[7:5])
+                  3'h0:
+                      \active_state$next [6] = automata_table[0];
+                  3'h1:
+                      \active_state$next [6] = automata_table[1];
+                  3'h2:
+                      \active_state$next [6] = automata_table[2];
+                  3'h3:
+                      \active_state$next [6] = automata_table[3];
+                  3'h4:
+                      \active_state$next [6] = automata_table[4];
+                  3'h5:
+                      \active_state$next [6] = automata_table[5];
+                  3'h6:
+                      \active_state$next [6] = automata_table[6];
+                  3'h7:
+                      \active_state$next [6] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[8:6])
+                  3'h0:
+                      \active_state$next [7] = automata_table[0];
+                  3'h1:
+                      \active_state$next [7] = automata_table[1];
+                  3'h2:
+                      \active_state$next [7] = automata_table[2];
+                  3'h3:
+                      \active_state$next [7] = automata_table[3];
+                  3'h4:
+                      \active_state$next [7] = automata_table[4];
+                  3'h5:
+                      \active_state$next [7] = automata_table[5];
+                  3'h6:
+                      \active_state$next [7] = automata_table[6];
+                  3'h7:
+                      \active_state$next [7] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[9:7])
+                  3'h0:
+                      \active_state$next [8] = automata_table[0];
+                  3'h1:
+                      \active_state$next [8] = automata_table[1];
+                  3'h2:
+                      \active_state$next [8] = automata_table[2];
+                  3'h3:
+                      \active_state$next [8] = automata_table[3];
+                  3'h4:
+                      \active_state$next [8] = automata_table[4];
+                  3'h5:
+                      \active_state$next [8] = automata_table[5];
+                  3'h6:
+                      \active_state$next [8] = automata_table[6];
+                  3'h7:
+                      \active_state$next [8] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[10:8])
+                  3'h0:
+                      \active_state$next [9] = automata_table[0];
+                  3'h1:
+                      \active_state$next [9] = automata_table[1];
+                  3'h2:
+                      \active_state$next [9] = automata_table[2];
+                  3'h3:
+                      \active_state$next [9] = automata_table[3];
+                  3'h4:
+                      \active_state$next [9] = automata_table[4];
+                  3'h5:
+                      \active_state$next [9] = automata_table[5];
+                  3'h6:
+                      \active_state$next [9] = automata_table[6];
+                  3'h7:
+                      \active_state$next [9] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[11:9])
+                  3'h0:
+                      \active_state$next [10] = automata_table[0];
+                  3'h1:
+                      \active_state$next [10] = automata_table[1];
+                  3'h2:
+                      \active_state$next [10] = automata_table[2];
+                  3'h3:
+                      \active_state$next [10] = automata_table[3];
+                  3'h4:
+                      \active_state$next [10] = automata_table[4];
+                  3'h5:
+                      \active_state$next [10] = automata_table[5];
+                  3'h6:
+                      \active_state$next [10] = automata_table[6];
+                  3'h7:
+                      \active_state$next [10] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[12:10])
+                  3'h0:
+                      \active_state$next [11] = automata_table[0];
+                  3'h1:
+                      \active_state$next [11] = automata_table[1];
+                  3'h2:
+                      \active_state$next [11] = automata_table[2];
+                  3'h3:
+                      \active_state$next [11] = automata_table[3];
+                  3'h4:
+                      \active_state$next [11] = automata_table[4];
+                  3'h5:
+                      \active_state$next [11] = automata_table[5];
+                  3'h6:
+                      \active_state$next [11] = automata_table[6];
+                  3'h7:
+                      \active_state$next [11] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[13:11])
+                  3'h0:
+                      \active_state$next [12] = automata_table[0];
+                  3'h1:
+                      \active_state$next [12] = automata_table[1];
+                  3'h2:
+                      \active_state$next [12] = automata_table[2];
+                  3'h3:
+                      \active_state$next [12] = automata_table[3];
+                  3'h4:
+                      \active_state$next [12] = automata_table[4];
+                  3'h5:
+                      \active_state$next [12] = automata_table[5];
+                  3'h6:
+                      \active_state$next [12] = automata_table[6];
+                  3'h7:
+                      \active_state$next [12] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[14:12])
+                  3'h0:
+                      \active_state$next [13] = automata_table[0];
+                  3'h1:
+                      \active_state$next [13] = automata_table[1];
+                  3'h2:
+                      \active_state$next [13] = automata_table[2];
+                  3'h3:
+                      \active_state$next [13] = automata_table[3];
+                  3'h4:
+                      \active_state$next [13] = automata_table[4];
+                  3'h5:
+                      \active_state$next [13] = automata_table[5];
+                  3'h6:
+                      \active_state$next [13] = automata_table[6];
+                  3'h7:
+                      \active_state$next [13] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[15:13])
+                  3'h0:
+                      \active_state$next [14] = automata_table[0];
+                  3'h1:
+                      \active_state$next [14] = automata_table[1];
+                  3'h2:
+                      \active_state$next [14] = automata_table[2];
+                  3'h3:
+                      \active_state$next [14] = automata_table[3];
+                  3'h4:
+                      \active_state$next [14] = automata_table[4];
+                  3'h5:
+                      \active_state$next [14] = automata_table[5];
+                  3'h6:
+                      \active_state$next [14] = automata_table[6];
+                  3'h7:
+                      \active_state$next [14] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[16:14])
+                  3'h0:
+                      \active_state$next [15] = automata_table[0];
+                  3'h1:
+                      \active_state$next [15] = automata_table[1];
+                  3'h2:
+                      \active_state$next [15] = automata_table[2];
+                  3'h3:
+                      \active_state$next [15] = automata_table[3];
+                  3'h4:
+                      \active_state$next [15] = automata_table[4];
+                  3'h5:
+                      \active_state$next [15] = automata_table[5];
+                  3'h6:
+                      \active_state$next [15] = automata_table[6];
+                  3'h7:
+                      \active_state$next [15] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[17:15])
+                  3'h0:
+                      \active_state$next [16] = automata_table[0];
+                  3'h1:
+                      \active_state$next [16] = automata_table[1];
+                  3'h2:
+                      \active_state$next [16] = automata_table[2];
+                  3'h3:
+                      \active_state$next [16] = automata_table[3];
+                  3'h4:
+                      \active_state$next [16] = automata_table[4];
+                  3'h5:
+                      \active_state$next [16] = automata_table[5];
+                  3'h6:
+                      \active_state$next [16] = automata_table[6];
+                  3'h7:
+                      \active_state$next [16] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[18:16])
+                  3'h0:
+                      \active_state$next [17] = automata_table[0];
+                  3'h1:
+                      \active_state$next [17] = automata_table[1];
+                  3'h2:
+                      \active_state$next [17] = automata_table[2];
+                  3'h3:
+                      \active_state$next [17] = automata_table[3];
+                  3'h4:
+                      \active_state$next [17] = automata_table[4];
+                  3'h5:
+                      \active_state$next [17] = automata_table[5];
+                  3'h6:
+                      \active_state$next [17] = automata_table[6];
+                  3'h7:
+                      \active_state$next [17] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[19:17])
+                  3'h0:
+                      \active_state$next [18] = automata_table[0];
+                  3'h1:
+                      \active_state$next [18] = automata_table[1];
+                  3'h2:
+                      \active_state$next [18] = automata_table[2];
+                  3'h3:
+                      \active_state$next [18] = automata_table[3];
+                  3'h4:
+                      \active_state$next [18] = automata_table[4];
+                  3'h5:
+                      \active_state$next [18] = automata_table[5];
+                  3'h6:
+                      \active_state$next [18] = automata_table[6];
+                  3'h7:
+                      \active_state$next [18] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[20:18])
+                  3'h0:
+                      \active_state$next [19] = automata_table[0];
+                  3'h1:
+                      \active_state$next [19] = automata_table[1];
+                  3'h2:
+                      \active_state$next [19] = automata_table[2];
+                  3'h3:
+                      \active_state$next [19] = automata_table[3];
+                  3'h4:
+                      \active_state$next [19] = automata_table[4];
+                  3'h5:
+                      \active_state$next [19] = automata_table[5];
+                  3'h6:
+                      \active_state$next [19] = automata_table[6];
+                  3'h7:
+                      \active_state$next [19] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[21:19])
+                  3'h0:
+                      \active_state$next [20] = automata_table[0];
+                  3'h1:
+                      \active_state$next [20] = automata_table[1];
+                  3'h2:
+                      \active_state$next [20] = automata_table[2];
+                  3'h3:
+                      \active_state$next [20] = automata_table[3];
+                  3'h4:
+                      \active_state$next [20] = automata_table[4];
+                  3'h5:
+                      \active_state$next [20] = automata_table[5];
+                  3'h6:
+                      \active_state$next [20] = automata_table[6];
+                  3'h7:
+                      \active_state$next [20] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[22:20])
+                  3'h0:
+                      \active_state$next [21] = automata_table[0];
+                  3'h1:
+                      \active_state$next [21] = automata_table[1];
+                  3'h2:
+                      \active_state$next [21] = automata_table[2];
+                  3'h3:
+                      \active_state$next [21] = automata_table[3];
+                  3'h4:
+                      \active_state$next [21] = automata_table[4];
+                  3'h5:
+                      \active_state$next [21] = automata_table[5];
+                  3'h6:
+                      \active_state$next [21] = automata_table[6];
+                  3'h7:
+                      \active_state$next [21] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[23:21])
+                  3'h0:
+                      \active_state$next [22] = automata_table[0];
+                  3'h1:
+                      \active_state$next [22] = automata_table[1];
+                  3'h2:
+                      \active_state$next [22] = automata_table[2];
+                  3'h3:
+                      \active_state$next [22] = automata_table[3];
+                  3'h4:
+                      \active_state$next [22] = automata_table[4];
+                  3'h5:
+                      \active_state$next [22] = automata_table[5];
+                  3'h6:
+                      \active_state$next [22] = automata_table[6];
+                  3'h7:
+                      \active_state$next [22] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[24:22])
+                  3'h0:
+                      \active_state$next [23] = automata_table[0];
+                  3'h1:
+                      \active_state$next [23] = automata_table[1];
+                  3'h2:
+                      \active_state$next [23] = automata_table[2];
+                  3'h3:
+                      \active_state$next [23] = automata_table[3];
+                  3'h4:
+                      \active_state$next [23] = automata_table[4];
+                  3'h5:
+                      \active_state$next [23] = automata_table[5];
+                  3'h6:
+                      \active_state$next [23] = automata_table[6];
+                  3'h7:
+                      \active_state$next [23] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[25:23])
+                  3'h0:
+                      \active_state$next [24] = automata_table[0];
+                  3'h1:
+                      \active_state$next [24] = automata_table[1];
+                  3'h2:
+                      \active_state$next [24] = automata_table[2];
+                  3'h3:
+                      \active_state$next [24] = automata_table[3];
+                  3'h4:
+                      \active_state$next [24] = automata_table[4];
+                  3'h5:
+                      \active_state$next [24] = automata_table[5];
+                  3'h6:
+                      \active_state$next [24] = automata_table[6];
+                  3'h7:
+                      \active_state$next [24] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[26:24])
+                  3'h0:
+                      \active_state$next [25] = automata_table[0];
+                  3'h1:
+                      \active_state$next [25] = automata_table[1];
+                  3'h2:
+                      \active_state$next [25] = automata_table[2];
+                  3'h3:
+                      \active_state$next [25] = automata_table[3];
+                  3'h4:
+                      \active_state$next [25] = automata_table[4];
+                  3'h5:
+                      \active_state$next [25] = automata_table[5];
+                  3'h6:
+                      \active_state$next [25] = automata_table[6];
+                  3'h7:
+                      \active_state$next [25] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[27:25])
+                  3'h0:
+                      \active_state$next [26] = automata_table[0];
+                  3'h1:
+                      \active_state$next [26] = automata_table[1];
+                  3'h2:
+                      \active_state$next [26] = automata_table[2];
+                  3'h3:
+                      \active_state$next [26] = automata_table[3];
+                  3'h4:
+                      \active_state$next [26] = automata_table[4];
+                  3'h5:
+                      \active_state$next [26] = automata_table[5];
+                  3'h6:
+                      \active_state$next [26] = automata_table[6];
+                  3'h7:
+                      \active_state$next [26] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[28:26])
+                  3'h0:
+                      \active_state$next [27] = automata_table[0];
+                  3'h1:
+                      \active_state$next [27] = automata_table[1];
+                  3'h2:
+                      \active_state$next [27] = automata_table[2];
+                  3'h3:
+                      \active_state$next [27] = automata_table[3];
+                  3'h4:
+                      \active_state$next [27] = automata_table[4];
+                  3'h5:
+                      \active_state$next [27] = automata_table[5];
+                  3'h6:
+                      \active_state$next [27] = automata_table[6];
+                  3'h7:
+                      \active_state$next [27] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[29:27])
+                  3'h0:
+                      \active_state$next [28] = automata_table[0];
+                  3'h1:
+                      \active_state$next [28] = automata_table[1];
+                  3'h2:
+                      \active_state$next [28] = automata_table[2];
+                  3'h3:
+                      \active_state$next [28] = automata_table[3];
+                  3'h4:
+                      \active_state$next [28] = automata_table[4];
+                  3'h5:
+                      \active_state$next [28] = automata_table[5];
+                  3'h6:
+                      \active_state$next [28] = automata_table[6];
+                  3'h7:
+                      \active_state$next [28] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[30:28])
+                  3'h0:
+                      \active_state$next [29] = automata_table[0];
+                  3'h1:
+                      \active_state$next [29] = automata_table[1];
+                  3'h2:
+                      \active_state$next [29] = automata_table[2];
+                  3'h3:
+                      \active_state$next [29] = automata_table[3];
+                  3'h4:
+                      \active_state$next [29] = automata_table[4];
+                  3'h5:
+                      \active_state$next [29] = automata_table[5];
+                  3'h6:
+                      \active_state$next [29] = automata_table[6];
+                  3'h7:
+                      \active_state$next [29] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[31:29])
+                  3'h0:
+                      \active_state$next [30] = automata_table[0];
+                  3'h1:
+                      \active_state$next [30] = automata_table[1];
+                  3'h2:
+                      \active_state$next [30] = automata_table[2];
+                  3'h3:
+                      \active_state$next [30] = automata_table[3];
+                  3'h4:
+                      \active_state$next [30] = automata_table[4];
+                  3'h5:
+                      \active_state$next [30] = automata_table[5];
+                  3'h6:
+                      \active_state$next [30] = automata_table[6];
+                  3'h7:
+                      \active_state$next [30] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[32:30])
+                  3'h0:
+                      \active_state$next [31] = automata_table[0];
+                  3'h1:
+                      \active_state$next [31] = automata_table[1];
+                  3'h2:
+                      \active_state$next [31] = automata_table[2];
+                  3'h3:
+                      \active_state$next [31] = automata_table[3];
+                  3'h4:
+                      \active_state$next [31] = automata_table[4];
+                  3'h5:
+                      \active_state$next [31] = automata_table[5];
+                  3'h6:
+                      \active_state$next [31] = automata_table[6];
+                  3'h7:
+                      \active_state$next [31] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[33:31])
+                  3'h0:
+                      \active_state$next [32] = automata_table[0];
+                  3'h1:
+                      \active_state$next [32] = automata_table[1];
+                  3'h2:
+                      \active_state$next [32] = automata_table[2];
+                  3'h3:
+                      \active_state$next [32] = automata_table[3];
+                  3'h4:
+                      \active_state$next [32] = automata_table[4];
+                  3'h5:
+                      \active_state$next [32] = automata_table[5];
+                  3'h6:
+                      \active_state$next [32] = automata_table[6];
+                  3'h7:
+                      \active_state$next [32] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[34:32])
+                  3'h0:
+                      \active_state$next [33] = automata_table[0];
+                  3'h1:
+                      \active_state$next [33] = automata_table[1];
+                  3'h2:
+                      \active_state$next [33] = automata_table[2];
+                  3'h3:
+                      \active_state$next [33] = automata_table[3];
+                  3'h4:
+                      \active_state$next [33] = automata_table[4];
+                  3'h5:
+                      \active_state$next [33] = automata_table[5];
+                  3'h6:
+                      \active_state$next [33] = automata_table[6];
+                  3'h7:
+                      \active_state$next [33] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[35:33])
+                  3'h0:
+                      \active_state$next [34] = automata_table[0];
+                  3'h1:
+                      \active_state$next [34] = automata_table[1];
+                  3'h2:
+                      \active_state$next [34] = automata_table[2];
+                  3'h3:
+                      \active_state$next [34] = automata_table[3];
+                  3'h4:
+                      \active_state$next [34] = automata_table[4];
+                  3'h5:
+                      \active_state$next [34] = automata_table[5];
+                  3'h6:
+                      \active_state$next [34] = automata_table[6];
+                  3'h7:
+                      \active_state$next [34] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[36:34])
+                  3'h0:
+                      \active_state$next [35] = automata_table[0];
+                  3'h1:
+                      \active_state$next [35] = automata_table[1];
+                  3'h2:
+                      \active_state$next [35] = automata_table[2];
+                  3'h3:
+                      \active_state$next [35] = automata_table[3];
+                  3'h4:
+                      \active_state$next [35] = automata_table[4];
+                  3'h5:
+                      \active_state$next [35] = automata_table[5];
+                  3'h6:
+                      \active_state$next [35] = automata_table[6];
+                  3'h7:
+                      \active_state$next [35] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[37:35])
+                  3'h0:
+                      \active_state$next [36] = automata_table[0];
+                  3'h1:
+                      \active_state$next [36] = automata_table[1];
+                  3'h2:
+                      \active_state$next [36] = automata_table[2];
+                  3'h3:
+                      \active_state$next [36] = automata_table[3];
+                  3'h4:
+                      \active_state$next [36] = automata_table[4];
+                  3'h5:
+                      \active_state$next [36] = automata_table[5];
+                  3'h6:
+                      \active_state$next [36] = automata_table[6];
+                  3'h7:
+                      \active_state$next [36] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[38:36])
+                  3'h0:
+                      \active_state$next [37] = automata_table[0];
+                  3'h1:
+                      \active_state$next [37] = automata_table[1];
+                  3'h2:
+                      \active_state$next [37] = automata_table[2];
+                  3'h3:
+                      \active_state$next [37] = automata_table[3];
+                  3'h4:
+                      \active_state$next [37] = automata_table[4];
+                  3'h5:
+                      \active_state$next [37] = automata_table[5];
+                  3'h6:
+                      \active_state$next [37] = automata_table[6];
+                  3'h7:
+                      \active_state$next [37] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[39:37])
+                  3'h0:
+                      \active_state$next [38] = automata_table[0];
+                  3'h1:
+                      \active_state$next [38] = automata_table[1];
+                  3'h2:
+                      \active_state$next [38] = automata_table[2];
+                  3'h3:
+                      \active_state$next [38] = automata_table[3];
+                  3'h4:
+                      \active_state$next [38] = automata_table[4];
+                  3'h5:
+                      \active_state$next [38] = automata_table[5];
+                  3'h6:
+                      \active_state$next [38] = automata_table[6];
+                  3'h7:
+                      \active_state$next [38] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[40:38])
+                  3'h0:
+                      \active_state$next [39] = automata_table[0];
+                  3'h1:
+                      \active_state$next [39] = automata_table[1];
+                  3'h2:
+                      \active_state$next [39] = automata_table[2];
+                  3'h3:
+                      \active_state$next [39] = automata_table[3];
+                  3'h4:
+                      \active_state$next [39] = automata_table[4];
+                  3'h5:
+                      \active_state$next [39] = automata_table[5];
+                  3'h6:
+                      \active_state$next [39] = automata_table[6];
+                  3'h7:
+                      \active_state$next [39] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[41:39])
+                  3'h0:
+                      \active_state$next [40] = automata_table[0];
+                  3'h1:
+                      \active_state$next [40] = automata_table[1];
+                  3'h2:
+                      \active_state$next [40] = automata_table[2];
+                  3'h3:
+                      \active_state$next [40] = automata_table[3];
+                  3'h4:
+                      \active_state$next [40] = automata_table[4];
+                  3'h5:
+                      \active_state$next [40] = automata_table[5];
+                  3'h6:
+                      \active_state$next [40] = automata_table[6];
+                  3'h7:
+                      \active_state$next [40] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[42:40])
+                  3'h0:
+                      \active_state$next [41] = automata_table[0];
+                  3'h1:
+                      \active_state$next [41] = automata_table[1];
+                  3'h2:
+                      \active_state$next [41] = automata_table[2];
+                  3'h3:
+                      \active_state$next [41] = automata_table[3];
+                  3'h4:
+                      \active_state$next [41] = automata_table[4];
+                  3'h5:
+                      \active_state$next [41] = automata_table[5];
+                  3'h6:
+                      \active_state$next [41] = automata_table[6];
+                  3'h7:
+                      \active_state$next [41] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[43:41])
+                  3'h0:
+                      \active_state$next [42] = automata_table[0];
+                  3'h1:
+                      \active_state$next [42] = automata_table[1];
+                  3'h2:
+                      \active_state$next [42] = automata_table[2];
+                  3'h3:
+                      \active_state$next [42] = automata_table[3];
+                  3'h4:
+                      \active_state$next [42] = automata_table[4];
+                  3'h5:
+                      \active_state$next [42] = automata_table[5];
+                  3'h6:
+                      \active_state$next [42] = automata_table[6];
+                  3'h7:
+                      \active_state$next [42] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[44:42])
+                  3'h0:
+                      \active_state$next [43] = automata_table[0];
+                  3'h1:
+                      \active_state$next [43] = automata_table[1];
+                  3'h2:
+                      \active_state$next [43] = automata_table[2];
+                  3'h3:
+                      \active_state$next [43] = automata_table[3];
+                  3'h4:
+                      \active_state$next [43] = automata_table[4];
+                  3'h5:
+                      \active_state$next [43] = automata_table[5];
+                  3'h6:
+                      \active_state$next [43] = automata_table[6];
+                  3'h7:
+                      \active_state$next [43] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[45:43])
+                  3'h0:
+                      \active_state$next [44] = automata_table[0];
+                  3'h1:
+                      \active_state$next [44] = automata_table[1];
+                  3'h2:
+                      \active_state$next [44] = automata_table[2];
+                  3'h3:
+                      \active_state$next [44] = automata_table[3];
+                  3'h4:
+                      \active_state$next [44] = automata_table[4];
+                  3'h5:
+                      \active_state$next [44] = automata_table[5];
+                  3'h6:
+                      \active_state$next [44] = automata_table[6];
+                  3'h7:
+                      \active_state$next [44] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[46:44])
+                  3'h0:
+                      \active_state$next [45] = automata_table[0];
+                  3'h1:
+                      \active_state$next [45] = automata_table[1];
+                  3'h2:
+                      \active_state$next [45] = automata_table[2];
+                  3'h3:
+                      \active_state$next [45] = automata_table[3];
+                  3'h4:
+                      \active_state$next [45] = automata_table[4];
+                  3'h5:
+                      \active_state$next [45] = automata_table[5];
+                  3'h6:
+                      \active_state$next [45] = automata_table[6];
+                  3'h7:
+                      \active_state$next [45] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[47:45])
+                  3'h0:
+                      \active_state$next [46] = automata_table[0];
+                  3'h1:
+                      \active_state$next [46] = automata_table[1];
+                  3'h2:
+                      \active_state$next [46] = automata_table[2];
+                  3'h3:
+                      \active_state$next [46] = automata_table[3];
+                  3'h4:
+                      \active_state$next [46] = automata_table[4];
+                  3'h5:
+                      \active_state$next [46] = automata_table[5];
+                  3'h6:
+                      \active_state$next [46] = automata_table[6];
+                  3'h7:
+                      \active_state$next [46] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[48:46])
+                  3'h0:
+                      \active_state$next [47] = automata_table[0];
+                  3'h1:
+                      \active_state$next [47] = automata_table[1];
+                  3'h2:
+                      \active_state$next [47] = automata_table[2];
+                  3'h3:
+                      \active_state$next [47] = automata_table[3];
+                  3'h4:
+                      \active_state$next [47] = automata_table[4];
+                  3'h5:
+                      \active_state$next [47] = automata_table[5];
+                  3'h6:
+                      \active_state$next [47] = automata_table[6];
+                  3'h7:
+                      \active_state$next [47] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[49:47])
+                  3'h0:
+                      \active_state$next [48] = automata_table[0];
+                  3'h1:
+                      \active_state$next [48] = automata_table[1];
+                  3'h2:
+                      \active_state$next [48] = automata_table[2];
+                  3'h3:
+                      \active_state$next [48] = automata_table[3];
+                  3'h4:
+                      \active_state$next [48] = automata_table[4];
+                  3'h5:
+                      \active_state$next [48] = automata_table[5];
+                  3'h6:
+                      \active_state$next [48] = automata_table[6];
+                  3'h7:
+                      \active_state$next [48] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[50:48])
+                  3'h0:
+                      \active_state$next [49] = automata_table[0];
+                  3'h1:
+                      \active_state$next [49] = automata_table[1];
+                  3'h2:
+                      \active_state$next [49] = automata_table[2];
+                  3'h3:
+                      \active_state$next [49] = automata_table[3];
+                  3'h4:
+                      \active_state$next [49] = automata_table[4];
+                  3'h5:
+                      \active_state$next [49] = automata_table[5];
+                  3'h6:
+                      \active_state$next [49] = automata_table[6];
+                  3'h7:
+                      \active_state$next [49] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[51:49])
+                  3'h0:
+                      \active_state$next [50] = automata_table[0];
+                  3'h1:
+                      \active_state$next [50] = automata_table[1];
+                  3'h2:
+                      \active_state$next [50] = automata_table[2];
+                  3'h3:
+                      \active_state$next [50] = automata_table[3];
+                  3'h4:
+                      \active_state$next [50] = automata_table[4];
+                  3'h5:
+                      \active_state$next [50] = automata_table[5];
+                  3'h6:
+                      \active_state$next [50] = automata_table[6];
+                  3'h7:
+                      \active_state$next [50] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[52:50])
+                  3'h0:
+                      \active_state$next [51] = automata_table[0];
+                  3'h1:
+                      \active_state$next [51] = automata_table[1];
+                  3'h2:
+                      \active_state$next [51] = automata_table[2];
+                  3'h3:
+                      \active_state$next [51] = automata_table[3];
+                  3'h4:
+                      \active_state$next [51] = automata_table[4];
+                  3'h5:
+                      \active_state$next [51] = automata_table[5];
+                  3'h6:
+                      \active_state$next [51] = automata_table[6];
+                  3'h7:
+                      \active_state$next [51] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[53:51])
+                  3'h0:
+                      \active_state$next [52] = automata_table[0];
+                  3'h1:
+                      \active_state$next [52] = automata_table[1];
+                  3'h2:
+                      \active_state$next [52] = automata_table[2];
+                  3'h3:
+                      \active_state$next [52] = automata_table[3];
+                  3'h4:
+                      \active_state$next [52] = automata_table[4];
+                  3'h5:
+                      \active_state$next [52] = automata_table[5];
+                  3'h6:
+                      \active_state$next [52] = automata_table[6];
+                  3'h7:
+                      \active_state$next [52] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[54:52])
+                  3'h0:
+                      \active_state$next [53] = automata_table[0];
+                  3'h1:
+                      \active_state$next [53] = automata_table[1];
+                  3'h2:
+                      \active_state$next [53] = automata_table[2];
+                  3'h3:
+                      \active_state$next [53] = automata_table[3];
+                  3'h4:
+                      \active_state$next [53] = automata_table[4];
+                  3'h5:
+                      \active_state$next [53] = automata_table[5];
+                  3'h6:
+                      \active_state$next [53] = automata_table[6];
+                  3'h7:
+                      \active_state$next [53] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[55:53])
+                  3'h0:
+                      \active_state$next [54] = automata_table[0];
+                  3'h1:
+                      \active_state$next [54] = automata_table[1];
+                  3'h2:
+                      \active_state$next [54] = automata_table[2];
+                  3'h3:
+                      \active_state$next [54] = automata_table[3];
+                  3'h4:
+                      \active_state$next [54] = automata_table[4];
+                  3'h5:
+                      \active_state$next [54] = automata_table[5];
+                  3'h6:
+                      \active_state$next [54] = automata_table[6];
+                  3'h7:
+                      \active_state$next [54] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[56:54])
+                  3'h0:
+                      \active_state$next [55] = automata_table[0];
+                  3'h1:
+                      \active_state$next [55] = automata_table[1];
+                  3'h2:
+                      \active_state$next [55] = automata_table[2];
+                  3'h3:
+                      \active_state$next [55] = automata_table[3];
+                  3'h4:
+                      \active_state$next [55] = automata_table[4];
+                  3'h5:
+                      \active_state$next [55] = automata_table[5];
+                  3'h6:
+                      \active_state$next [55] = automata_table[6];
+                  3'h7:
+                      \active_state$next [55] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[57:55])
+                  3'h0:
+                      \active_state$next [56] = automata_table[0];
+                  3'h1:
+                      \active_state$next [56] = automata_table[1];
+                  3'h2:
+                      \active_state$next [56] = automata_table[2];
+                  3'h3:
+                      \active_state$next [56] = automata_table[3];
+                  3'h4:
+                      \active_state$next [56] = automata_table[4];
+                  3'h5:
+                      \active_state$next [56] = automata_table[5];
+                  3'h6:
+                      \active_state$next [56] = automata_table[6];
+                  3'h7:
+                      \active_state$next [56] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[58:56])
+                  3'h0:
+                      \active_state$next [57] = automata_table[0];
+                  3'h1:
+                      \active_state$next [57] = automata_table[1];
+                  3'h2:
+                      \active_state$next [57] = automata_table[2];
+                  3'h3:
+                      \active_state$next [57] = automata_table[3];
+                  3'h4:
+                      \active_state$next [57] = automata_table[4];
+                  3'h5:
+                      \active_state$next [57] = automata_table[5];
+                  3'h6:
+                      \active_state$next [57] = automata_table[6];
+                  3'h7:
+                      \active_state$next [57] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[59:57])
+                  3'h0:
+                      \active_state$next [58] = automata_table[0];
+                  3'h1:
+                      \active_state$next [58] = automata_table[1];
+                  3'h2:
+                      \active_state$next [58] = automata_table[2];
+                  3'h3:
+                      \active_state$next [58] = automata_table[3];
+                  3'h4:
+                      \active_state$next [58] = automata_table[4];
+                  3'h5:
+                      \active_state$next [58] = automata_table[5];
+                  3'h6:
+                      \active_state$next [58] = automata_table[6];
+                  3'h7:
+                      \active_state$next [58] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[60:58])
+                  3'h0:
+                      \active_state$next [59] = automata_table[0];
+                  3'h1:
+                      \active_state$next [59] = automata_table[1];
+                  3'h2:
+                      \active_state$next [59] = automata_table[2];
+                  3'h3:
+                      \active_state$next [59] = automata_table[3];
+                  3'h4:
+                      \active_state$next [59] = automata_table[4];
+                  3'h5:
+                      \active_state$next [59] = automata_table[5];
+                  3'h6:
+                      \active_state$next [59] = automata_table[6];
+                  3'h7:
+                      \active_state$next [59] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[61:59])
+                  3'h0:
+                      \active_state$next [60] = automata_table[0];
+                  3'h1:
+                      \active_state$next [60] = automata_table[1];
+                  3'h2:
+                      \active_state$next [60] = automata_table[2];
+                  3'h3:
+                      \active_state$next [60] = automata_table[3];
+                  3'h4:
+                      \active_state$next [60] = automata_table[4];
+                  3'h5:
+                      \active_state$next [60] = automata_table[5];
+                  3'h6:
+                      \active_state$next [60] = automata_table[6];
+                  3'h7:
+                      \active_state$next [60] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[62:60])
+                  3'h0:
+                      \active_state$next [61] = automata_table[0];
+                  3'h1:
+                      \active_state$next [61] = automata_table[1];
+                  3'h2:
+                      \active_state$next [61] = automata_table[2];
+                  3'h3:
+                      \active_state$next [61] = automata_table[3];
+                  3'h4:
+                      \active_state$next [61] = automata_table[4];
+                  3'h5:
+                      \active_state$next [61] = automata_table[5];
+                  3'h6:
+                      \active_state$next [61] = automata_table[6];
+                  3'h7:
+                      \active_state$next [61] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[63:61])
+                  3'h0:
+                      \active_state$next [62] = automata_table[0];
+                  3'h1:
+                      \active_state$next [62] = automata_table[1];
+                  3'h2:
+                      \active_state$next [62] = automata_table[2];
+                  3'h3:
+                      \active_state$next [62] = automata_table[3];
+                  3'h4:
+                      \active_state$next [62] = automata_table[4];
+                  3'h5:
+                      \active_state$next [62] = automata_table[5];
+                  3'h6:
+                      \active_state$next [62] = automata_table[6];
+                  3'h7:
+                      \active_state$next [62] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[64:62])
+                  3'h0:
+                      \active_state$next [63] = automata_table[0];
+                  3'h1:
+                      \active_state$next [63] = automata_table[1];
+                  3'h2:
+                      \active_state$next [63] = automata_table[2];
+                  3'h3:
+                      \active_state$next [63] = automata_table[3];
+                  3'h4:
+                      \active_state$next [63] = automata_table[4];
+                  3'h5:
+                      \active_state$next [63] = automata_table[5];
+                  3'h6:
+                      \active_state$next [63] = automata_table[6];
+                  3'h7:
+                      \active_state$next [63] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[65:63])
+                  3'h0:
+                      \active_state$next [64] = automata_table[0];
+                  3'h1:
+                      \active_state$next [64] = automata_table[1];
+                  3'h2:
+                      \active_state$next [64] = automata_table[2];
+                  3'h3:
+                      \active_state$next [64] = automata_table[3];
+                  3'h4:
+                      \active_state$next [64] = automata_table[4];
+                  3'h5:
+                      \active_state$next [64] = automata_table[5];
+                  3'h6:
+                      \active_state$next [64] = automata_table[6];
+                  3'h7:
+                      \active_state$next [64] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[66:64])
+                  3'h0:
+                      \active_state$next [65] = automata_table[0];
+                  3'h1:
+                      \active_state$next [65] = automata_table[1];
+                  3'h2:
+                      \active_state$next [65] = automata_table[2];
+                  3'h3:
+                      \active_state$next [65] = automata_table[3];
+                  3'h4:
+                      \active_state$next [65] = automata_table[4];
+                  3'h5:
+                      \active_state$next [65] = automata_table[5];
+                  3'h6:
+                      \active_state$next [65] = automata_table[6];
+                  3'h7:
+                      \active_state$next [65] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[67:65])
+                  3'h0:
+                      \active_state$next [66] = automata_table[0];
+                  3'h1:
+                      \active_state$next [66] = automata_table[1];
+                  3'h2:
+                      \active_state$next [66] = automata_table[2];
+                  3'h3:
+                      \active_state$next [66] = automata_table[3];
+                  3'h4:
+                      \active_state$next [66] = automata_table[4];
+                  3'h5:
+                      \active_state$next [66] = automata_table[5];
+                  3'h6:
+                      \active_state$next [66] = automata_table[6];
+                  3'h7:
+                      \active_state$next [66] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[68:66])
+                  3'h0:
+                      \active_state$next [67] = automata_table[0];
+                  3'h1:
+                      \active_state$next [67] = automata_table[1];
+                  3'h2:
+                      \active_state$next [67] = automata_table[2];
+                  3'h3:
+                      \active_state$next [67] = automata_table[3];
+                  3'h4:
+                      \active_state$next [67] = automata_table[4];
+                  3'h5:
+                      \active_state$next [67] = automata_table[5];
+                  3'h6:
+                      \active_state$next [67] = automata_table[6];
+                  3'h7:
+                      \active_state$next [67] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[69:67])
+                  3'h0:
+                      \active_state$next [68] = automata_table[0];
+                  3'h1:
+                      \active_state$next [68] = automata_table[1];
+                  3'h2:
+                      \active_state$next [68] = automata_table[2];
+                  3'h3:
+                      \active_state$next [68] = automata_table[3];
+                  3'h4:
+                      \active_state$next [68] = automata_table[4];
+                  3'h5:
+                      \active_state$next [68] = automata_table[5];
+                  3'h6:
+                      \active_state$next [68] = automata_table[6];
+                  3'h7:
+                      \active_state$next [68] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[70:68])
+                  3'h0:
+                      \active_state$next [69] = automata_table[0];
+                  3'h1:
+                      \active_state$next [69] = automata_table[1];
+                  3'h2:
+                      \active_state$next [69] = automata_table[2];
+                  3'h3:
+                      \active_state$next [69] = automata_table[3];
+                  3'h4:
+                      \active_state$next [69] = automata_table[4];
+                  3'h5:
+                      \active_state$next [69] = automata_table[5];
+                  3'h6:
+                      \active_state$next [69] = automata_table[6];
+                  3'h7:
+                      \active_state$next [69] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[71:69])
+                  3'h0:
+                      \active_state$next [70] = automata_table[0];
+                  3'h1:
+                      \active_state$next [70] = automata_table[1];
+                  3'h2:
+                      \active_state$next [70] = automata_table[2];
+                  3'h3:
+                      \active_state$next [70] = automata_table[3];
+                  3'h4:
+                      \active_state$next [70] = automata_table[4];
+                  3'h5:
+                      \active_state$next [70] = automata_table[5];
+                  3'h6:
+                      \active_state$next [70] = automata_table[6];
+                  3'h7:
+                      \active_state$next [70] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[72:70])
+                  3'h0:
+                      \active_state$next [71] = automata_table[0];
+                  3'h1:
+                      \active_state$next [71] = automata_table[1];
+                  3'h2:
+                      \active_state$next [71] = automata_table[2];
+                  3'h3:
+                      \active_state$next [71] = automata_table[3];
+                  3'h4:
+                      \active_state$next [71] = automata_table[4];
+                  3'h5:
+                      \active_state$next [71] = automata_table[5];
+                  3'h6:
+                      \active_state$next [71] = automata_table[6];
+                  3'h7:
+                      \active_state$next [71] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[73:71])
+                  3'h0:
+                      \active_state$next [72] = automata_table[0];
+                  3'h1:
+                      \active_state$next [72] = automata_table[1];
+                  3'h2:
+                      \active_state$next [72] = automata_table[2];
+                  3'h3:
+                      \active_state$next [72] = automata_table[3];
+                  3'h4:
+                      \active_state$next [72] = automata_table[4];
+                  3'h5:
+                      \active_state$next [72] = automata_table[5];
+                  3'h6:
+                      \active_state$next [72] = automata_table[6];
+                  3'h7:
+                      \active_state$next [72] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[74:72])
+                  3'h0:
+                      \active_state$next [73] = automata_table[0];
+                  3'h1:
+                      \active_state$next [73] = automata_table[1];
+                  3'h2:
+                      \active_state$next [73] = automata_table[2];
+                  3'h3:
+                      \active_state$next [73] = automata_table[3];
+                  3'h4:
+                      \active_state$next [73] = automata_table[4];
+                  3'h5:
+                      \active_state$next [73] = automata_table[5];
+                  3'h6:
+                      \active_state$next [73] = automata_table[6];
+                  3'h7:
+                      \active_state$next [73] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[75:73])
+                  3'h0:
+                      \active_state$next [74] = automata_table[0];
+                  3'h1:
+                      \active_state$next [74] = automata_table[1];
+                  3'h2:
+                      \active_state$next [74] = automata_table[2];
+                  3'h3:
+                      \active_state$next [74] = automata_table[3];
+                  3'h4:
+                      \active_state$next [74] = automata_table[4];
+                  3'h5:
+                      \active_state$next [74] = automata_table[5];
+                  3'h6:
+                      \active_state$next [74] = automata_table[6];
+                  3'h7:
+                      \active_state$next [74] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[76:74])
+                  3'h0:
+                      \active_state$next [75] = automata_table[0];
+                  3'h1:
+                      \active_state$next [75] = automata_table[1];
+                  3'h2:
+                      \active_state$next [75] = automata_table[2];
+                  3'h3:
+                      \active_state$next [75] = automata_table[3];
+                  3'h4:
+                      \active_state$next [75] = automata_table[4];
+                  3'h5:
+                      \active_state$next [75] = automata_table[5];
+                  3'h6:
+                      \active_state$next [75] = automata_table[6];
+                  3'h7:
+                      \active_state$next [75] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[77:75])
+                  3'h0:
+                      \active_state$next [76] = automata_table[0];
+                  3'h1:
+                      \active_state$next [76] = automata_table[1];
+                  3'h2:
+                      \active_state$next [76] = automata_table[2];
+                  3'h3:
+                      \active_state$next [76] = automata_table[3];
+                  3'h4:
+                      \active_state$next [76] = automata_table[4];
+                  3'h5:
+                      \active_state$next [76] = automata_table[5];
+                  3'h6:
+                      \active_state$next [76] = automata_table[6];
+                  3'h7:
+                      \active_state$next [76] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[78:76])
+                  3'h0:
+                      \active_state$next [77] = automata_table[0];
+                  3'h1:
+                      \active_state$next [77] = automata_table[1];
+                  3'h2:
+                      \active_state$next [77] = automata_table[2];
+                  3'h3:
+                      \active_state$next [77] = automata_table[3];
+                  3'h4:
+                      \active_state$next [77] = automata_table[4];
+                  3'h5:
+                      \active_state$next [77] = automata_table[5];
+                  3'h6:
+                      \active_state$next [77] = automata_table[6];
+                  3'h7:
+                      \active_state$next [77] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[79:77])
+                  3'h0:
+                      \active_state$next [78] = automata_table[0];
+                  3'h1:
+                      \active_state$next [78] = automata_table[1];
+                  3'h2:
+                      \active_state$next [78] = automata_table[2];
+                  3'h3:
+                      \active_state$next [78] = automata_table[3];
+                  3'h4:
+                      \active_state$next [78] = automata_table[4];
+                  3'h5:
+                      \active_state$next [78] = automata_table[5];
+                  3'h6:
+                      \active_state$next [78] = automata_table[6];
+                  3'h7:
+                      \active_state$next [78] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[80:78])
+                  3'h0:
+                      \active_state$next [79] = automata_table[0];
+                  3'h1:
+                      \active_state$next [79] = automata_table[1];
+                  3'h2:
+                      \active_state$next [79] = automata_table[2];
+                  3'h3:
+                      \active_state$next [79] = automata_table[3];
+                  3'h4:
+                      \active_state$next [79] = automata_table[4];
+                  3'h5:
+                      \active_state$next [79] = automata_table[5];
+                  3'h6:
+                      \active_state$next [79] = automata_table[6];
+                  3'h7:
+                      \active_state$next [79] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[81:79])
+                  3'h0:
+                      \active_state$next [80] = automata_table[0];
+                  3'h1:
+                      \active_state$next [80] = automata_table[1];
+                  3'h2:
+                      \active_state$next [80] = automata_table[2];
+                  3'h3:
+                      \active_state$next [80] = automata_table[3];
+                  3'h4:
+                      \active_state$next [80] = automata_table[4];
+                  3'h5:
+                      \active_state$next [80] = automata_table[5];
+                  3'h6:
+                      \active_state$next [80] = automata_table[6];
+                  3'h7:
+                      \active_state$next [80] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[82:80])
+                  3'h0:
+                      \active_state$next [81] = automata_table[0];
+                  3'h1:
+                      \active_state$next [81] = automata_table[1];
+                  3'h2:
+                      \active_state$next [81] = automata_table[2];
+                  3'h3:
+                      \active_state$next [81] = automata_table[3];
+                  3'h4:
+                      \active_state$next [81] = automata_table[4];
+                  3'h5:
+                      \active_state$next [81] = automata_table[5];
+                  3'h6:
+                      \active_state$next [81] = automata_table[6];
+                  3'h7:
+                      \active_state$next [81] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[83:81])
+                  3'h0:
+                      \active_state$next [82] = automata_table[0];
+                  3'h1:
+                      \active_state$next [82] = automata_table[1];
+                  3'h2:
+                      \active_state$next [82] = automata_table[2];
+                  3'h3:
+                      \active_state$next [82] = automata_table[3];
+                  3'h4:
+                      \active_state$next [82] = automata_table[4];
+                  3'h5:
+                      \active_state$next [82] = automata_table[5];
+                  3'h6:
+                      \active_state$next [82] = automata_table[6];
+                  3'h7:
+                      \active_state$next [82] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[84:82])
+                  3'h0:
+                      \active_state$next [83] = automata_table[0];
+                  3'h1:
+                      \active_state$next [83] = automata_table[1];
+                  3'h2:
+                      \active_state$next [83] = automata_table[2];
+                  3'h3:
+                      \active_state$next [83] = automata_table[3];
+                  3'h4:
+                      \active_state$next [83] = automata_table[4];
+                  3'h5:
+                      \active_state$next [83] = automata_table[5];
+                  3'h6:
+                      \active_state$next [83] = automata_table[6];
+                  3'h7:
+                      \active_state$next [83] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[85:83])
+                  3'h0:
+                      \active_state$next [84] = automata_table[0];
+                  3'h1:
+                      \active_state$next [84] = automata_table[1];
+                  3'h2:
+                      \active_state$next [84] = automata_table[2];
+                  3'h3:
+                      \active_state$next [84] = automata_table[3];
+                  3'h4:
+                      \active_state$next [84] = automata_table[4];
+                  3'h5:
+                      \active_state$next [84] = automata_table[5];
+                  3'h6:
+                      \active_state$next [84] = automata_table[6];
+                  3'h7:
+                      \active_state$next [84] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[86:84])
+                  3'h0:
+                      \active_state$next [85] = automata_table[0];
+                  3'h1:
+                      \active_state$next [85] = automata_table[1];
+                  3'h2:
+                      \active_state$next [85] = automata_table[2];
+                  3'h3:
+                      \active_state$next [85] = automata_table[3];
+                  3'h4:
+                      \active_state$next [85] = automata_table[4];
+                  3'h5:
+                      \active_state$next [85] = automata_table[5];
+                  3'h6:
+                      \active_state$next [85] = automata_table[6];
+                  3'h7:
+                      \active_state$next [85] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[87:85])
+                  3'h0:
+                      \active_state$next [86] = automata_table[0];
+                  3'h1:
+                      \active_state$next [86] = automata_table[1];
+                  3'h2:
+                      \active_state$next [86] = automata_table[2];
+                  3'h3:
+                      \active_state$next [86] = automata_table[3];
+                  3'h4:
+                      \active_state$next [86] = automata_table[4];
+                  3'h5:
+                      \active_state$next [86] = automata_table[5];
+                  3'h6:
+                      \active_state$next [86] = automata_table[6];
+                  3'h7:
+                      \active_state$next [86] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[88:86])
+                  3'h0:
+                      \active_state$next [87] = automata_table[0];
+                  3'h1:
+                      \active_state$next [87] = automata_table[1];
+                  3'h2:
+                      \active_state$next [87] = automata_table[2];
+                  3'h3:
+                      \active_state$next [87] = automata_table[3];
+                  3'h4:
+                      \active_state$next [87] = automata_table[4];
+                  3'h5:
+                      \active_state$next [87] = automata_table[5];
+                  3'h6:
+                      \active_state$next [87] = automata_table[6];
+                  3'h7:
+                      \active_state$next [87] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[89:87])
+                  3'h0:
+                      \active_state$next [88] = automata_table[0];
+                  3'h1:
+                      \active_state$next [88] = automata_table[1];
+                  3'h2:
+                      \active_state$next [88] = automata_table[2];
+                  3'h3:
+                      \active_state$next [88] = automata_table[3];
+                  3'h4:
+                      \active_state$next [88] = automata_table[4];
+                  3'h5:
+                      \active_state$next [88] = automata_table[5];
+                  3'h6:
+                      \active_state$next [88] = automata_table[6];
+                  3'h7:
+                      \active_state$next [88] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[90:88])
+                  3'h0:
+                      \active_state$next [89] = automata_table[0];
+                  3'h1:
+                      \active_state$next [89] = automata_table[1];
+                  3'h2:
+                      \active_state$next [89] = automata_table[2];
+                  3'h3:
+                      \active_state$next [89] = automata_table[3];
+                  3'h4:
+                      \active_state$next [89] = automata_table[4];
+                  3'h5:
+                      \active_state$next [89] = automata_table[5];
+                  3'h6:
+                      \active_state$next [89] = automata_table[6];
+                  3'h7:
+                      \active_state$next [89] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[91:89])
+                  3'h0:
+                      \active_state$next [90] = automata_table[0];
+                  3'h1:
+                      \active_state$next [90] = automata_table[1];
+                  3'h2:
+                      \active_state$next [90] = automata_table[2];
+                  3'h3:
+                      \active_state$next [90] = automata_table[3];
+                  3'h4:
+                      \active_state$next [90] = automata_table[4];
+                  3'h5:
+                      \active_state$next [90] = automata_table[5];
+                  3'h6:
+                      \active_state$next [90] = automata_table[6];
+                  3'h7:
+                      \active_state$next [90] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[92:90])
+                  3'h0:
+                      \active_state$next [91] = automata_table[0];
+                  3'h1:
+                      \active_state$next [91] = automata_table[1];
+                  3'h2:
+                      \active_state$next [91] = automata_table[2];
+                  3'h3:
+                      \active_state$next [91] = automata_table[3];
+                  3'h4:
+                      \active_state$next [91] = automata_table[4];
+                  3'h5:
+                      \active_state$next [91] = automata_table[5];
+                  3'h6:
+                      \active_state$next [91] = automata_table[6];
+                  3'h7:
+                      \active_state$next [91] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[93:91])
+                  3'h0:
+                      \active_state$next [92] = automata_table[0];
+                  3'h1:
+                      \active_state$next [92] = automata_table[1];
+                  3'h2:
+                      \active_state$next [92] = automata_table[2];
+                  3'h3:
+                      \active_state$next [92] = automata_table[3];
+                  3'h4:
+                      \active_state$next [92] = automata_table[4];
+                  3'h5:
+                      \active_state$next [92] = automata_table[5];
+                  3'h6:
+                      \active_state$next [92] = automata_table[6];
+                  3'h7:
+                      \active_state$next [92] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[94:92])
+                  3'h0:
+                      \active_state$next [93] = automata_table[0];
+                  3'h1:
+                      \active_state$next [93] = automata_table[1];
+                  3'h2:
+                      \active_state$next [93] = automata_table[2];
+                  3'h3:
+                      \active_state$next [93] = automata_table[3];
+                  3'h4:
+                      \active_state$next [93] = automata_table[4];
+                  3'h5:
+                      \active_state$next [93] = automata_table[5];
+                  3'h6:
+                      \active_state$next [93] = automata_table[6];
+                  3'h7:
+                      \active_state$next [93] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[95:93])
+                  3'h0:
+                      \active_state$next [94] = automata_table[0];
+                  3'h1:
+                      \active_state$next [94] = automata_table[1];
+                  3'h2:
+                      \active_state$next [94] = automata_table[2];
+                  3'h3:
+                      \active_state$next [94] = automata_table[3];
+                  3'h4:
+                      \active_state$next [94] = automata_table[4];
+                  3'h5:
+                      \active_state$next [94] = automata_table[5];
+                  3'h6:
+                      \active_state$next [94] = automata_table[6];
+                  3'h7:
+                      \active_state$next [94] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[96:94])
+                  3'h0:
+                      \active_state$next [95] = automata_table[0];
+                  3'h1:
+                      \active_state$next [95] = automata_table[1];
+                  3'h2:
+                      \active_state$next [95] = automata_table[2];
+                  3'h3:
+                      \active_state$next [95] = automata_table[3];
+                  3'h4:
+                      \active_state$next [95] = automata_table[4];
+                  3'h5:
+                      \active_state$next [95] = automata_table[5];
+                  3'h6:
+                      \active_state$next [95] = automata_table[6];
+                  3'h7:
+                      \active_state$next [95] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[97:95])
+                  3'h0:
+                      \active_state$next [96] = automata_table[0];
+                  3'h1:
+                      \active_state$next [96] = automata_table[1];
+                  3'h2:
+                      \active_state$next [96] = automata_table[2];
+                  3'h3:
+                      \active_state$next [96] = automata_table[3];
+                  3'h4:
+                      \active_state$next [96] = automata_table[4];
+                  3'h5:
+                      \active_state$next [96] = automata_table[5];
+                  3'h6:
+                      \active_state$next [96] = automata_table[6];
+                  3'h7:
+                      \active_state$next [96] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[98:96])
+                  3'h0:
+                      \active_state$next [97] = automata_table[0];
+                  3'h1:
+                      \active_state$next [97] = automata_table[1];
+                  3'h2:
+                      \active_state$next [97] = automata_table[2];
+                  3'h3:
+                      \active_state$next [97] = automata_table[3];
+                  3'h4:
+                      \active_state$next [97] = automata_table[4];
+                  3'h5:
+                      \active_state$next [97] = automata_table[5];
+                  3'h6:
+                      \active_state$next [97] = automata_table[6];
+                  3'h7:
+                      \active_state$next [97] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[99:97])
+                  3'h0:
+                      \active_state$next [98] = automata_table[0];
+                  3'h1:
+                      \active_state$next [98] = automata_table[1];
+                  3'h2:
+                      \active_state$next [98] = automata_table[2];
+                  3'h3:
+                      \active_state$next [98] = automata_table[3];
+                  3'h4:
+                      \active_state$next [98] = automata_table[4];
+                  3'h5:
+                      \active_state$next [98] = automata_table[5];
+                  3'h6:
+                      \active_state$next [98] = automata_table[6];
+                  3'h7:
+                      \active_state$next [98] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[100:98])
+                  3'h0:
+                      \active_state$next [99] = automata_table[0];
+                  3'h1:
+                      \active_state$next [99] = automata_table[1];
+                  3'h2:
+                      \active_state$next [99] = automata_table[2];
+                  3'h3:
+                      \active_state$next [99] = automata_table[3];
+                  3'h4:
+                      \active_state$next [99] = automata_table[4];
+                  3'h5:
+                      \active_state$next [99] = automata_table[5];
+                  3'h6:
+                      \active_state$next [99] = automata_table[6];
+                  3'h7:
+                      \active_state$next [99] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[101:99])
+                  3'h0:
+                      \active_state$next [100] = automata_table[0];
+                  3'h1:
+                      \active_state$next [100] = automata_table[1];
+                  3'h2:
+                      \active_state$next [100] = automata_table[2];
+                  3'h3:
+                      \active_state$next [100] = automata_table[3];
+                  3'h4:
+                      \active_state$next [100] = automata_table[4];
+                  3'h5:
+                      \active_state$next [100] = automata_table[5];
+                  3'h6:
+                      \active_state$next [100] = automata_table[6];
+                  3'h7:
+                      \active_state$next [100] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[102:100])
+                  3'h0:
+                      \active_state$next [101] = automata_table[0];
+                  3'h1:
+                      \active_state$next [101] = automata_table[1];
+                  3'h2:
+                      \active_state$next [101] = automata_table[2];
+                  3'h3:
+                      \active_state$next [101] = automata_table[3];
+                  3'h4:
+                      \active_state$next [101] = automata_table[4];
+                  3'h5:
+                      \active_state$next [101] = automata_table[5];
+                  3'h6:
+                      \active_state$next [101] = automata_table[6];
+                  3'h7:
+                      \active_state$next [101] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[103:101])
+                  3'h0:
+                      \active_state$next [102] = automata_table[0];
+                  3'h1:
+                      \active_state$next [102] = automata_table[1];
+                  3'h2:
+                      \active_state$next [102] = automata_table[2];
+                  3'h3:
+                      \active_state$next [102] = automata_table[3];
+                  3'h4:
+                      \active_state$next [102] = automata_table[4];
+                  3'h5:
+                      \active_state$next [102] = automata_table[5];
+                  3'h6:
+                      \active_state$next [102] = automata_table[6];
+                  3'h7:
+                      \active_state$next [102] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[104:102])
+                  3'h0:
+                      \active_state$next [103] = automata_table[0];
+                  3'h1:
+                      \active_state$next [103] = automata_table[1];
+                  3'h2:
+                      \active_state$next [103] = automata_table[2];
+                  3'h3:
+                      \active_state$next [103] = automata_table[3];
+                  3'h4:
+                      \active_state$next [103] = automata_table[4];
+                  3'h5:
+                      \active_state$next [103] = automata_table[5];
+                  3'h6:
+                      \active_state$next [103] = automata_table[6];
+                  3'h7:
+                      \active_state$next [103] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[105:103])
+                  3'h0:
+                      \active_state$next [104] = automata_table[0];
+                  3'h1:
+                      \active_state$next [104] = automata_table[1];
+                  3'h2:
+                      \active_state$next [104] = automata_table[2];
+                  3'h3:
+                      \active_state$next [104] = automata_table[3];
+                  3'h4:
+                      \active_state$next [104] = automata_table[4];
+                  3'h5:
+                      \active_state$next [104] = automata_table[5];
+                  3'h6:
+                      \active_state$next [104] = automata_table[6];
+                  3'h7:
+                      \active_state$next [104] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[106:104])
+                  3'h0:
+                      \active_state$next [105] = automata_table[0];
+                  3'h1:
+                      \active_state$next [105] = automata_table[1];
+                  3'h2:
+                      \active_state$next [105] = automata_table[2];
+                  3'h3:
+                      \active_state$next [105] = automata_table[3];
+                  3'h4:
+                      \active_state$next [105] = automata_table[4];
+                  3'h5:
+                      \active_state$next [105] = automata_table[5];
+                  3'h6:
+                      \active_state$next [105] = automata_table[6];
+                  3'h7:
+                      \active_state$next [105] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[107:105])
+                  3'h0:
+                      \active_state$next [106] = automata_table[0];
+                  3'h1:
+                      \active_state$next [106] = automata_table[1];
+                  3'h2:
+                      \active_state$next [106] = automata_table[2];
+                  3'h3:
+                      \active_state$next [106] = automata_table[3];
+                  3'h4:
+                      \active_state$next [106] = automata_table[4];
+                  3'h5:
+                      \active_state$next [106] = automata_table[5];
+                  3'h6:
+                      \active_state$next [106] = automata_table[6];
+                  3'h7:
+                      \active_state$next [106] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[108:106])
+                  3'h0:
+                      \active_state$next [107] = automata_table[0];
+                  3'h1:
+                      \active_state$next [107] = automata_table[1];
+                  3'h2:
+                      \active_state$next [107] = automata_table[2];
+                  3'h3:
+                      \active_state$next [107] = automata_table[3];
+                  3'h4:
+                      \active_state$next [107] = automata_table[4];
+                  3'h5:
+                      \active_state$next [107] = automata_table[5];
+                  3'h6:
+                      \active_state$next [107] = automata_table[6];
+                  3'h7:
+                      \active_state$next [107] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[109:107])
+                  3'h0:
+                      \active_state$next [108] = automata_table[0];
+                  3'h1:
+                      \active_state$next [108] = automata_table[1];
+                  3'h2:
+                      \active_state$next [108] = automata_table[2];
+                  3'h3:
+                      \active_state$next [108] = automata_table[3];
+                  3'h4:
+                      \active_state$next [108] = automata_table[4];
+                  3'h5:
+                      \active_state$next [108] = automata_table[5];
+                  3'h6:
+                      \active_state$next [108] = automata_table[6];
+                  3'h7:
+                      \active_state$next [108] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[110:108])
+                  3'h0:
+                      \active_state$next [109] = automata_table[0];
+                  3'h1:
+                      \active_state$next [109] = automata_table[1];
+                  3'h2:
+                      \active_state$next [109] = automata_table[2];
+                  3'h3:
+                      \active_state$next [109] = automata_table[3];
+                  3'h4:
+                      \active_state$next [109] = automata_table[4];
+                  3'h5:
+                      \active_state$next [109] = automata_table[5];
+                  3'h6:
+                      \active_state$next [109] = automata_table[6];
+                  3'h7:
+                      \active_state$next [109] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[111:109])
+                  3'h0:
+                      \active_state$next [110] = automata_table[0];
+                  3'h1:
+                      \active_state$next [110] = automata_table[1];
+                  3'h2:
+                      \active_state$next [110] = automata_table[2];
+                  3'h3:
+                      \active_state$next [110] = automata_table[3];
+                  3'h4:
+                      \active_state$next [110] = automata_table[4];
+                  3'h5:
+                      \active_state$next [110] = automata_table[5];
+                  3'h6:
+                      \active_state$next [110] = automata_table[6];
+                  3'h7:
+                      \active_state$next [110] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[112:110])
+                  3'h0:
+                      \active_state$next [111] = automata_table[0];
+                  3'h1:
+                      \active_state$next [111] = automata_table[1];
+                  3'h2:
+                      \active_state$next [111] = automata_table[2];
+                  3'h3:
+                      \active_state$next [111] = automata_table[3];
+                  3'h4:
+                      \active_state$next [111] = automata_table[4];
+                  3'h5:
+                      \active_state$next [111] = automata_table[5];
+                  3'h6:
+                      \active_state$next [111] = automata_table[6];
+                  3'h7:
+                      \active_state$next [111] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[113:111])
+                  3'h0:
+                      \active_state$next [112] = automata_table[0];
+                  3'h1:
+                      \active_state$next [112] = automata_table[1];
+                  3'h2:
+                      \active_state$next [112] = automata_table[2];
+                  3'h3:
+                      \active_state$next [112] = automata_table[3];
+                  3'h4:
+                      \active_state$next [112] = automata_table[4];
+                  3'h5:
+                      \active_state$next [112] = automata_table[5];
+                  3'h6:
+                      \active_state$next [112] = automata_table[6];
+                  3'h7:
+                      \active_state$next [112] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[114:112])
+                  3'h0:
+                      \active_state$next [113] = automata_table[0];
+                  3'h1:
+                      \active_state$next [113] = automata_table[1];
+                  3'h2:
+                      \active_state$next [113] = automata_table[2];
+                  3'h3:
+                      \active_state$next [113] = automata_table[3];
+                  3'h4:
+                      \active_state$next [113] = automata_table[4];
+                  3'h5:
+                      \active_state$next [113] = automata_table[5];
+                  3'h6:
+                      \active_state$next [113] = automata_table[6];
+                  3'h7:
+                      \active_state$next [113] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[115:113])
+                  3'h0:
+                      \active_state$next [114] = automata_table[0];
+                  3'h1:
+                      \active_state$next [114] = automata_table[1];
+                  3'h2:
+                      \active_state$next [114] = automata_table[2];
+                  3'h3:
+                      \active_state$next [114] = automata_table[3];
+                  3'h4:
+                      \active_state$next [114] = automata_table[4];
+                  3'h5:
+                      \active_state$next [114] = automata_table[5];
+                  3'h6:
+                      \active_state$next [114] = automata_table[6];
+                  3'h7:
+                      \active_state$next [114] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[116:114])
+                  3'h0:
+                      \active_state$next [115] = automata_table[0];
+                  3'h1:
+                      \active_state$next [115] = automata_table[1];
+                  3'h2:
+                      \active_state$next [115] = automata_table[2];
+                  3'h3:
+                      \active_state$next [115] = automata_table[3];
+                  3'h4:
+                      \active_state$next [115] = automata_table[4];
+                  3'h5:
+                      \active_state$next [115] = automata_table[5];
+                  3'h6:
+                      \active_state$next [115] = automata_table[6];
+                  3'h7:
+                      \active_state$next [115] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[117:115])
+                  3'h0:
+                      \active_state$next [116] = automata_table[0];
+                  3'h1:
+                      \active_state$next [116] = automata_table[1];
+                  3'h2:
+                      \active_state$next [116] = automata_table[2];
+                  3'h3:
+                      \active_state$next [116] = automata_table[3];
+                  3'h4:
+                      \active_state$next [116] = automata_table[4];
+                  3'h5:
+                      \active_state$next [116] = automata_table[5];
+                  3'h6:
+                      \active_state$next [116] = automata_table[6];
+                  3'h7:
+                      \active_state$next [116] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[118:116])
+                  3'h0:
+                      \active_state$next [117] = automata_table[0];
+                  3'h1:
+                      \active_state$next [117] = automata_table[1];
+                  3'h2:
+                      \active_state$next [117] = automata_table[2];
+                  3'h3:
+                      \active_state$next [117] = automata_table[3];
+                  3'h4:
+                      \active_state$next [117] = automata_table[4];
+                  3'h5:
+                      \active_state$next [117] = automata_table[5];
+                  3'h6:
+                      \active_state$next [117] = automata_table[6];
+                  3'h7:
+                      \active_state$next [117] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[119:117])
+                  3'h0:
+                      \active_state$next [118] = automata_table[0];
+                  3'h1:
+                      \active_state$next [118] = automata_table[1];
+                  3'h2:
+                      \active_state$next [118] = automata_table[2];
+                  3'h3:
+                      \active_state$next [118] = automata_table[3];
+                  3'h4:
+                      \active_state$next [118] = automata_table[4];
+                  3'h5:
+                      \active_state$next [118] = automata_table[5];
+                  3'h6:
+                      \active_state$next [118] = automata_table[6];
+                  3'h7:
+                      \active_state$next [118] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[120:118])
+                  3'h0:
+                      \active_state$next [119] = automata_table[0];
+                  3'h1:
+                      \active_state$next [119] = automata_table[1];
+                  3'h2:
+                      \active_state$next [119] = automata_table[2];
+                  3'h3:
+                      \active_state$next [119] = automata_table[3];
+                  3'h4:
+                      \active_state$next [119] = automata_table[4];
+                  3'h5:
+                      \active_state$next [119] = automata_table[5];
+                  3'h6:
+                      \active_state$next [119] = automata_table[6];
+                  3'h7:
+                      \active_state$next [119] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[121:119])
+                  3'h0:
+                      \active_state$next [120] = automata_table[0];
+                  3'h1:
+                      \active_state$next [120] = automata_table[1];
+                  3'h2:
+                      \active_state$next [120] = automata_table[2];
+                  3'h3:
+                      \active_state$next [120] = automata_table[3];
+                  3'h4:
+                      \active_state$next [120] = automata_table[4];
+                  3'h5:
+                      \active_state$next [120] = automata_table[5];
+                  3'h6:
+                      \active_state$next [120] = automata_table[6];
+                  3'h7:
+                      \active_state$next [120] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[122:120])
+                  3'h0:
+                      \active_state$next [121] = automata_table[0];
+                  3'h1:
+                      \active_state$next [121] = automata_table[1];
+                  3'h2:
+                      \active_state$next [121] = automata_table[2];
+                  3'h3:
+                      \active_state$next [121] = automata_table[3];
+                  3'h4:
+                      \active_state$next [121] = automata_table[4];
+                  3'h5:
+                      \active_state$next [121] = automata_table[5];
+                  3'h6:
+                      \active_state$next [121] = automata_table[6];
+                  3'h7:
+                      \active_state$next [121] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[123:121])
+                  3'h0:
+                      \active_state$next [122] = automata_table[0];
+                  3'h1:
+                      \active_state$next [122] = automata_table[1];
+                  3'h2:
+                      \active_state$next [122] = automata_table[2];
+                  3'h3:
+                      \active_state$next [122] = automata_table[3];
+                  3'h4:
+                      \active_state$next [122] = automata_table[4];
+                  3'h5:
+                      \active_state$next [122] = automata_table[5];
+                  3'h6:
+                      \active_state$next [122] = automata_table[6];
+                  3'h7:
+                      \active_state$next [122] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[124:122])
+                  3'h0:
+                      \active_state$next [123] = automata_table[0];
+                  3'h1:
+                      \active_state$next [123] = automata_table[1];
+                  3'h2:
+                      \active_state$next [123] = automata_table[2];
+                  3'h3:
+                      \active_state$next [123] = automata_table[3];
+                  3'h4:
+                      \active_state$next [123] = automata_table[4];
+                  3'h5:
+                      \active_state$next [123] = automata_table[5];
+                  3'h6:
+                      \active_state$next [123] = automata_table[6];
+                  3'h7:
+                      \active_state$next [123] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[125:123])
+                  3'h0:
+                      \active_state$next [124] = automata_table[0];
+                  3'h1:
+                      \active_state$next [124] = automata_table[1];
+                  3'h2:
+                      \active_state$next [124] = automata_table[2];
+                  3'h3:
+                      \active_state$next [124] = automata_table[3];
+                  3'h4:
+                      \active_state$next [124] = automata_table[4];
+                  3'h5:
+                      \active_state$next [124] = automata_table[5];
+                  3'h6:
+                      \active_state$next [124] = automata_table[6];
+                  3'h7:
+                      \active_state$next [124] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[126:124])
+                  3'h0:
+                      \active_state$next [125] = automata_table[0];
+                  3'h1:
+                      \active_state$next [125] = automata_table[1];
+                  3'h2:
+                      \active_state$next [125] = automata_table[2];
+                  3'h3:
+                      \active_state$next [125] = automata_table[3];
+                  3'h4:
+                      \active_state$next [125] = automata_table[4];
+                  3'h5:
+                      \active_state$next [125] = automata_table[5];
+                  3'h6:
+                      \active_state$next [125] = automata_table[6];
+                  3'h7:
+                      \active_state$next [125] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[127:125])
+                  3'h0:
+                      \active_state$next [126] = automata_table[0];
+                  3'h1:
+                      \active_state$next [126] = automata_table[1];
+                  3'h2:
+                      \active_state$next [126] = automata_table[2];
+                  3'h3:
+                      \active_state$next [126] = automata_table[3];
+                  3'h4:
+                      \active_state$next [126] = automata_table[4];
+                  3'h5:
+                      \active_state$next [126] = automata_table[5];
+                  3'h6:
+                      \active_state$next [126] = automata_table[6];
+                  3'h7:
+                      \active_state$next [126] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[128:126])
+                  3'h0:
+                      \active_state$next [127] = automata_table[0];
+                  3'h1:
+                      \active_state$next [127] = automata_table[1];
+                  3'h2:
+                      \active_state$next [127] = automata_table[2];
+                  3'h3:
+                      \active_state$next [127] = automata_table[3];
+                  3'h4:
+                      \active_state$next [127] = automata_table[4];
+                  3'h5:
+                      \active_state$next [127] = automata_table[5];
+                  3'h6:
+                      \active_state$next [127] = automata_table[6];
+                  3'h7:
+                      \active_state$next [127] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[129:127])
+                  3'h0:
+                      \active_state$next [128] = automata_table[0];
+                  3'h1:
+                      \active_state$next [128] = automata_table[1];
+                  3'h2:
+                      \active_state$next [128] = automata_table[2];
+                  3'h3:
+                      \active_state$next [128] = automata_table[3];
+                  3'h4:
+                      \active_state$next [128] = automata_table[4];
+                  3'h5:
+                      \active_state$next [128] = automata_table[5];
+                  3'h6:
+                      \active_state$next [128] = automata_table[6];
+                  3'h7:
+                      \active_state$next [128] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[130:128])
+                  3'h0:
+                      \active_state$next [129] = automata_table[0];
+                  3'h1:
+                      \active_state$next [129] = automata_table[1];
+                  3'h2:
+                      \active_state$next [129] = automata_table[2];
+                  3'h3:
+                      \active_state$next [129] = automata_table[3];
+                  3'h4:
+                      \active_state$next [129] = automata_table[4];
+                  3'h5:
+                      \active_state$next [129] = automata_table[5];
+                  3'h6:
+                      \active_state$next [129] = automata_table[6];
+                  3'h7:
+                      \active_state$next [129] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[131:129])
+                  3'h0:
+                      \active_state$next [130] = automata_table[0];
+                  3'h1:
+                      \active_state$next [130] = automata_table[1];
+                  3'h2:
+                      \active_state$next [130] = automata_table[2];
+                  3'h3:
+                      \active_state$next [130] = automata_table[3];
+                  3'h4:
+                      \active_state$next [130] = automata_table[4];
+                  3'h5:
+                      \active_state$next [130] = automata_table[5];
+                  3'h6:
+                      \active_state$next [130] = automata_table[6];
+                  3'h7:
+                      \active_state$next [130] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[132:130])
+                  3'h0:
+                      \active_state$next [131] = automata_table[0];
+                  3'h1:
+                      \active_state$next [131] = automata_table[1];
+                  3'h2:
+                      \active_state$next [131] = automata_table[2];
+                  3'h3:
+                      \active_state$next [131] = automata_table[3];
+                  3'h4:
+                      \active_state$next [131] = automata_table[4];
+                  3'h5:
+                      \active_state$next [131] = automata_table[5];
+                  3'h6:
+                      \active_state$next [131] = automata_table[6];
+                  3'h7:
+                      \active_state$next [131] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[133:131])
+                  3'h0:
+                      \active_state$next [132] = automata_table[0];
+                  3'h1:
+                      \active_state$next [132] = automata_table[1];
+                  3'h2:
+                      \active_state$next [132] = automata_table[2];
+                  3'h3:
+                      \active_state$next [132] = automata_table[3];
+                  3'h4:
+                      \active_state$next [132] = automata_table[4];
+                  3'h5:
+                      \active_state$next [132] = automata_table[5];
+                  3'h6:
+                      \active_state$next [132] = automata_table[6];
+                  3'h7:
+                      \active_state$next [132] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[134:132])
+                  3'h0:
+                      \active_state$next [133] = automata_table[0];
+                  3'h1:
+                      \active_state$next [133] = automata_table[1];
+                  3'h2:
+                      \active_state$next [133] = automata_table[2];
+                  3'h3:
+                      \active_state$next [133] = automata_table[3];
+                  3'h4:
+                      \active_state$next [133] = automata_table[4];
+                  3'h5:
+                      \active_state$next [133] = automata_table[5];
+                  3'h6:
+                      \active_state$next [133] = automata_table[6];
+                  3'h7:
+                      \active_state$next [133] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[135:133])
+                  3'h0:
+                      \active_state$next [134] = automata_table[0];
+                  3'h1:
+                      \active_state$next [134] = automata_table[1];
+                  3'h2:
+                      \active_state$next [134] = automata_table[2];
+                  3'h3:
+                      \active_state$next [134] = automata_table[3];
+                  3'h4:
+                      \active_state$next [134] = automata_table[4];
+                  3'h5:
+                      \active_state$next [134] = automata_table[5];
+                  3'h6:
+                      \active_state$next [134] = automata_table[6];
+                  3'h7:
+                      \active_state$next [134] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[136:134])
+                  3'h0:
+                      \active_state$next [135] = automata_table[0];
+                  3'h1:
+                      \active_state$next [135] = automata_table[1];
+                  3'h2:
+                      \active_state$next [135] = automata_table[2];
+                  3'h3:
+                      \active_state$next [135] = automata_table[3];
+                  3'h4:
+                      \active_state$next [135] = automata_table[4];
+                  3'h5:
+                      \active_state$next [135] = automata_table[5];
+                  3'h6:
+                      \active_state$next [135] = automata_table[6];
+                  3'h7:
+                      \active_state$next [135] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[137:135])
+                  3'h0:
+                      \active_state$next [136] = automata_table[0];
+                  3'h1:
+                      \active_state$next [136] = automata_table[1];
+                  3'h2:
+                      \active_state$next [136] = automata_table[2];
+                  3'h3:
+                      \active_state$next [136] = automata_table[3];
+                  3'h4:
+                      \active_state$next [136] = automata_table[4];
+                  3'h5:
+                      \active_state$next [136] = automata_table[5];
+                  3'h6:
+                      \active_state$next [136] = automata_table[6];
+                  3'h7:
+                      \active_state$next [136] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[138:136])
+                  3'h0:
+                      \active_state$next [137] = automata_table[0];
+                  3'h1:
+                      \active_state$next [137] = automata_table[1];
+                  3'h2:
+                      \active_state$next [137] = automata_table[2];
+                  3'h3:
+                      \active_state$next [137] = automata_table[3];
+                  3'h4:
+                      \active_state$next [137] = automata_table[4];
+                  3'h5:
+                      \active_state$next [137] = automata_table[5];
+                  3'h6:
+                      \active_state$next [137] = automata_table[6];
+                  3'h7:
+                      \active_state$next [137] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[139:137])
+                  3'h0:
+                      \active_state$next [138] = automata_table[0];
+                  3'h1:
+                      \active_state$next [138] = automata_table[1];
+                  3'h2:
+                      \active_state$next [138] = automata_table[2];
+                  3'h3:
+                      \active_state$next [138] = automata_table[3];
+                  3'h4:
+                      \active_state$next [138] = automata_table[4];
+                  3'h5:
+                      \active_state$next [138] = automata_table[5];
+                  3'h6:
+                      \active_state$next [138] = automata_table[6];
+                  3'h7:
+                      \active_state$next [138] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[140:138])
+                  3'h0:
+                      \active_state$next [139] = automata_table[0];
+                  3'h1:
+                      \active_state$next [139] = automata_table[1];
+                  3'h2:
+                      \active_state$next [139] = automata_table[2];
+                  3'h3:
+                      \active_state$next [139] = automata_table[3];
+                  3'h4:
+                      \active_state$next [139] = automata_table[4];
+                  3'h5:
+                      \active_state$next [139] = automata_table[5];
+                  3'h6:
+                      \active_state$next [139] = automata_table[6];
+                  3'h7:
+                      \active_state$next [139] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[141:139])
+                  3'h0:
+                      \active_state$next [140] = automata_table[0];
+                  3'h1:
+                      \active_state$next [140] = automata_table[1];
+                  3'h2:
+                      \active_state$next [140] = automata_table[2];
+                  3'h3:
+                      \active_state$next [140] = automata_table[3];
+                  3'h4:
+                      \active_state$next [140] = automata_table[4];
+                  3'h5:
+                      \active_state$next [140] = automata_table[5];
+                  3'h6:
+                      \active_state$next [140] = automata_table[6];
+                  3'h7:
+                      \active_state$next [140] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[142:140])
+                  3'h0:
+                      \active_state$next [141] = automata_table[0];
+                  3'h1:
+                      \active_state$next [141] = automata_table[1];
+                  3'h2:
+                      \active_state$next [141] = automata_table[2];
+                  3'h3:
+                      \active_state$next [141] = automata_table[3];
+                  3'h4:
+                      \active_state$next [141] = automata_table[4];
+                  3'h5:
+                      \active_state$next [141] = automata_table[5];
+                  3'h6:
+                      \active_state$next [141] = automata_table[6];
+                  3'h7:
+                      \active_state$next [141] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[143:141])
+                  3'h0:
+                      \active_state$next [142] = automata_table[0];
+                  3'h1:
+                      \active_state$next [142] = automata_table[1];
+                  3'h2:
+                      \active_state$next [142] = automata_table[2];
+                  3'h3:
+                      \active_state$next [142] = automata_table[3];
+                  3'h4:
+                      \active_state$next [142] = automata_table[4];
+                  3'h5:
+                      \active_state$next [142] = automata_table[5];
+                  3'h6:
+                      \active_state$next [142] = automata_table[6];
+                  3'h7:
+                      \active_state$next [142] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[144:142])
+                  3'h0:
+                      \active_state$next [143] = automata_table[0];
+                  3'h1:
+                      \active_state$next [143] = automata_table[1];
+                  3'h2:
+                      \active_state$next [143] = automata_table[2];
+                  3'h3:
+                      \active_state$next [143] = automata_table[3];
+                  3'h4:
+                      \active_state$next [143] = automata_table[4];
+                  3'h5:
+                      \active_state$next [143] = automata_table[5];
+                  3'h6:
+                      \active_state$next [143] = automata_table[6];
+                  3'h7:
+                      \active_state$next [143] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[145:143])
+                  3'h0:
+                      \active_state$next [144] = automata_table[0];
+                  3'h1:
+                      \active_state$next [144] = automata_table[1];
+                  3'h2:
+                      \active_state$next [144] = automata_table[2];
+                  3'h3:
+                      \active_state$next [144] = automata_table[3];
+                  3'h4:
+                      \active_state$next [144] = automata_table[4];
+                  3'h5:
+                      \active_state$next [144] = automata_table[5];
+                  3'h6:
+                      \active_state$next [144] = automata_table[6];
+                  3'h7:
+                      \active_state$next [144] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[146:144])
+                  3'h0:
+                      \active_state$next [145] = automata_table[0];
+                  3'h1:
+                      \active_state$next [145] = automata_table[1];
+                  3'h2:
+                      \active_state$next [145] = automata_table[2];
+                  3'h3:
+                      \active_state$next [145] = automata_table[3];
+                  3'h4:
+                      \active_state$next [145] = automata_table[4];
+                  3'h5:
+                      \active_state$next [145] = automata_table[5];
+                  3'h6:
+                      \active_state$next [145] = automata_table[6];
+                  3'h7:
+                      \active_state$next [145] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[147:145])
+                  3'h0:
+                      \active_state$next [146] = automata_table[0];
+                  3'h1:
+                      \active_state$next [146] = automata_table[1];
+                  3'h2:
+                      \active_state$next [146] = automata_table[2];
+                  3'h3:
+                      \active_state$next [146] = automata_table[3];
+                  3'h4:
+                      \active_state$next [146] = automata_table[4];
+                  3'h5:
+                      \active_state$next [146] = automata_table[5];
+                  3'h6:
+                      \active_state$next [146] = automata_table[6];
+                  3'h7:
+                      \active_state$next [146] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[148:146])
+                  3'h0:
+                      \active_state$next [147] = automata_table[0];
+                  3'h1:
+                      \active_state$next [147] = automata_table[1];
+                  3'h2:
+                      \active_state$next [147] = automata_table[2];
+                  3'h3:
+                      \active_state$next [147] = automata_table[3];
+                  3'h4:
+                      \active_state$next [147] = automata_table[4];
+                  3'h5:
+                      \active_state$next [147] = automata_table[5];
+                  3'h6:
+                      \active_state$next [147] = automata_table[6];
+                  3'h7:
+                      \active_state$next [147] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[149:147])
+                  3'h0:
+                      \active_state$next [148] = automata_table[0];
+                  3'h1:
+                      \active_state$next [148] = automata_table[1];
+                  3'h2:
+                      \active_state$next [148] = automata_table[2];
+                  3'h3:
+                      \active_state$next [148] = automata_table[3];
+                  3'h4:
+                      \active_state$next [148] = automata_table[4];
+                  3'h5:
+                      \active_state$next [148] = automata_table[5];
+                  3'h6:
+                      \active_state$next [148] = automata_table[6];
+                  3'h7:
+                      \active_state$next [148] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[150:148])
+                  3'h0:
+                      \active_state$next [149] = automata_table[0];
+                  3'h1:
+                      \active_state$next [149] = automata_table[1];
+                  3'h2:
+                      \active_state$next [149] = automata_table[2];
+                  3'h3:
+                      \active_state$next [149] = automata_table[3];
+                  3'h4:
+                      \active_state$next [149] = automata_table[4];
+                  3'h5:
+                      \active_state$next [149] = automata_table[5];
+                  3'h6:
+                      \active_state$next [149] = automata_table[6];
+                  3'h7:
+                      \active_state$next [149] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[151:149])
+                  3'h0:
+                      \active_state$next [150] = automata_table[0];
+                  3'h1:
+                      \active_state$next [150] = automata_table[1];
+                  3'h2:
+                      \active_state$next [150] = automata_table[2];
+                  3'h3:
+                      \active_state$next [150] = automata_table[3];
+                  3'h4:
+                      \active_state$next [150] = automata_table[4];
+                  3'h5:
+                      \active_state$next [150] = automata_table[5];
+                  3'h6:
+                      \active_state$next [150] = automata_table[6];
+                  3'h7:
+                      \active_state$next [150] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[152:150])
+                  3'h0:
+                      \active_state$next [151] = automata_table[0];
+                  3'h1:
+                      \active_state$next [151] = automata_table[1];
+                  3'h2:
+                      \active_state$next [151] = automata_table[2];
+                  3'h3:
+                      \active_state$next [151] = automata_table[3];
+                  3'h4:
+                      \active_state$next [151] = automata_table[4];
+                  3'h5:
+                      \active_state$next [151] = automata_table[5];
+                  3'h6:
+                      \active_state$next [151] = automata_table[6];
+                  3'h7:
+                      \active_state$next [151] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[153:151])
+                  3'h0:
+                      \active_state$next [152] = automata_table[0];
+                  3'h1:
+                      \active_state$next [152] = automata_table[1];
+                  3'h2:
+                      \active_state$next [152] = automata_table[2];
+                  3'h3:
+                      \active_state$next [152] = automata_table[3];
+                  3'h4:
+                      \active_state$next [152] = automata_table[4];
+                  3'h5:
+                      \active_state$next [152] = automata_table[5];
+                  3'h6:
+                      \active_state$next [152] = automata_table[6];
+                  3'h7:
+                      \active_state$next [152] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[154:152])
+                  3'h0:
+                      \active_state$next [153] = automata_table[0];
+                  3'h1:
+                      \active_state$next [153] = automata_table[1];
+                  3'h2:
+                      \active_state$next [153] = automata_table[2];
+                  3'h3:
+                      \active_state$next [153] = automata_table[3];
+                  3'h4:
+                      \active_state$next [153] = automata_table[4];
+                  3'h5:
+                      \active_state$next [153] = automata_table[5];
+                  3'h6:
+                      \active_state$next [153] = automata_table[6];
+                  3'h7:
+                      \active_state$next [153] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[155:153])
+                  3'h0:
+                      \active_state$next [154] = automata_table[0];
+                  3'h1:
+                      \active_state$next [154] = automata_table[1];
+                  3'h2:
+                      \active_state$next [154] = automata_table[2];
+                  3'h3:
+                      \active_state$next [154] = automata_table[3];
+                  3'h4:
+                      \active_state$next [154] = automata_table[4];
+                  3'h5:
+                      \active_state$next [154] = automata_table[5];
+                  3'h6:
+                      \active_state$next [154] = automata_table[6];
+                  3'h7:
+                      \active_state$next [154] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[156:154])
+                  3'h0:
+                      \active_state$next [155] = automata_table[0];
+                  3'h1:
+                      \active_state$next [155] = automata_table[1];
+                  3'h2:
+                      \active_state$next [155] = automata_table[2];
+                  3'h3:
+                      \active_state$next [155] = automata_table[3];
+                  3'h4:
+                      \active_state$next [155] = automata_table[4];
+                  3'h5:
+                      \active_state$next [155] = automata_table[5];
+                  3'h6:
+                      \active_state$next [155] = automata_table[6];
+                  3'h7:
+                      \active_state$next [155] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[157:155])
+                  3'h0:
+                      \active_state$next [156] = automata_table[0];
+                  3'h1:
+                      \active_state$next [156] = automata_table[1];
+                  3'h2:
+                      \active_state$next [156] = automata_table[2];
+                  3'h3:
+                      \active_state$next [156] = automata_table[3];
+                  3'h4:
+                      \active_state$next [156] = automata_table[4];
+                  3'h5:
+                      \active_state$next [156] = automata_table[5];
+                  3'h6:
+                      \active_state$next [156] = automata_table[6];
+                  3'h7:
+                      \active_state$next [156] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[158:156])
+                  3'h0:
+                      \active_state$next [157] = automata_table[0];
+                  3'h1:
+                      \active_state$next [157] = automata_table[1];
+                  3'h2:
+                      \active_state$next [157] = automata_table[2];
+                  3'h3:
+                      \active_state$next [157] = automata_table[3];
+                  3'h4:
+                      \active_state$next [157] = automata_table[4];
+                  3'h5:
+                      \active_state$next [157] = automata_table[5];
+                  3'h6:
+                      \active_state$next [157] = automata_table[6];
+                  3'h7:
+                      \active_state$next [157] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez (active_state[159:157])
+                  3'h0:
+                      \active_state$next [158] = automata_table[0];
+                  3'h1:
+                      \active_state$next [158] = automata_table[1];
+                  3'h2:
+                      \active_state$next [158] = automata_table[2];
+                  3'h3:
+                      \active_state$next [158] = automata_table[3];
+                  3'h4:
+                      \active_state$next [158] = automata_table[4];
+                  3'h5:
+                      \active_state$next [158] = automata_table[5];
+                  3'h6:
+                      \active_state$next [158] = automata_table[6];
+                  3'h7:
+                      \active_state$next [158] = automata_table[7];
+                endcase
+                (* full_case = 32'd1 *)
+                casez ({ active_state[0], active_state[159:158] })
+                  3'h0:
+                      \active_state$next [159] = automata_table[0];
+                  3'h1:
+                      \active_state$next [159] = automata_table[1];
+                  3'h2:
+                      \active_state$next [159] = automata_table[2];
+                  3'h3:
+                      \active_state$next [159] = automata_table[3];
+                  3'h4:
+                      \active_state$next [159] = automata_table[4];
+                  3'h5:
+                      \active_state$next [159] = automata_table[5];
+                  3'h6:
+                      \active_state$next [159] = automata_table[6];
+                  3'h7:
+                      \active_state$next [159] = automata_table[7];
                 endcase
               end
           endcase
@@ -14410,20 +4170,30 @@ module amaranth_core(audio_dac, audio_lrck, audio_mclk, clk, cont1_joy, cont1_ke
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2083:dump_module$1 ) begin end
-    \automata$next  = automata;
+    \automata_table$next  = automata_table;
     casez (video_clk_div_stb)
       1'h1:
           casez (video_vsync_stb)
             1'h1:
                 casez (need_automata_next)
                   1'h1:
-                      \automata$next  = automata_next;
+                      (* full_case = 32'd1 *)
+                      casez (automata_next)
+                        2'h0:
+                            \automata_table$next  = 8'h1e;
+                        2'h1:
+                            \automata_table$next  = 8'h6e;
+                        2'h2:
+                            \automata_table$next  = 8'h6a;
+                        2'h3:
+                            \automata_table$next  = 8'h0e;
+                      endcase
                 endcase
           endcase
     endcase
     casez (\rst$2 )
       1'h1:
-          \automata$next  = 2'h0;
+          \automata_table$next  = 8'h1e;
     endcase
   end
   always @* begin

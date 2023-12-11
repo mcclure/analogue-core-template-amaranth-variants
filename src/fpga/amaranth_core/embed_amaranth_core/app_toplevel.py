@@ -28,6 +28,13 @@ class AutoKind(enum.IntEnum):
     rule106 = 2 # Weird diagonal
     rule14 = 3 # Ultra normal diagonal
 
+AUTO_RULE_BITS = [ # Lookup byte for above. (FIXME: Generate from rule number)
+    0b00011110,
+    0b01101110,
+    0b01101010,
+    0b00001110
+]
+
 AUTO_DEFAULT = AutoKind.rule30
 
 class AppToplevel(Toplevel):
@@ -64,8 +71,9 @@ class AppToplevel(Toplevel):
         speed_counter_mask = Signal(SPEED_LEVELS, reset=((1<<SPEED_INITIAL) - 1))
 
         # Automaton
-        automata = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
+        #automata = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
         automata_next = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
+        automata_table = Signal(8, reset=AUTO_RULE_BITS[AutoKind.rule30])
         need_automata_next = Signal(1)
 
         # Scribble
@@ -206,79 +214,10 @@ class AppToplevel(Toplevel):
                     # Input signal
                     cat = Cat(Cat(active_state[pre], at), active_state[nex])
                     # Cellular automaton definition
-                    with m.Switch(automata):
-                        with m.Case(AutoKind.rule30):
-                            with m.Switch(cat):
-                                with m.Case(0b000):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b001):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b010):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b011):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b100):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b101):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b110):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b111):
-                                    m.d.sync += at.eq(0)
-                        with m.Case(AutoKind.rule110):
-                            with m.Switch(cat):
-                                with m.Case(0b000):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b001):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b010):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b011):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b100):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b101):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b110):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b111):
-                                    m.d.sync += at.eq(0)
-                        with m.Case(AutoKind.rule106):
-                            with m.Switch(cat):
-                                with m.Case(0b000):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b001):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b010):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b011):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b100):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b101):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b110):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b111):
-                                    m.d.sync += at.eq(0)
-                        with m.Case(AutoKind.rule14):
-                            with m.Switch(cat):
-                                with m.Case(0b000):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b001):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b010):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b011):
-                                    m.d.sync += at.eq(1)
-                                with m.Case(0b100):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b101):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b110):
-                                    m.d.sync += at.eq(0)
-                                with m.Case(0b111):
-                                    m.d.sync += at.eq(0)
+                    with m.Switch(cat):
+                        for idx in range(8): # Case applies each possible neighbor bit combination to a bit in the register
+                            with m.Case(idx):
+                                m.d.sync += at.eq(automata_table[idx])
 
                 # 1 cycle after first row is done performing CA, make that the new topline
                 # (Unless we are in first second and frozen)
@@ -341,9 +280,14 @@ class AppToplevel(Toplevel):
                     # Activate automata change
                     with m.If(need_automata_next):
                         m.d.sync += [
-                            automata.eq(automata_next),
                             need_automata_next.eq(0)
                         ]
+                        with m.Switch(automata_next):
+                            for idx in range(4):
+                                with m.Case(idx):
+                                    m.d.sync += [
+                                        automata_table.eq(AUTO_RULE_BITS[idx])
+                                    ]
 
                     m.d.sync += need_topline_copy.eq(1)
 
