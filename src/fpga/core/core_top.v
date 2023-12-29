@@ -494,6 +494,30 @@ core_bridge_cmd icb (
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
+wire pll_outclk_0;
+wire pll_outclk_1;
+altera_pll #(
+    .fractional_vco_multiplier ( "true"          ),
+    .reference_clock_frequency ( "74.25 MHz"     ),
+    .operation_mode            ( "direct"        ),
+    .number_of_clocks          ( 2               ),
+    .output_clock_frequency0   ( "1.237500 MHz" ),
+    .phase_shift0              ( "0 ps"          ),
+    .duty_cycle0               ( 50              ),
+    .output_clock_frequency1   ( "1.237500 MHz" ),
+    .phase_shift1              ( "202020.202 ps" ),
+    .duty_cycle1               ( 50              ),
+    .pll_type                  ( "General"       ),
+    .pll_subtype               ( "General"       )
+) altera_pll_i (
+    .rst      ( ~reset_n             ),
+    .outclk   ( {pll_outclk_0, pll_outclk_1} ),
+    .locked   (                      ),
+    .fboutclk (                      ),
+    .fbclk    ( 1'b0                 ),
+    .refclk   ( clk_74a               )
+);
+
 
 amaranth_core ac (
 
@@ -532,6 +556,9 @@ amaranth_core ac (
     .video_skip         ( video_skip ),
     .video_vs           ( video_vs ),
     .video_hs           ( video_hs ),
+
+    .pll_clk_0          ( pll_outclk_0 ),
+    .pll_clk_1          ( pll_outclk_1 ),
 
 // output  wire            audio_clk,
 // output  wire            audio_wsel,

@@ -3,6 +3,8 @@ from amaranth.lib import wiring, data
 from amaranth.lib.wiring import In, Out
 import enum
 
+USE_EXTERNAL_DISPLAY_CLOCK = True
+
 from .resolution import *
 
 
@@ -64,6 +66,9 @@ class Toplevel(wiring.Component):
     video_vs        : Out(1)
     video_hs        : Out(1)
 
+    pll_clk_0       : In(1)
+    pll_clk_1       : In(1)
+
     audio_mclk      : Out(1)
     audio_lrck      : Out(1) # A better name would be audio_select but this is what the i2s standard calls it
     audio_adc       : In(1)  # Unused
@@ -97,11 +102,25 @@ class Toplevel(wiring.Component):
 
         # Video interface
 
-        m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=VID_DIV_RATIO)
-        m.d.comb += [
-            self.video_rgb_clk.eq(video_clk_div.clk),
-            self.video_rgb_clk90.eq(video_clk_div.clk90),
-        ]
+        video_update_stb = Signal(1)
+
+        if USE_EXTERNAL_DISPLAY_CLOCK:
+            pll_clk_0_was = Signal(1)
+            m.d.sync += pll_clk_0_was.eq(self.pll_clk_0)
+
+            m.d.comb += [
+                self.video_rgb_clk.eq(self.pll_clk_0),
+                self.video_rgb_clk90.eq(self.pll_clk_1),
+                video_update_stb.eq(self.pll_clk_0 & (~pll_clk_0_was))
+            ]
+        else:
+            m.submodules.video_clk_div = video_clk_div = PixelClockDiv(ratio=VID_DIV_RATIO)
+
+            m.d.comb += [
+                self.video_rgb_clk.eq(video_clk_div.clk),
+                self.video_rgb_clk90.eq(video_clk_div.clk90),
+                video_update_stb.eq(video_clk_div.stb)
+            ]
 
         video_x_count = Signal(10)
         video_y_count = Signal(10)
@@ -122,19 +141,19 @@ class Toplevel(wiring.Component):
         video_active = Signal(1)
 
         m.d.comb += [ # Hsync strobes the pixel *after* the final displayed pixel of the row; vsync strobes one pixel after final-row hsync
-            video_hsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH)),
-            video_vsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH + 1) & (video_y_count == VID_V_ACTIVE + VID_V_BPORCH - 1)),
+            video_hsync_stb.eq(video_update_stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH)),
+            video_vsync_stb.eq(video_update_stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH + 1) & (video_y_count == VID_V_ACTIVE + VID_V_BPORCH - 1)),
             video_active.eq((video_x_count >= VID_H_BPORCH) & (video_x_count < VID_H_ACTIVE + VID_H_BPORCH) &
                 (video_y_count >= VID_V_BPORCH) & (video_y_count < VID_V_ACTIVE + VID_V_BPORCH))
         ]
 
         self.app_elaborate(platform, m,
-            video_clk_div.stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, self.video_rgb,
+            video_update_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, self.video_rgb,
             audgen_silenced, audgen_channel_select, audgen_channel_internal, audgen_bit_update_stb, audgen_word_update_stb, audgen_dac)
 
         # Draw
 
-        with m.If(video_clk_div.stb):
+        with m.If(video_update_stb):
             # Vertical and horizontal sync
             m.d.sync += [
                 self.video_vs.eq((video_x_count == 0) & (video_y_count == 0)),
