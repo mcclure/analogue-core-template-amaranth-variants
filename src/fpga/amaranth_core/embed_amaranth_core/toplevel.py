@@ -26,21 +26,25 @@ class PixelClockDiv(wiring.Component):
         # clk90  __/¯¯¯\_
         # clk    /¯¯¯\___
         # rgb    X--------
-        # Note clock rises one cycle AFTER rgb strobe
+        # Note clock rises one cycle AFTER rgb strobe;
+        # Strobe fires on first cycle, clock register is high starting with leftmost bit
 
         # Generate bitmap with ratio/2 0s (low order) followed by ratio/2 1s (high order)
-        clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2))
+        # Currently attempting to rotate left a bit or two relative to old approach…
+        clk_reg = Signal(self.ratio, reset=Const((1 << (self.ratio // 2)) - 1, unsigned(self.ratio)).rotate_right(self.ratio//2-1))
         m.d.sync += clk_reg.eq(clk_reg.rotate_left(1))
         m.d.comb += [
             self.clk.eq(clk_reg[0]),
             self.clk90.eq(clk_reg[self.ratio // 4]),
         ]
 
-        stb_reg = Signal(self.ratio, reset=1)
+        stb_reg = Signal(self.ratio, reset=1<<(self.ratio-2))
         m.d.sync += stb_reg.eq(stb_reg.rotate_left(1))
         m.d.comb += [
             self.stb.eq(stb_reg[0])
         ]
+
+        print(f"Clocks {clk_reg.reset},{clk_reg.reset >> (self.ratio//4)}; stb {stb_reg.reset}");
 
         return m
 
