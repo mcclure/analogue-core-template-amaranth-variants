@@ -26,10 +26,12 @@ class PixelClockDiv(wiring.Component):
         # clk90  __/¯¯¯\_
         # clk    /¯¯¯\___
         # rgb    X--------
-        # Note clock rises one cycle AFTER rgb strobe
+        # Notice oddities: RGB strobe fires on first cycle; clk_reg fires only afterward,
+        # phase offset by TWO cycles-- it ought to be only one, but that gave timing issues
+        # and rgb skew. So we give ourselves an extra frame to finish getting RGB ready...
 
         # Generate bitmap with ratio/2 0s (low order) followed by ratio/2 1s (high order)
-        clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2))
+        clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2 - 1))
         m.d.sync += clk_reg.eq(clk_reg.rotate_left(1))
         m.d.comb += [
             self.clk.eq(clk_reg[0]),
@@ -41,6 +43,9 @@ class PixelClockDiv(wiring.Component):
         m.d.comb += [
             self.stb.eq(stb_reg[0])
         ]
+
+        # Debug clk_reg/stb_reg
+        # print(f"Clocks {clk_reg.reset},{clk_reg.reset >> (self.ratio//4)}; stb {stb_reg.reset}");
 
         return m
 
