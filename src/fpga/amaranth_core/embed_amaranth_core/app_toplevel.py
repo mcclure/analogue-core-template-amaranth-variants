@@ -30,6 +30,9 @@ class AutoKind(enum.IntEnum):
 
 AUTO_DEFAULT = AutoKind.rule30
 
+# app_elaborate is responsible for setting values of:
+#     - audio_dac_out (always)
+#     - video_rgb_out (when video_active)
 class AppToplevel(Toplevel):
     def app_elaborate(self, platform, m,
             video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count,  video_x_active, video_y_active, video_active, video_docked, video_rgb_out,

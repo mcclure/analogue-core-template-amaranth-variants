@@ -428,7 +428,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   assign \$275  = video_x_count == 8'ha7;
   assign \$277  = video_y_count == 8'h98;
   assign \$27  = video_y_count >= 3'h4;
-  assign \$279  = osnotify_docked_last_sent ? 8'h90 : 8'h5a;
+  assign \$279  = osnotify_docked_last_sent ? 8'h5a : 8'h90;
   assign \$281  = video_y_final & video_hsync_stb;
   assign \$284  = audgen_accum + 22'h03c000;
   assign \$287  = audgen_accum - 22'h0b5464;
@@ -982,13 +982,10 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     endcase
     casez (video_clk_div_stb)
       1'h1:
-        begin
-          \video_rgb$next  = 24'h000000;
           casez (\$197 )
             1'h1:
                 \video_rgb$next [13] = osnotify_docked;
           endcase
-        end
     endcase
     casez (\rst$2 )
       1'h1:

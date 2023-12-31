@@ -145,6 +145,9 @@ class Toplevel(wiring.Component):
                 (video_y_count >= VID_V_BPORCH) & (video_y_count < video_y_active + VID_V_BPORCH))
         ]
 
+        with m.If(video_clk_div.stb):
+            self.video_rgb.eq(0) # Set this early so it can be overridden
+
         self.app_elaborate(platform, m,
             video_clk_div.stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, Const(VID_H_ACTIVE), video_y_active, video_active, osnotify_docked_last, self.video_rgb,
             audgen_silenced, audgen_channel_select, audgen_channel_internal, audgen_bit_update_stb, audgen_word_update_stb, audgen_dac)
@@ -170,13 +173,12 @@ class Toplevel(wiring.Component):
                     # Update constants for osnotify_docked_last_sent
                     m.d.sync += [
                         osnotify_docked_last.eq(osnotify_docked_last_sent),
-                        video_y_active.eq(Mux(osnotify_docked_last_sent, VID_V_ACTIVES[0], VID_V_ACTIVES[1]))
+                        video_y_active.eq(Mux(osnotify_docked_last_sent, VID_V_ACTIVES[1], VID_V_ACTIVES[0])) # Note if order
                     ]
 
             # inactive screen areas must be black
             m.d.sync += [
                 self.video_de.eq(video_active),
-                self.video_rgb.eq(0)
             ]
 
             # Use final frame pulse to set scaler mode for next frame
