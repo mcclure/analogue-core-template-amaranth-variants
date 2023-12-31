@@ -23,5 +23,5 @@ set_clock_groups -asynchronous \
 #puts $debugAndi1 [debug_andi_col2list [get_ports clk_74a]]
 #close $debugAndi1
 
-create_generated_clock -divide_by 60 -duty_cycle 50 -master_clock [get_clocks clk_74a] -source core_top:ic|amaranth_core:ac|amaranth_core.video_clk_div:video_clk_div|clk_reg[0] -phase 0 -name vid_0
-create_generated_clock -divide_by 60 -duty_cycle 50 -master_clock [get_clocks clk_74a] -source core_top:ic|amaranth_core:ac|amaranth_core.video_clk_div:video_clk_div|clk_reg[15] -phase 90 -name vid_90
+create_generated_clock -divide_by 48 -duty_cycle 50 -master_clock [get_clocks clk_74a] -source core_top:ic|amaranth_core:ac|amaranth_core.video_clk_div:video_clk_div|clk_reg[0] -phase 0 -name vid_0
+create_generated_clock -divide_by 48 -duty_cycle 50 -master_clock [get_clocks clk_74a] -source core_top:ic|amaranth_core:ac|amaranth_core.video_clk_div:video_clk_div|clk_reg[15] -phase 90 -name vid_90

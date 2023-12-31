@@ -110,4 +110,6 @@ VID_V_TOTAL  = {y}
     }}
 }}
 
+# Remember also to edit core_constraints.sdc: -divide_by {divisor}
+# And toplevel.py: video_x_count, video_y_count, video_y_height must have enough bits
 """)

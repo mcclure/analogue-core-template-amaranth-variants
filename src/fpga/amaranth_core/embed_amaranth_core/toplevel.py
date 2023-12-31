@@ -5,9 +5,13 @@ import enum
 
 from .resolution import *
 
-
 assert 47 <= (74250000 / VID_DIV_RATIO / VID_V_TOTAL / VID_H_TOTAL) < 61, "Pixel clock out of range"
 
+assert VID_V_ACTIVE == 144, "resolution.py different from expected"
+
+# The two resolutions (docked, undocked) are both 160 wide, but different heights
+# TODO: Generalize so resolution.py can emit either different heights or different widths
+VID_V_ACTIVES = [144, 90]
 
 class PixelClockDiv(wiring.Component):
     clk90   : Out(1) # Pixel clock, 90 deg trailing
@@ -87,6 +91,8 @@ class Toplevel(wiring.Component):
     cont3_trig      : In(16)
     cont4_trig      : In(16)
 
+    osnotify_docked : In(1)
+
     def elaborate(self, platform):
         m = Module()
 
@@ -108,8 +114,12 @@ class Toplevel(wiring.Component):
             self.video_rgb_clk90.eq(video_clk_div.clk90),
         ]
 
-        video_x_count = Signal(10)
-        video_y_count = Signal(10)
+        video_x_count = Signal(8)
+        video_y_count = Signal(8)
+
+        osnotify_docked_last = Signal(1) # Updates on frame boundary after send
+        osnotify_docked_last_sent = Signal(1) # Updates on send
+        video_y_active = Signal(8, reset=VID_V_ACTIVE) # FIXME: VID_V_ACTIVE/video_y_active naming is too confusing
 
         # Audio interface
 
@@ -122,19 +132,21 @@ class Toplevel(wiring.Component):
 
         # App interface
 
+        video_y_final = Signal(1)
         video_hsync_stb = Signal(1)
         video_vsync_stb = Signal(1)
         video_active = Signal(1)
 
         m.d.comb += [ # Hsync strobes the pixel *after* the final displayed pixel of the row; vsync strobes one pixel after final-row hsync
+            video_y_final.eq(video_y_count == video_y_active + VID_V_BPORCH - 1),
             video_hsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH)),
-            video_vsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH + 1) & (video_y_count == VID_V_ACTIVE + VID_V_BPORCH - 1)),
+            video_vsync_stb.eq(video_clk_div.stb & (video_x_count == VID_H_ACTIVE + VID_H_BPORCH + 1) & video_y_final),
             video_active.eq((video_x_count >= VID_H_BPORCH) & (video_x_count < VID_H_ACTIVE + VID_H_BPORCH) &
-                (video_y_count >= VID_V_BPORCH) & (video_y_count < VID_V_ACTIVE + VID_V_BPORCH))
+                (video_y_count >= VID_V_BPORCH) & (video_y_count < video_y_active + VID_V_BPORCH))
         ]
 
         self.app_elaborate(platform, m,
-            video_clk_div.stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, self.video_rgb,
+            video_clk_div.stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, Const(VID_H_ACTIVE), video_y_active, video_active, osnotify_docked_last, self.video_rgb,
             audgen_silenced, audgen_channel_select, audgen_channel_internal, audgen_bit_update_stb, audgen_word_update_stb, audgen_dac)
 
         # Draw
@@ -155,10 +167,26 @@ class Toplevel(wiring.Component):
                 with m.If(video_y_count == VID_V_TOTAL - 1):
                     m.d.sync += video_y_count.eq(0)
 
+                    # Update constants for osnotify_docked_last_sent
+                    m.d.sync += [
+                        osnotify_docked_last.eq(osnotify_docked_last_sent),
+                        video_y_active.eq(Mux(osnotify_docked_last_sent, VID_V_ACTIVES[0], VID_V_ACTIVES[1]))
+                    ]
+
             # inactive screen areas must be black
             m.d.sync += [
-                self.video_de.eq(video_active)
+                self.video_de.eq(video_active),
+                self.video_rgb.eq(0)
             ]
+
+            # Use final frame pulse to set scaler mode for next frame
+            # Remove this if app_toplevel wants to set scaler mode itself
+            with m.If(video_y_final & video_hsync_stb):
+                m.d.sync += [
+                    # "Set Scaler Slot" cmd is 0, so all we do is set 13:23 to the id.
+                    self.video_rgb.as_value()[13].eq(self.osnotify_docked),
+                    osnotify_docked_last_sent.eq(self.osnotify_docked)
+                ]
 
         # Audio
 
@@ -248,11 +276,10 @@ class Toplevel(wiring.Component):
 
     # "App logic" function to be overloaded by subclass
     def app_elaborate(self, platform, m,
-            video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, video_rgb_out,
+            video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_x_active, video_y_active, video_active, video_docked, video_rgb_out,
             audio_silenced, audio_channel_select, audio_channel_internal, audio_bit_update_stb, audio_word_update_stb, audio_dac_out):
-        # Black screen, silence
+        # Leave default black screen, emit silence
 
         m.d.comb += [
-            video_rgb_out.eq(0),
             audio_dac_out.eq(0)
         ]

@@ -32,13 +32,15 @@ AUTO_DEFAULT = AutoKind.rule30
 
 class AppToplevel(Toplevel):
     def app_elaborate(self, platform, m,
-            video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, video_active, video_rgb_out,
+            video_pixel_stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count,  video_x_active, video_y_active, video_active, video_docked, video_rgb_out,
             audio_silenced, audio_channel_select, audio_channel_internal, audio_bit_update_stb, audio_word_update_stb, audio_dac_out):
         # App: Rule 30?
 
         # Setup
 
         # CA mechanics
+        # Note: In current design, video_x_active is disregarded and VID_H_ACTIVE is read directly, on assumption VID_H_ACTIVE constant.
+        # This is due to this commit's midpoint between the original all-constants size architecture and the eventual mutable-per-frame one.
         line_reset_value = (1 << (VID_H_ACTIVE//2)) # Initial state value of first line
         topline_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
         active_state = Signal(VID_H_ACTIVE, reset=line_reset_value)
@@ -182,12 +184,8 @@ class AppToplevel(Toplevel):
         m.d.sync += [
             need_topline_backcopy.eq(0)
         ]
-        with m.If(video_pixel_stb):            # inactive screen areas must be black
-            m.d.sync += [
-                video_rgb_out.eq(0)
-            ]
-
-            # Color selection for live pixels
+        with m.If(video_pixel_stb): # Action of drawing
+            # Color selection for live pixels -- toplevel handles other pixels
             with m.If(video_active):
                 m.d.sync += [
                     video_rgb_out.eq(flash_color),
@@ -195,7 +193,7 @@ class AppToplevel(Toplevel):
                 ]
 
             # Row finished
-            with m.If(video_hsync_stb & (video_y_count >= VID_V_BPORCH) & (video_y_count < VID_V_ACTIVE + VID_V_BPORCH - 1)):
+            with m.If(video_hsync_stb & (video_y_count >= VID_V_BPORCH) & (video_y_count < video_y_active + VID_V_BPORCH - 1)):
                 # Perform rule 30
                 for i in range(VID_H_ACTIVE): # For each col
                     # Calculate indices

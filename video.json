@@ -4,12 +4,20 @@
         "scaler_modes": [
             {
                 "width": 160,
+                "height": 144,
+                "aspect_w": 10,
+                "aspect_h": 9,
+                "rotation": 0,
+                "mirror": 0
+            },
+            {
+                "width": 160,
                 "height": 90,
                 "aspect_w": 16,
                 "aspect_h": 9,
                 "rotation": 0,
                 "mirror": 0
             }
-        ]
+        ],
     }
 }

@@ -380,6 +380,7 @@ end
     wire            savestate_load_err;
     
     wire            osnotify_inmenu;
+    wire            osnotify_docked;
 
 // bridge target commands
 // synchronous to clk_74a
@@ -465,6 +466,7 @@ core_bridge_cmd icb (
     .savestate_load_err     ( savestate_load_err ),
 
     .osnotify_inmenu        ( osnotify_inmenu ),
+    .osnotify_docked        ( osnotify_docked ),
     
     .target_dataslot_read       ( target_dataslot_read ),
     .target_dataslot_write      ( target_dataslot_write ),
@@ -567,7 +569,9 @@ amaranth_core ac (
     .cont1_trig         ( cont1_trig ),
     .cont2_trig         ( cont2_trig ),
     .cont3_trig         ( cont3_trig ),
-    .cont4_trig         ( cont4_trig )
+    .cont4_trig         ( cont4_trig ),
+
+    .osnotify_docked    ( osnotify_docked )
 
 );
 
