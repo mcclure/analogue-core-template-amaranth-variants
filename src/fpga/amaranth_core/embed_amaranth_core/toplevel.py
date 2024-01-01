@@ -117,8 +117,8 @@ class Toplevel(wiring.Component):
         video_x_count = Signal(8)
         video_y_count = Signal(8)
 
-        osnotify_docked_last = Signal(1) # Updates on frame boundary after send
-        osnotify_docked_last_sent = Signal(1) # Updates on send
+        osnotify_docked_next = Signal(1) # Updates on frame boundary after send
+        osnotify_docked_current = Signal(1) # Updates on send
         video_y_active = Signal(8, reset=VID_V_ACTIVE) # FIXME: VID_V_ACTIVE/video_y_active naming is too confusing
 
         # Audio interface
@@ -149,7 +149,7 @@ class Toplevel(wiring.Component):
             self.video_rgb.eq(0) # Set this early so it can be overridden
 
         self.app_elaborate(platform, m,
-            video_clk_div.stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, Const(VID_H_ACTIVE), video_y_active, video_active, osnotify_docked_last, self.video_rgb,
+            video_clk_div.stb, video_hsync_stb, video_vsync_stb, video_x_count, video_y_count, Const(VID_H_ACTIVE), video_y_active, video_active, osnotify_docked_current, self.video_rgb,
             audgen_silenced, audgen_channel_select, audgen_channel_internal, audgen_bit_update_stb, audgen_word_update_stb, audgen_dac)
 
         # Draw
@@ -172,8 +172,9 @@ class Toplevel(wiring.Component):
 
                     # Update constants for osnotify_docked_last_sent
                     m.d.sync += [
-                        osnotify_docked_last.eq(osnotify_docked_last_sent),
-                        video_y_active.eq(Mux(osnotify_docked_last_sent, VID_V_ACTIVES[1], VID_V_ACTIVES[0])) # Note if order
+                        osnotify_docked_next.eq(self.osnotify_docked),
+                        osnotify_docked_current.eq(osnotify_docked_next),
+                        video_y_active.eq(Mux(osnotify_docked_next, VID_V_ACTIVES[1], VID_V_ACTIVES[0])) # Note if order
                     ]
 
             # inactive screen areas must be black
@@ -183,11 +184,10 @@ class Toplevel(wiring.Component):
 
             # Use final frame pulse to set scaler mode for next frame
             # Remove this if app_toplevel wants to set scaler mode itself
-            with m.If(video_y_final & video_hsync_stb):
+            with m.If(video_hsync_stb & (video_y_count >= VID_V_BPORCH) & (video_y_count < video_y_active + VID_V_BPORCH)):
                 m.d.sync += [
                     # "Set Scaler Slot" cmd is 0, so all we do is set 13:23 to the id.
-                    self.video_rgb.eq(Mux(self.osnotify_docked, 1<<13, 0)),
-                    osnotify_docked_last_sent.eq(self.osnotify_docked)
+                    self.video_rgb.eq(Mux(osnotify_docked_next, 1<<13, 0)),
                 ]
 
         # Audio
