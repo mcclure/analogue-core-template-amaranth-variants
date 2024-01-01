@@ -186,7 +186,7 @@ class Toplevel(wiring.Component):
             with m.If(video_y_final & video_hsync_stb):
                 m.d.sync += [
                     # "Set Scaler Slot" cmd is 0, so all we do is set 13:23 to the id.
-                    self.video_rgb.as_value()[13].eq(self.osnotify_docked),
+                    self.video_rgb.eq(Mux(self.osnotify_docked, 1<<13, 0)),
                     osnotify_docked_last_sent.eq(self.osnotify_docked)
                 ]
 

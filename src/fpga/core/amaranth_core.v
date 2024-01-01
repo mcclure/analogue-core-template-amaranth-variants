@@ -51,61 +51,61 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   wire \$193 ;
   wire \$195 ;
   wire \$197 ;
-  wire \$199 ;
-  wire \$201 ;
-  wire [9:0] \$203 ;
-  wire [8:0] \$205 ;
+  wire [23:0] \$199 ;
+  wire [13:0] \$200 ;
+  wire \$203 ;
+  wire \$205 ;
   wire [9:0] \$207 ;
-  wire \$209 ;
+  wire [8:0] \$209 ;
   wire \$21 ;
-  wire \$211 ;
-  wire [8:0] \$213 ;
-  wire [8:0] \$214 ;
-  wire [7:0] \$216 ;
-  wire \$218 ;
-  wire \$220 ;
-  wire \$225 ;
-  wire [6:0] \$227 ;
-  wire [6:0] \$228 ;
+  wire [9:0] \$211 ;
+  wire \$213 ;
+  wire \$215 ;
+  wire [8:0] \$217 ;
+  wire [8:0] \$218 ;
+  wire [7:0] \$220 ;
+  wire \$222 ;
+  wire \$224 ;
+  wire \$229 ;
   wire \$23 ;
-  wire \$230 ;
-  wire \$232 ;
-  wire \$233 ;
+  wire [6:0] \$231 ;
+  wire [6:0] \$232 ;
+  wire \$234 ;
   wire \$236 ;
-  wire \$238 ;
+  wire \$237 ;
   wire \$240 ;
   wire \$242 ;
   wire \$244 ;
-  wire \$245 ;
-  wire [2:0] \$248 ;
-  wire [2:0] \$249 ;
+  wire \$246 ;
+  wire \$248 ;
+  wire \$249 ;
   wire \$25 ;
-  wire \$251 ;
-  wire \$253 ;
+  wire [2:0] \$252 ;
+  wire [2:0] \$253 ;
   wire \$255 ;
   wire \$257 ;
-  wire [8:0] \$259 ;
-  wire [8:0] \$260 ;
-  wire \$262 ;
-  wire \$264 ;
-  wire [8:0] \$266 ;
-  wire [8:0] \$267 ;
-  wire \$269 ;
+  wire \$259 ;
+  wire \$261 ;
+  wire [8:0] \$263 ;
+  wire [8:0] \$264 ;
+  wire \$266 ;
+  wire \$268 ;
   wire \$27 ;
-  wire \$271 ;
+  wire [8:0] \$270 ;
+  wire [8:0] \$271 ;
   wire \$273 ;
   wire \$275 ;
   wire \$277 ;
-  wire [7:0] \$279 ;
+  wire \$279 ;
   wire \$281 ;
-  wire [22:0] \$283 ;
-  wire [22:0] \$284 ;
-  wire [23:0] \$286 ;
+  wire [7:0] \$283 ;
+  wire \$285 ;
   wire [22:0] \$287 ;
-  wire [23:0] \$289 ;
+  wire [22:0] \$288 ;
   wire \$29 ;
-  wire \$291 ;
-  wire \$293 ;
+  wire [23:0] \$290 ;
+  wire [22:0] \$291 ;
+  wire [23:0] \$293 ;
   wire \$295 ;
   wire \$297 ;
   wire \$299 ;
@@ -113,14 +113,16 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   wire \$301 ;
   wire \$303 ;
   wire \$305 ;
-  wire [2:0] \$307 ;
-  wire [2:0] \$308 ;
+  wire \$307 ;
+  wire \$309 ;
   wire [8:0] \$31 ;
-  wire \$310 ;
-  wire \$312 ;
-  wire [8:0] \$314 ;
-  wire [8:0] \$315 ;
-  wire \$317 ;
+  wire [2:0] \$311 ;
+  wire [2:0] \$312 ;
+  wire \$314 ;
+  wire \$316 ;
+  wire [8:0] \$318 ;
+  wire [8:0] \$319 ;
+  wire \$321 ;
   wire \$33 ;
   wire \$35 ;
   wire \$37 ;
@@ -293,9 +295,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   wire rst;
   wire \rst$2 ;
   reg scribble_now;
-  reg \scribble_now$222 ;
-  reg \scribble_now$223 ;
-  reg \scribble_now$224 ;
+  reg \scribble_now$226 ;
+  reg \scribble_now$227 ;
+  reg \scribble_now$228 ;
   wire select;
   reg [7:0] speed_counter = 8'h00;
   reg [7:0] \speed_counter$next ;
@@ -388,68 +390,70 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   assign \$195  = \$191  & \$193 ;
   assign \$197  = video_y_final & video_hsync_stb;
   assign \$19  = \$17  & video_y_final;
-  assign \$199  = video_y_count >= 3'h4;
-  assign \$201  = video_hsync_stb & \$199 ;
-  assign \$203  = + video_y_count;
-  assign \$205  = video_y_active + 3'h4;
-  assign \$207  = \$205  - 1'h1;
-  assign \$209  = $signed(\$203 ) < $signed(\$207 );
-  assign \$211  = \$201  & \$209 ;
-  assign \$214  = speed_counter + 1'h1;
-  assign \$216  = speed_counter & speed_counter_mask;
-  assign \$218  = ! \$216 ;
+  assign \$200  = osnotify_docked ? 14'h2000 : 14'h0000;
+  assign \$199  = + \$200 ;
+  assign \$203  = video_y_count >= 3'h4;
+  assign \$205  = video_hsync_stb & \$203 ;
+  assign \$207  = + video_y_count;
+  assign \$209  = video_y_active + 3'h4;
+  assign \$211  = \$209  - 1'h1;
+  assign \$213  = $signed(\$207 ) < $signed(\$211 );
+  assign \$215  = \$205  & \$213 ;
+  assign \$218  = speed_counter + 1'h1;
   assign \$21  = video_x_count >= 3'h4;
-  assign \$220  = opening_wants_frozen | pause_key_wants_frozen;
-  assign \$225  = | opening_countdown_timer;
-  assign \$228  = opening_countdown_timer - 1'h1;
-  assign \$230  = ~ frame_frozen;
-  assign \$233  = video_clk_div_stb & video_vsync_stb;
-  assign \$232  = ~ \$233 ;
-  assign \$236  = audgen_channel_internal <= 3'h5;
-  assign \$238  = ! audio_divide_counter;
+  assign \$220  = speed_counter & speed_counter_mask;
+  assign \$222  = ! \$220 ;
+  assign \$224  = opening_wants_frozen | pause_key_wants_frozen;
+  assign \$229  = | opening_countdown_timer;
+  assign \$232  = opening_countdown_timer - 1'h1;
+  assign \$234  = ~ frame_frozen;
+  assign \$237  = video_clk_div_stb & video_vsync_stb;
+  assign \$236  = ~ \$237 ;
   assign \$23  = video_x_count < 8'ha4;
-  assign \$240  = audio_output_word_bit ^ audio_high;
-  assign \$242  = audgen_silenced ? 1'h0 : \$240 ;
-  assign \$245  = video_clk_div_stb & video_vsync_stb;
-  assign \$244  = ~ \$245 ;
-  assign \$249  = audio_divide_counter + 1'h1;
-  assign \$251  = ! video_x_count;
-  assign \$253  = ! video_y_count;
-  assign \$255  = \$251  & \$253 ;
-  assign \$257  = video_x_count == 2'h3;
+  assign \$240  = audgen_channel_internal <= 3'h5;
+  assign \$242  = ! audio_divide_counter;
+  assign \$244  = audio_output_word_bit ^ audio_high;
+  assign \$246  = audgen_silenced ? 1'h0 : \$244 ;
+  assign \$249  = video_clk_div_stb & video_vsync_stb;
+  assign \$248  = ~ \$249 ;
+  assign \$253  = audio_divide_counter + 1'h1;
+  assign \$255  = ! video_x_count;
+  assign \$257  = ! video_y_count;
   assign \$25  = \$21  & \$23 ;
-  assign \$260  = video_x_count + 1'h1;
-  assign \$262  = video_x_count == 8'ha7;
-  assign \$264  = video_x_count == 8'ha7;
-  assign \$267  = video_y_count + 1'h1;
-  assign \$269  = video_y_count == 8'h98;
-  assign \$271  = video_x_count == 8'ha7;
+  assign \$259  = \$255  & \$257 ;
+  assign \$261  = video_x_count == 2'h3;
+  assign \$264  = video_x_count + 1'h1;
+  assign \$266  = video_x_count == 8'ha7;
+  assign \$268  = video_x_count == 8'ha7;
+  assign \$271  = video_y_count + 1'h1;
   assign \$273  = video_y_count == 8'h98;
   assign \$275  = video_x_count == 8'ha7;
   assign \$277  = video_y_count == 8'h98;
   assign \$27  = video_y_count >= 3'h4;
-  assign \$279  = osnotify_docked_last_sent ? 8'h5a : 8'h90;
-  assign \$281  = video_y_final & video_hsync_stb;
-  assign \$284  = audgen_accum + 22'h03c000;
-  assign \$287  = audgen_accum - 22'h0b5464;
-  assign \$289  = $signed(\$287 ) + $signed(23'h03c000);
-  assign \$291  = audgen_accum >= 22'h0b5464;
-  assign \$293  = ~ audgen_mclk;
-  assign \$295  = ~ audgen_slck_count[1];
+  assign \$279  = video_x_count == 8'ha7;
+  assign \$281  = video_y_count == 8'h98;
+  assign \$283  = osnotify_docked_last_sent ? 8'h5a : 8'h90;
+  assign \$285  = video_y_final & video_hsync_stb;
+  assign \$288  = audgen_accum + 22'h03c000;
+  assign \$291  = audgen_accum - 22'h0b5464;
+  assign \$293  = $signed(\$291 ) + $signed(23'h03c000);
+  assign \$295  = audgen_accum >= 22'h0b5464;
   assign \$297  = ~ audgen_mclk;
   assign \$29  = \$25  & \$27 ;
-  assign \$299  = audgen_mclk_stb & \$297 ;
-  assign \$301  = audgen_slck_count == 2'h2;
-  assign \$303  = ~ audgen_mclk;
-  assign \$305  = audgen_mclk_stb & \$303 ;
-  assign \$308  = audgen_slck_count + 1'h1;
-  assign \$310  = ~ audgen_mclk;
-  assign \$312  = audgen_mclk_stb & \$310 ;
-  assign \$315  = audgen_lrck_count + 1'h1;
-  assign \$317  = audgen_lrck_internal == 5'h17;
+  assign \$299  = ~ audgen_slck_count[1];
+  assign \$301  = ~ audgen_mclk;
+  assign \$303  = audgen_mclk_stb & \$301 ;
+  assign \$305  = audgen_slck_count == 2'h2;
+  assign \$307  = ~ audgen_mclk;
+  assign \$309  = audgen_mclk_stb & \$307 ;
+  assign \$312  = audgen_slck_count + 1'h1;
+  assign \$314  = ~ audgen_mclk;
+  assign \$316  = audgen_mclk_stb & \$314 ;
+  assign \$31  = video_y_active + 3'h4;
+  assign \$319  = audgen_lrck_count + 1'h1;
+  assign \$321  = audgen_lrck_internal == 5'h17;
   always @(posedge boot_clk)
     init_done <= 1'h1;
-  assign \$31  = video_y_active + 3'h4;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) cont1_key_last <= 32'd0;
     else cont1_key_last <= \cont1_key_last$next ;
@@ -498,6 +502,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) need_topline_backcopy <= 1'h0;
     else need_topline_backcopy <= \need_topline_backcopy$next ;
+  assign \$33  = video_y_count < \$31 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) video_rgb <= 24'h000000;
     else video_rgb <= \video_rgb$next ;
@@ -510,7 +515,6 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) frame_frozen <= 1'h1;
     else frame_frozen <= \frame_frozen$next ;
-  assign \$33  = video_y_count < \$31 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) topline_state <= 160'h0000000000000000000100000000000000000000;
     else topline_state <= \topline_state$next ;
@@ -559,6 +563,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_accum <= 22'h0b5464;
     else audgen_accum <= \audgen_accum$next ;
+  assign \$35  = \$29  & \$33 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_mclk <= 1'h0;
     else audgen_mclk <= \audgen_mclk$next ;
@@ -571,7 +576,6 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_lrck_count <= 8'h00;
     else audgen_lrck_count <= \audgen_lrck_count$next ;
-  assign \$35  = \$29  & \$33 ;
   assign \$37  = ~ cont1_key_last[15];
   assign \$3  = + video_y_count;
   assign \$39  = cont1_key[15] & \$37 ;
@@ -984,7 +988,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
       1'h1:
           casez (\$197 )
             1'h1:
-                \video_rgb$next [13] = osnotify_docked;
+                \video_rgb$next  = \$199 ;
           endcase
     endcase
     casez (\rst$2 )
@@ -1002,7 +1006,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
             1'h1:
                 \active_state$next  = { active_state[0], active_state[159:1] };
           endcase
-          casez (\$211 )
+          casez (\$215 )
             1'h1:
               begin
                 (* full_case = 32'd1 *)
@@ -4065,7 +4069,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
       1'h1:
           casez (video_vsync_stb)
             1'h1:
-                \speed_counter$next  = \$214 [7:0];
+                \speed_counter$next  = \$218 [7:0];
           endcase
     endcase
     casez (\rst$2 )
@@ -4082,9 +4086,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
             1'h1:
               begin
                 (* full_case = 32'd1 *)
-                casez (\$218 )
+                casez (\$222 )
                   1'h1:
-                      \frame_frozen$next  = \$220 ;
+                      \frame_frozen$next  = \$224 ;
                   default:
                       \frame_frozen$next  = 1'h1;
                 endcase
@@ -4133,11 +4137,11 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
                   1'h1:
                       \topline_state$next [80] = 1'h1;
                 endcase
-                casez (\scribble_now$222 )
+                casez (\scribble_now$226 )
                   1'h1:
                       \topline_state$next [81] = 1'h0;
                 endcase
-                casez (\scribble_now$223 )
+                casez (\scribble_now$227 )
                   1'h1:
                     begin
                       \topline_state$next [0] = 1'h1;
@@ -4147,7 +4151,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
                       \topline_state$next [132] = 1'h1;
                     end
                 endcase
-                casez (\scribble_now$224 )
+                casez (\scribble_now$228 )
                   1'h1:
                     begin
                       \topline_state$next [1] = 1'h0;
@@ -4171,20 +4175,20 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
-    \scribble_now$222  = 1'h0;
+    \scribble_now$226  = 1'h0;
     casez (video_clk_div_stb)
       1'h1:
           casez (video_vsync_stb)
             1'h1:
               begin
-                \scribble_now$222  = 1'h0;
+                \scribble_now$226  = 1'h0;
                 casez (\$signal$80 )
                   1'h1:
-                      \scribble_now$222  = 1'h1;
+                      \scribble_now$226  = 1'h1;
                 endcase
                 casez (\$signal$89 )
                   1'h1:
-                      \scribble_now$222  = 1'h1;
+                      \scribble_now$226  = 1'h1;
                 endcase
               end
           endcase
@@ -4192,20 +4196,20 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
-    \scribble_now$223  = 1'h0;
+    \scribble_now$227  = 1'h0;
     casez (video_clk_div_stb)
       1'h1:
           casez (video_vsync_stb)
             1'h1:
               begin
-                \scribble_now$223  = 1'h0;
+                \scribble_now$227  = 1'h0;
                 casez (\$signal$98 )
                   1'h1:
-                      \scribble_now$223  = 1'h1;
+                      \scribble_now$227  = 1'h1;
                 endcase
                 casez (\$signal$107 )
                   1'h1:
-                      \scribble_now$223  = 1'h1;
+                      \scribble_now$227  = 1'h1;
                 endcase
               end
           endcase
@@ -4213,20 +4217,20 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
-    \scribble_now$224  = 1'h0;
+    \scribble_now$228  = 1'h0;
     casez (video_clk_div_stb)
       1'h1:
           casez (video_vsync_stb)
             1'h1:
               begin
-                \scribble_now$224  = 1'h0;
+                \scribble_now$228  = 1'h0;
                 casez (\$signal$116 )
                   1'h1:
-                      \scribble_now$224  = 1'h1;
+                      \scribble_now$228  = 1'h1;
                 endcase
                 casez (\$signal$125 )
                   1'h1:
-                      \scribble_now$224  = 1'h1;
+                      \scribble_now$228  = 1'h1;
                 endcase
               end
           endcase
@@ -4286,9 +4290,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
       1'h1:
           casez (video_vsync_stb)
             1'h1:
-                casez (\$225 )
+                casez (\$229 )
                   1'h1:
-                      \opening_countdown_timer$next  = \$228 [5:0];
+                      \opening_countdown_timer$next  = \$232 [5:0];
                 endcase
           endcase
     endcase
@@ -4308,7 +4312,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
       1'h1:
           casez (video_vsync_stb)
             1'h1:
-                casez (\$230 )
+                casez (\$234 )
                   1'h1:
                       \audgen_state$next  = topline_state;
                 endcase
@@ -4316,7 +4320,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     endcase
     casez (audgen_word_update_stb)
       1'h1:
-          casez (\$232 )
+          casez (\$236 )
             1'h1:
                 casez (audio_divide_stb)
                   1'h1:
@@ -4334,7 +4338,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \audgen_dac$next  = audgen_dac;
     casez (audgen_bit_update_stb)
       1'h1:
-          \audgen_dac$next  = \$242 ;
+          \audgen_dac$next  = \$246 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -4346,9 +4350,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \audio_divide_counter$next  = audio_divide_counter;
     casez (audgen_word_update_stb)
       1'h1:
-          casez (\$244 )
+          casez (\$248 )
             1'h1:
-                \audio_divide_counter$next  = \$249 [1:0];
+                \audio_divide_counter$next  = \$253 [1:0];
           endcase
     endcase
     casez (\rst$2 )
@@ -4361,7 +4365,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \video_vs$next  = video_vs;
     casez (video_clk_div_stb)
       1'h1:
-          \video_vs$next  = \$255 ;
+          \video_vs$next  = \$259 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -4373,7 +4377,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \video_hs$next  = video_hs;
     casez (video_clk_div_stb)
       1'h1:
-          \video_hs$next  = \$257 ;
+          \video_hs$next  = \$261 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -4386,8 +4390,8 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     casez (video_clk_div_stb)
       1'h1:
         begin
-          \video_x_count$next  = \$260 [7:0];
-          casez (\$262 )
+          \video_x_count$next  = \$264 [7:0];
+          casez (\$266 )
             1'h1:
                 \video_x_count$next  = 8'h00;
           endcase
@@ -4403,11 +4407,11 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \video_y_count$next  = video_y_count;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$264 )
+          casez (\$268 )
             1'h1:
               begin
-                \video_y_count$next  = \$267 [7:0];
-                casez (\$269 )
+                \video_y_count$next  = \$271 [7:0];
+                casez (\$273 )
                   1'h1:
                       \video_y_count$next  = 8'h00;
                 endcase
@@ -4424,9 +4428,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \osnotify_docked_last$next  = osnotify_docked_last;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$271 )
+          casez (\$275 )
             1'h1:
-                casez (\$273 )
+                casez (\$277 )
                   1'h1:
                       \osnotify_docked_last$next  = osnotify_docked_last_sent;
                 endcase
@@ -4442,11 +4446,11 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \video_y_active$next  = video_y_active;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$275 )
+          casez (\$279 )
             1'h1:
-                casez (\$277 )
+                casez (\$281 )
                   1'h1:
-                      \video_y_active$next  = \$279 ;
+                      \video_y_active$next  = \$283 ;
                 endcase
           endcase
     endcase
@@ -4472,7 +4476,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \osnotify_docked_last_sent$next  = osnotify_docked_last_sent;
     casez (video_clk_div_stb)
       1'h1:
-          casez (\$281 )
+          casez (\$285 )
             1'h1:
                 \osnotify_docked_last_sent$next  = osnotify_docked;
           endcase
@@ -4484,10 +4488,10 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   end
   always @* begin
     if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
-    \audgen_accum$next  = \$284 [21:0];
+    \audgen_accum$next  = \$288 [21:0];
     casez (audgen_mclk_stb)
       1'h1:
-          \audgen_accum$next  = \$289 [21:0];
+          \audgen_accum$next  = \$293 [21:0];
     endcase
     casez (\rst$2 )
       1'h1:
@@ -4499,7 +4503,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     \audgen_mclk$next  = audgen_mclk;
     casez (audgen_mclk_stb)
       1'h1:
-          \audgen_mclk$next  = \$293 ;
+          \audgen_mclk$next  = \$297 ;
     endcase
     casez (\rst$2 )
       1'h1:
@@ -4509,9 +4513,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @* begin
     if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
     \audgen_slck_update$next  = 1'h0;
-    casez (\$299 )
+    casez (\$303 )
       1'h1:
-          casez (\$301 )
+          casez (\$305 )
             1'h1:
                 \audgen_slck_update$next  = 1'h1;
           endcase
@@ -4524,9 +4528,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @* begin
     if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
     \audgen_slck_count$next  = audgen_slck_count;
-    casez (\$305 )
+    casez (\$309 )
       1'h1:
-          \audgen_slck_count$next  = \$308 [1:0];
+          \audgen_slck_count$next  = \$312 [1:0];
     endcase
     casez (\rst$2 )
       1'h1:
@@ -4536,9 +4540,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @* begin
     if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
     \audgen_lrck_count$next  = audgen_lrck_count;
-    casez (\$312 )
+    casez (\$316 )
       1'h1:
-          \audgen_lrck_count$next  = \$315 [7:0];
+          \audgen_lrck_count$next  = \$319 [7:0];
     endcase
     casez (\rst$2 )
       1'h1:
@@ -4550,7 +4554,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     audgen_word_update_stb = 1'h0;
     casez (audgen_slck_update)
       1'h1:
-          casez (\$317 )
+          casez (\$321 )
             1'h1:
                 audgen_word_update_stb = 1'h1;
           endcase
@@ -4564,15 +4568,15 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
           audgen_bit_update_stb = 1'h1;
     endcase
   end
-  assign \$213  = \$214 ;
-  assign \$227  = \$228 ;
-  assign \$248  = \$249 ;
-  assign \$259  = \$260 ;
-  assign \$266  = \$267 ;
-  assign \$283  = \$284 ;
-  assign \$286  = \$289 ;
-  assign \$307  = \$308 ;
-  assign \$314  = \$315 ;
+  assign \$217  = \$218 ;
+  assign \$231  = \$232 ;
+  assign \$252  = \$253 ;
+  assign \$263  = \$264 ;
+  assign \$270  = \$271 ;
+  assign \$287  = \$288 ;
+  assign \$290  = \$293 ;
+  assign \$311  = \$312 ;
+  assign \$318  = \$319 ;
   assign audio_lrck = audgen_lrck;
   assign audio_dac = audgen_dac;
   assign audio_mclk = audgen_mclk;
@@ -4581,11 +4585,11 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   assign audgen_channel_internal = audgen_lrck_count[5:2];
   assign audgen_channel_select = audgen_lrck;
   assign audgen_lrck = audgen_lrck_count[7];
-  assign audgen_slck = \$295 ;
-  assign audgen_mclk_stb = \$291 ;
+  assign audgen_slck = \$299 ;
+  assign audgen_mclk_stb = \$295 ;
   assign audio_high = audgen_state[0];
-  assign audio_divide_stb = \$238 ;
-  assign audio_output_word_bit = \$236 ;
+  assign audio_divide_stb = \$242 ;
+  assign audio_output_word_bit = \$240 ;
   assign opening_wants_frozen = \$175 ;
   assign \release$170  = \$173 ;
   assign \press$165  = \$168 ;
