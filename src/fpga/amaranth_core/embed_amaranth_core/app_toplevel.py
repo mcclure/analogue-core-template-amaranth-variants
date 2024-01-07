@@ -6,7 +6,7 @@ from amaranth.lib.wiring import In, Out
 import enum
 
 from .resolution import *
-from .toplevel import Toplevel
+from .toplevel import Toplevel, ColorScheme
 
 
 DEBUG_NO_OPENING_PAUSE = False
@@ -182,7 +182,15 @@ class AppToplevel(Toplevel):
 
         # flash_color is our 1 bit video output (black/white)
         with m.If(active_state[0]):
-            m.d.comb += flash_color.eq(0x0)
+            with m.Switch(self.interact_color):
+                with m.Case(ColorScheme.BLACK):
+                    m.d.comb += flash_color.eq(0x00000000)
+                with m.Case(ColorScheme.RED):
+                    m.d.comb += flash_color.eq(0xFF)
+                with m.Case(ColorScheme.GREEN):
+                    m.d.comb += flash_color.eq(0x00FF)
+                with m.Case(ColorScheme.BLUE):
+                    m.d.comb += flash_color.eq(0x0000FF)
         with m.Else():
             m.d.comb += flash_color.eq(0xFFFFFF)
 

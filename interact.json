@@ -9,24 +9,24 @@
                 "enabled": true,
                 "address": "0x00300010",
                 "persist": true,
-                "_defaultval_comment": "Red",
-                "defaultval": 1,
+                "_defaultval_comment": "Green",
+                "defaultval": 2,
                 "mask": "0xFFFFFFFC",
                 "options": [
                     {
-                        "value": "0",
+                        "value": 0,
                         "name": "Black"
                     },
                     {
-                        "value": "1",
+                        "value": 1,
                         "name": "Red"
                     },
                     {
-                        "value": "2",
+                        "value": 2,
                         "name": "Green"
                     },
                     {
-                        "value": "3",
+                        "value": 3,
                         "name": "Blue"
                     }
                 ]

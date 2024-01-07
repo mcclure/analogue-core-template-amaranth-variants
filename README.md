@@ -16,14 +16,14 @@ Then on Linux, do this:
 
 
 ```
-(cd src/fpga/amaranth_core/ && python3 -m pdm generate) && (cd src/fpga && ~/usr/intelFPGA_lite/22.1std/quartus/bin/quartus_sh --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cp bitstream.rbf_r "/media/mcc/3930-6663/Cores/test.andi amaranth/bitstream.rbf_r") && (cp video.json "/media/mcc/3930-6663/Cores/test.andi amaranth/video.json") && sync
+(cd src/fpga/amaranth_core/ && python3 -m pdm generate) && (cd src/fpga && ~/usr/intelFPGA_lite/22.1std/quartus/bin/quartus_sh --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cp bitstream.rbf_r "/media/mcc/3930-6663/Cores/test.andi amaranth/bitstream.rbf_r") && (cp video.json interact.json "/media/mcc/3930-6663/Cores/test.andi amaranth/") && sync
 ```
 
 Or, on Windows 10, it's this:
 
 
 ```
-(cd src/fpga/amaranth_core/ && python.exe -m pdm generate) && (cd src/fpga && /mnt/d/intelFPGA_lite/22.1std/quartus/bin64/quartus_sh.exe --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cmd.exe /c copy bitstream.rbf_r "E:\Cores\test.andi amaranth\bitstream.rbf_r") && (cmd.exe /c copy video.json "E:\Cores\test.andi amaranth\video.json")
+(cd src/fpga/amaranth_core/ && python.exe -m pdm generate) && (cd src/fpga && /mnt/d/intelFPGA_lite/22.1std/quartus/bin64/quartus_sh.exe --flow compile ap_core) && (rm -f ../quartus/reverse/bitstream.rbf_r && ../quartus/reverse/a.out ./src/fpga/output_files/ap_core.rbf ../quartus/reverse/bitstream.rbf_r) && (cd ../quartus/reverse && cmd.exe /c copy bitstream.rbf_r "E:\Cores\test.andi amaranth\bitstream.rbf_r") && (cmd.exe /c copy video.json "E:\Cores\test.andi amaranth\video.json" && (cmd.exe /c copy interact.json "E:\Cores\test.andi amaranth\interact.json")
 ```
 
 This assumes JSON files besides video.json have already been configured per the Analogue documentation. Clearer build instructions are forthcoming.

@@ -265,11 +265,6 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   output init_done;
   reg init_done = 1'h0;
   wire \init_done$next ;
-  (* enum_base_type = "ColorScheme" *)
-  (* enum_value_00 = "black" *)
-  (* enum_value_01 = "red" *)
-  (* enum_value_10 = "green" *)
-  (* enum_value_11 = "blue" *)
   input [1:0] interact_color;
   wire [1:0] interact_color;
   input [7:0] interact_rule0;
@@ -972,7 +967,17 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     (* full_case = 32'd1 *)
     casez (active_state[0])
       1'h1:
-          flash_color = 24'h000000;
+          (* full_case = 32'd1 *)
+          casez (interact_color)
+            2'h0:
+                flash_color = 24'h000000;
+            2'h1:
+                flash_color = 24'h0000ff;
+            2'h2:
+                flash_color = 24'h0000ff;
+            2'h3:
+                flash_color = 24'h0000ff;
+          endcase
       default:
           flash_color = 24'hffffff;
     endcase

@@ -55,10 +55,10 @@ class PixelClockDiv(wiring.Component):
 
 
 class ColorScheme(enum.IntEnum):
-    black = 0 # Triangles
-    red = 1 # Left isoceles triangles
-    green = 2 # Weird diagonal
-    blue = 3 # Ultra normal diagonal
+    BLACK = 0 # Triangles
+    RED = 1 # Left isoceles triangles
+    GREEN = 2 # Weird diagonal
+    BLUE = 3 # Ultra normal diagonal
 
 
 class Toplevel(wiring.Component):
