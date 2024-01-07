@@ -181,6 +181,8 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   reg \$signal$next ;
   reg [159:0] active_state = 160'h0000000000000000000100000000000000000000;
   reg [159:0] \active_state$next ;
+  reg active_state_zero_last = 1'h1;
+  reg \active_state_zero_last$next ;
   reg [21:0] audgen_accum = 22'h0b5464;
   reg [21:0] \audgen_accum$next ;
   reg audgen_bit_update_stb;
@@ -535,6 +537,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     if (\rst$2 ) active_state <= 160'h0000000000000000000100000000000000000000;
     else active_state <= \active_state$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
+    if (\rst$2 ) active_state_zero_last <= 1'h1;
+    else active_state_zero_last <= \active_state_zero_last$next ;
+  always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) speed_counter <= 8'h00;
     else speed_counter <= \speed_counter$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
@@ -555,10 +560,10 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_state <= 160'h0000000000000000000100000000000000000000;
     else audgen_state <= \audgen_state$next ;
+  assign \$35  = \$29  & \$33 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_dac <= 1'h0;
     else audgen_dac <= \audgen_dac$next ;
-  assign \$35  = \$29  & \$33 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audio_divide_counter <= 2'h3;
     else audio_divide_counter <= \audio_divide_counter$next ;
@@ -973,18 +978,58 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     casez (active_state[0])
       1'h1:
           (* full_case = 32'd1 *)
-          casez (interact_color)
-            2'h0:
+          casez (active_state_zero_last)
+            1'h1:
                 flash_color = 24'h000000;
-            2'h1:
-                flash_color = 24'hff0000;
-            2'h2:
-                flash_color = 24'h00ff00;
-            2'h3:
-                flash_color = 24'h0000ff;
+            default:
+                (* full_case = 32'd1 *)
+                casez (interact_color)
+                  2'h0:
+                      flash_color = 24'h000000;
+                  2'h1:
+                    begin
+                      flash_color[23:16] = 8'hf7;
+                      flash_color[15:8] = 8'hbe;
+                      flash_color[7:0] = 8'h18;
+                    end
+                  2'h2:
+                    begin
+                      flash_color[23:16] = 8'hff;
+                      flash_color[15:8] = 8'hbe;
+                      flash_color[7:0] = 8'hff;
+                    end
+                  2'h3:
+                    begin
+                      flash_color[23:16] = 8'h08;
+                      flash_color[15:8] = 8'h00;
+                      flash_color[7:0] = 8'h84;
+                    end
+                endcase
           endcase
       default:
-          flash_color = 24'hffffff;
+          (* full_case = 32'd1 *)
+          casez (active_state_zero_last)
+            1'h1:
+                (* full_case = 32'd1 *)
+                casez (interact_color)
+                  2'h1:
+                    begin
+                      flash_color[23:16] = 8'hff;
+                      flash_color[15:8] = 8'hcf;
+                      flash_color[7:0] = 8'hff;
+                    end
+                  2'h2:
+                    begin
+                      flash_color[23:16] = 8'h84;
+                      flash_color[15:8] = 8'hfb;
+                      flash_color[7:0] = 8'h18;
+                    end
+                  default:
+                      flash_color = 24'hffffff;
+                endcase
+            default:
+                flash_color = 24'hffffff;
+          endcase
     endcase
   end
   always @* begin
@@ -4095,6 +4140,27 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     casez (\rst$2 )
       1'h1:
           \active_state$next  = 160'h0000000000000000000100000000000000000000;
+    endcase
+  end
+  always @* begin
+    if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
+    \active_state_zero_last$next  = active_state_zero_last;
+    casez (video_clk_div_stb)
+      1'h1:
+        begin
+          casez (video_active)
+            1'h1:
+                \active_state_zero_last$next  = active_state[0];
+          endcase
+          casez (video_hsync_stb)
+            1'h1:
+                \active_state_zero_last$next  = 1'h1;
+          endcase
+        end
+    endcase
+    casez (\rst$2 )
+      1'h1:
+          \active_state_zero_last$next  = 1'h1;
     endcase
   end
   always @* begin

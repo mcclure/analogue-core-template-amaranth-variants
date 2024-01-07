@@ -80,6 +80,7 @@ class AppToplevel(Toplevel):
         automata_next = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
         automata_table = Signal(8, reset=AUTO_RULE_BITS[AutoKind.rule30])
         need_automata_next = Signal(1)
+        active_state_zero_last = Signal(1, reset=1)
 
         # Scribble
         scribble_hold = [Signal(1) for _ in range(4)]
@@ -178,21 +179,54 @@ class AppToplevel(Toplevel):
 
         # Partial results for colors
 
-        flash_color = Signal(24)
+        flash_color = Signal(self.video_rgb.shape())
 
         # flash_color is our 1 bit video output (black/white)
         with m.If(active_state[0]):
-            with m.Switch(self.interact_color):
-                with m.Case(ColorScheme.BLACK):
-                    m.d.comb += flash_color.eq(0x00000000)
-                with m.Case(ColorScheme.RED):
-                    m.d.comb += flash_color.eq(0xFF0000)
-                with m.Case(ColorScheme.GREEN):
-                    m.d.comb += flash_color.eq(0x00FF00)
-                with m.Case(ColorScheme.BLUE):
-                    m.d.comb += flash_color.eq(0x0000FF)
+            with m.If(active_state_zero_last): # Double black
+                m.d.comb += flash_color.as_value().eq(0x000000)
+            with m.Else():                     # Leading black
+                with m.Switch(self.interact_color):
+                    with m.Case(ColorScheme.BLACK):
+                        m.d.comb += flash_color.eq(0x000000)
+                    with m.Case(ColorScheme.RED):   # Pink
+                        m.d.comb += [
+                            flash_color.r.eq(247),
+                            flash_color.g.eq(190),
+                            flash_color.b.eq(24),
+                        ]
+                    with m.Case(ColorScheme.GREEN): # Purple
+                        m.d.comb += [
+                            flash_color.r.eq(255),
+                            flash_color.g.eq(190),
+                            flash_color.b.eq(255),
+                        ]
+                    with m.Case(ColorScheme.BLUE):  # Blue
+                        m.d.comb += [
+                            flash_color.r.eq(8),
+                            flash_color.g.eq(0),
+                            flash_color.b.eq(132),
+                        ]
         with m.Else():
-            m.d.comb += flash_color.eq(0xFFFFFF)
+            with m.If(active_state_zero_last): # Trailing white
+                with m.Switch(self.interact_color):
+                    with m.Case(ColorScheme.RED): # Orange
+                        m.d.comb += [
+                            flash_color.r.eq(255),
+                            flash_color.g.eq(207),
+                            flash_color.b.eq(255),
+                        ]
+                    with m.Case(ColorScheme.GREEN): # Green
+                        m.d.comb += [
+                            flash_color.r.eq(132),
+                            flash_color.g.eq(251),
+                            flash_color.b.eq(24),
+                        ]
+                    with m.Default():
+                        m.d.comb += flash_color.as_value().eq(0xFFFFFF)
+            with m.Else():                     # Double white
+                m.d.comb += flash_color.as_value().eq(0xFFFFFF)
+
 
         # Animation
 
@@ -208,7 +242,8 @@ class AppToplevel(Toplevel):
             with m.If(video_active):
                 m.d.sync += [
                     video_rgb_out.eq(flash_color),
-                    active_state.eq(active_state.rotate_right(1)) # We are always displaying the least significant bit
+                    active_state.eq(active_state.rotate_right(1)), # We are always displaying the least significant bit
+                    active_state_zero_last.eq(active_state[0])
                 ]
 
             # Row finished
@@ -234,6 +269,10 @@ class AppToplevel(Toplevel):
                         (video_y_count == VID_V_BPORCH) & 
                         (~frame_frozen)):
                     m.d.sync += need_topline_backcopy.eq(1)
+
+            # Row finished
+            with m.If(video_hsync_stb):
+                m.d.sync += active_state_zero_last.eq(1) # Note: this could have been done one stb earlier
 
             # Screen finished
             with m.If(video_vsync_stb):
