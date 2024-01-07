@@ -977,9 +977,9 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
             2'h0:
                 flash_color = 24'h000000;
             2'h1:
-                flash_color = 24'h0000ff;
+                flash_color = 24'hff0000;
             2'h2:
-                flash_color = 24'h0000ff;
+                flash_color = 24'h00ff00;
             2'h3:
                 flash_color = 24'h0000ff;
           endcase

@@ -186,9 +186,9 @@ class AppToplevel(Toplevel):
                 with m.Case(ColorScheme.BLACK):
                     m.d.comb += flash_color.eq(0x00000000)
                 with m.Case(ColorScheme.RED):
-                    m.d.comb += flash_color.eq(0xFF)
+                    m.d.comb += flash_color.eq(0xFF0000)
                 with m.Case(ColorScheme.GREEN):
-                    m.d.comb += flash_color.eq(0x00FF)
+                    m.d.comb += flash_color.eq(0x00FF00)
                 with m.Case(ColorScheme.BLUE):
                     m.d.comb += flash_color.eq(0x0000FF)
         with m.Else():
