@@ -180,6 +180,13 @@ output  reg     [31:0]  bridge_rd_data,
 input   wire            bridge_wr,
 input   wire    [31:0]  bridge_wr_data,
 
+// User
+output reg      [1:0]      interact_color,
+output reg      [7:0]      interact_rule0,
+output reg      [7:0]      interact_rule1,
+output reg      [7:0]      interact_rule2,
+output reg      [7:0]      interact_rule3,
+
 ///////////////////////////////////////////////////
 // controller data
 // 
@@ -323,6 +330,21 @@ always @(*) begin
     end
     32'hF8xxxxxx: begin
         bridge_rd_data <= cmd_bridge_rd_data;
+    end
+    32'h00300010: begin
+        bridge_rd_data <= interact_color;
+    end
+    32'h00300000: begin
+        bridge_rd_data <= interact_rule0;
+    end
+    32'h00300004: begin
+        bridge_rd_data <= interact_rule1;
+    end
+    32'h00300008: begin
+        bridge_rd_data <= interact_rule2;
+    end
+    32'h0030000C: begin
+        bridge_rd_data <= interact_rule3;
     end
     endcase
 end
@@ -492,6 +514,32 @@ core_bridge_cmd icb (
 
 );
 
+// Copied from Analogue core-example-interact
+always @(posedge clk_74a) begin
+
+    if(bridge_wr) begin
+      casex(bridge_addr)
+        32'h00300010: begin
+            interact_color <= bridge_wr_data;
+        end
+        32'h00300000: begin
+            interact_rule0 <= bridge_wr_data;
+        end
+        32'h00300004: begin
+            interact_rule1 <= bridge_wr_data;
+        end
+        32'h00300008: begin
+            interact_rule2 <= bridge_wr_data;
+        end
+        32'h0030000C: begin
+            interact_rule3 <= bridge_wr_data;
+        end
+        
+        endcase
+
+    end
+
+end
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -571,7 +619,14 @@ amaranth_core ac (
     .cont3_trig         ( cont3_trig ),
     .cont4_trig         ( cont4_trig ),
 
-    .osnotify_docked    ( osnotify_docked )
+    .osnotify_docked    ( osnotify_docked ),
+
+
+    .interact_color        ( interact_color ),
+    .interact_rule0        ( interact_rule0 ),
+    .interact_rule1        ( interact_rule1 ),
+    .interact_rule2        ( interact_rule2 ),
+    .interact_rule3        ( interact_rule3 )
 
 );
 

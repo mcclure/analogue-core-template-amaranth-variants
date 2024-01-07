@@ -1,7 +1,109 @@
 {
     "interact": {
         "magic": "APF_VER_1",
-        "variables": [],
+        "variables": [
+            {
+                "name": "Color",
+                "id": 1,
+                "type": "list",
+                "enabled": true,
+                "address": "0x00300010",
+                "persist": true,
+                "_defaultval_comment": "Red",
+                "defaultval": 1,
+                "mask": "0xFFFFFFFC",
+                "options": [
+                    {
+                        "value": "0",
+                        "name": "Black"
+                    },
+                    {
+                        "value": "1",
+                        "name": "Red"
+                    },
+                    {
+                        "value": "2",
+                        "name": "Green"
+                    },
+                    {
+                        "value": "3",
+                        "name": "Blue"
+                    }
+                ]
+            },
+            {
+                "name": "Rule (up)",
+                "id": 2,
+                "type": "slider_u32",
+                "enabled": true,
+                "address": "0x00300000",
+                "persist": true,
+                "_defaultval_comment": "0b00011110",
+                "defaultval": 30,
+                "mask": "0xFFFFFF00",
+                "graphical": {
+                    "signed": false,
+                    "min": 0,
+                    "max": 255,
+                    "adjust_small": 1,
+                    "adjust_large": 16
+                }
+            },
+            {
+                "name": "Rule (left)",
+                "id": 3,
+                "type": "slider_u32",
+                "enabled": true,
+                "address": "0x00300004",
+                "persist": true,
+                "_defaultval_comment": "0b01101110",
+                "defaultval": 110,
+                "mask": "0xFFFFFF00",
+                "graphical": {
+                    "signed": false,
+                    "min": 0,
+                    "max": 255,
+                    "adjust_small": 1,
+                    "adjust_large": 16
+                }
+            },
+            {
+                "name": "Rule (right)",
+                "id": 4,
+                "type": "slider_u32",
+                "enabled": true,
+                "address": "0x00300008",
+                "persist": true,
+                "_defaultval_comment": "0b01101010",
+                "defaultval": 106,
+                "mask": "0xFFFFFF00",
+                "graphical": {
+                    "signed": false,
+                    "min": 0,
+                    "max": 255,
+                    "adjust_small": 1,
+                    "adjust_large": 16
+                }
+            },
+            {
+                "name": "Rule (down)",
+                "id": 5,
+                "type": "slider_u32",
+                "enabled": true,
+                "address": "0x0030000C",
+                "persist": true,
+                "_defaultval_comment": "0b00001110",
+                "defaultval": 14,
+                "mask": "0xFFFFFF00",
+                "graphical": {
+                    "signed": false,
+                    "min": 0,
+                    "max": 255,
+                    "adjust_small": 1,
+                    "adjust_large": 16
+                }
+            },
+        ],
         "messages": []
     }
 }

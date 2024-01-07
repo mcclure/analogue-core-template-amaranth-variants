@@ -54,6 +54,13 @@ class PixelClockDiv(wiring.Component):
         return m
 
 
+class ColorScheme(enum.IntEnum):
+    black = 0 # Triangles
+    red = 1 # Left isoceles triangles
+    green = 2 # Weird diagonal
+    blue = 3 # Ultra normal diagonal
+
+
 class Toplevel(wiring.Component):
     clk             : In(1)
     rst             : In(1)
@@ -92,6 +99,13 @@ class Toplevel(wiring.Component):
     cont4_trig      : In(16)
 
     osnotify_docked : In(1)
+
+    # Note: Interacts are all "In" but after writing, the "true top" will read back
+    interact_color : In(ColorScheme) # Should be 2 bits
+    interact_rule0 : In(8) # Up
+    interact_rule1 : In(8) # Left
+    interact_rule2 : In(8) # Right
+    interact_rule3 : In(8) # Down
 
     def elaborate(self, platform):
         m = Module()
