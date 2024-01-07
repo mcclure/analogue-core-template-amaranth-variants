@@ -265,6 +265,11 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   output init_done;
   reg init_done = 1'h0;
   wire \init_done$next ;
+  (* enum_base_type = "ColorScheme" *)
+  (* enum_value_00 = "BLACK" *)
+  (* enum_value_01 = "RED" *)
+  (* enum_value_10 = "GREEN" *)
+  (* enum_value_11 = "BLUE" *)
   input [1:0] interact_color;
   wire [1:0] interact_color;
   input [7:0] interact_rule0;

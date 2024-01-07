@@ -1,7 +1,6 @@
 from amaranth import *
-from amaranth.lib import wiring, data
+from amaranth.lib import wiring, data, enum
 from amaranth.lib.wiring import In, Out
-import enum
 
 from .resolution import *
 
@@ -54,11 +53,11 @@ class PixelClockDiv(wiring.Component):
         return m
 
 
-class ColorScheme(enum.IntEnum):
-    BLACK = 0 # Triangles
-    RED = 1 # Left isoceles triangles
-    GREEN = 2 # Weird diagonal
-    BLUE = 3 # Ultra normal diagonal
+class ColorScheme(enum.Enum, shape=2):
+    BLACK = 0 # No color
+    RED = 1   # Pink and orange
+    GREEN = 2 # Green and purple
+    BLUE = 3  # Blue and black
 
 
 class Toplevel(wiring.Component):
