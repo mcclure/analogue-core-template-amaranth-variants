@@ -221,7 +221,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   wire audio_output_word_bit;
   reg [1:0] automata_next = 2'h0;
   reg [1:0] \automata_next$next ;
-  reg [7:0] automata_table = 8'h1e;
+  reg [7:0] automata_table = 8'h00;
   reg [7:0] \automata_table$next ;
   wire boot_clk;
   input clk;
@@ -283,8 +283,6 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   input [7:0] interact_rule3;
   wire [7:0] interact_rule3;
   wire l_press;
-  reg need_automata_next = 1'h0;
-  reg \need_automata_next$next ;
   reg need_frozen_exception = 1'h0;
   reg \need_frozen_exception$next ;
   reg need_topline_backcopy = 1'h0;
@@ -525,9 +523,6 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     if (\rst$2 ) automata_next <= 2'h0;
     else automata_next <= \automata_next$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) need_automata_next <= 1'h0;
-    else need_automata_next <= \need_automata_next$next ;
-  always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) need_topline_backcopy <= 1'h0;
     else need_topline_backcopy <= \need_topline_backcopy$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
@@ -549,7 +544,7 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     if (\rst$2 ) topline_state <= 160'h0000000000000000000100000000000000000000;
     else topline_state <= \topline_state$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
-    if (\rst$2 ) automata_table <= 8'h1e;
+    if (\rst$2 ) automata_table <= 8'h00;
     else automata_table <= \automata_table$next ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) need_topline_copy <= 1'h0;
@@ -560,10 +555,10 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_state <= 160'h0000000000000000000100000000000000000000;
     else audgen_state <= \audgen_state$next ;
-  assign \$35  = \$29  & \$33 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audgen_dac <= 1'h0;
     else audgen_dac <= \audgen_dac$next ;
+  assign \$35  = \$29  & \$33 ;
   always @(posedge \clk$1 , posedge \rst$2 )
     if (\rst$2 ) audio_divide_counter <= 2'h3;
     else audio_divide_counter <= \audio_divide_counter$next ;
@@ -942,34 +937,6 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
     casez (\rst$2 )
       1'h1:
           \automata_next$next  = 2'h0;
-    endcase
-  end
-  always @* begin
-    if (\$auto$verilog_backend.cc:2189:dump_module$1 ) begin end
-    \need_automata_next$next  = need_automata_next;
-    casez ({ \press$165 , \press$154 , \press$143 , press, 1'h0 })
-      5'b???1?:
-          \need_automata_next$next  = 1'h1;
-      5'b??1??:
-          \need_automata_next$next  = 1'h1;
-      5'b?1???:
-          \need_automata_next$next  = 1'h1;
-      5'h1?:
-          \need_automata_next$next  = 1'h1;
-    endcase
-    casez (video_clk_div_stb)
-      1'h1:
-          casez (video_vsync_stb)
-            1'h1:
-                casez (need_automata_next)
-                  1'h1:
-                      \need_automata_next$next  = 1'h0;
-                endcase
-          endcase
-    endcase
-    casez (\rst$2 )
-      1'h1:
-          \need_automata_next$next  = 1'h0;
     endcase
   end
   always @* begin
@@ -4344,25 +4311,22 @@ module amaranth_core(rst, init_done, user1, user2, dbg_tx, dbg_rx, video_rgb_clk
       1'h1:
           casez (video_vsync_stb)
             1'h1:
-                casez (need_automata_next)
-                  1'h1:
-                      (* full_case = 32'd1 *)
-                      casez (automata_next)
-                        2'h0:
-                            \automata_table$next  = 8'h1e;
-                        2'h1:
-                            \automata_table$next  = 8'h6e;
-                        2'h2:
-                            \automata_table$next  = 8'h6a;
-                        2'h3:
-                            \automata_table$next  = 8'h0e;
-                      endcase
+                (* full_case = 32'd1 *)
+                casez (automata_next)
+                  2'h0:
+                      \automata_table$next  = interact_rule0;
+                  2'h1:
+                      \automata_table$next  = interact_rule1;
+                  2'h2:
+                      \automata_table$next  = interact_rule2;
+                  2'h3:
+                      \automata_table$next  = interact_rule3;
                 endcase
           endcase
     endcase
     casez (\rst$2 )
       1'h1:
-          \automata_table$next  = 8'h1e;
+          \automata_table$next  = 8'h00;
     endcase
   end
   always @* begin

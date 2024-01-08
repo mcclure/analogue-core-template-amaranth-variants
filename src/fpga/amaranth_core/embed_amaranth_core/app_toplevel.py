@@ -22,20 +22,7 @@ class ScribbleKind(enum.IntEnum):
     MANY_BLACK = 2
     MANY_WHITE = 3
 
-class AutoKind(enum.IntEnum):
-    rule30 = 0 # Triangles
-    rule110 = 1 # Left isoceles triangles
-    rule106 = 2 # Weird diagonal
-    rule14 = 3 # Ultra normal diagonal
-
-AUTO_RULE_BITS = [ # Lookup byte for above. (FIXME: Generate from rule number)
-    0b00011110,
-    0b01101110,
-    0b01101010,
-    0b00001110
-]
-
-AUTO_DEFAULT = AutoKind.rule30
+AUTO_DEFAULT = 0
 
 # app_elaborate is responsible for setting values of:
 #     - audio_dac_out (always)
@@ -76,10 +63,9 @@ class AppToplevel(Toplevel):
         speed_counter_mask = Signal(SPEED_LEVELS, reset=((1<<SPEED_INITIAL) - 1))
 
         # Automaton
-        #automata = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
-        automata_next = Signal(Shape.cast(AutoKind), reset=AUTO_DEFAULT)
-        automata_table = Signal(8, reset=AUTO_RULE_BITS[AutoKind.rule30])
-        need_automata_next = Signal(1)
+        automata_rule_array = [self.interact_rule0, self.interact_rule1, self.interact_rule2, self.interact_rule3]
+        automata_next = Signal(2, reset=AUTO_DEFAULT)
+        automata_table = Signal(8)
         active_state_zero_last = Signal(1, reset=1)
 
         # Scribble
@@ -171,8 +157,7 @@ class AppToplevel(Toplevel):
             for idx,press in enumerate(d_press):
                 with m.Elif(press):
                     m.d.sync += [
-                        automata_next.eq(idx),
-                        need_automata_next.eq(1)
+                        automata_next.eq(idx)
                     ]
             # TODO: Also release behavior
 
@@ -325,17 +310,13 @@ class AppToplevel(Toplevel):
                                         for off in range(many) 
                                     ]
 
-                    # Activate automata change
-                    with m.If(need_automata_next):
-                        m.d.sync += [
-                            need_automata_next.eq(0)
-                        ]
-                        with m.Switch(automata_next):
-                            for idx in range(4):
-                                with m.Case(idx):
-                                    m.d.sync += [
-                                        automata_table.eq(AUTO_RULE_BITS[idx])
-                                    ]
+                    # Do this every time, even if no button pressed, because Interact may have changed
+                    with m.Switch(automata_next):
+                        for idx in range(4):
+                            with m.Case(idx):
+                                m.d.sync += [
+                                    automata_table.eq(automata_rule_array[idx])
+                                ]
 
                     m.d.sync += need_topline_copy.eq(1)
 

@@ -38,7 +38,7 @@
                 "enabled": true,
                 "address": "0x00300000",
                 "persist": true,
-                "_defaultval_comment": "0b00011110",
+                "_defaultval_comment": "0b00011110 (Triangles)",
                 "defaultval": 30,
                 "mask": "0xFFFFFF00",
                 "graphical": {
@@ -56,7 +56,7 @@
                 "enabled": true,
                 "address": "0x00300004",
                 "persist": true,
-                "_defaultval_comment": "0b01101110",
+                "_defaultval_comment": "0b01101110 (Left isoceles triangles)",
                 "defaultval": 110,
                 "mask": "0xFFFFFF00",
                 "graphical": {
@@ -74,7 +74,7 @@
                 "enabled": true,
                 "address": "0x00300008",
                 "persist": true,
-                "_defaultval_comment": "0b01101010",
+                "_defaultval_comment": "0b01101010 (Weird diagonal)",
                 "defaultval": 106,
                 "mask": "0xFFFFFF00",
                 "graphical": {
@@ -92,7 +92,7 @@
                 "enabled": true,
                 "address": "0x0030000C",
                 "persist": true,
-                "_defaultval_comment": "0b00001110",
+                "_defaultval_comment": "0b00001110 (Ultra normal diagonal)",
                 "defaultval": 14,
                 "mask": "0xFFFFFF00",
                 "graphical": {
