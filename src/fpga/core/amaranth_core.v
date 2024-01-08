@@ -4694,7 +4694,7 @@ module \amaranth_core.video_clk_div (rst, \clk$1 , clk90, stb, clk);
   wire \clk$1 ;
   output clk90;
   wire clk90;
-  reg [47:0] clk_reg = 48'h7fffff800000;
+  reg [47:0] clk_reg = 48'hffffff000000;
   reg [47:0] \clk_reg$next ;
   input rst;
   wire rst;
@@ -4703,7 +4703,7 @@ module \amaranth_core.video_clk_div (rst, \clk$1 , clk90, stb, clk);
   reg [47:0] stb_reg = 48'h000000000001;
   reg [47:0] \stb_reg$next ;
   always @(posedge clk, posedge rst)
-    if (rst) clk_reg <= 48'h7fffff800000;
+    if (rst) clk_reg <= 48'hffffff000000;
     else clk_reg <= \clk_reg$next ;
   always @(posedge clk, posedge rst)
     if (rst) stb_reg <= 48'h000000000001;
@@ -4713,7 +4713,7 @@ module \amaranth_core.video_clk_div (rst, \clk$1 , clk90, stb, clk);
     \clk_reg$next  = { clk_reg[46:0], clk_reg[47] };
     casez (rst)
       1'h1:
-          \clk_reg$next  = 48'h7fffff800000;
+          \clk_reg$next  = 48'hffffff000000;
     endcase
   end
   always @* begin

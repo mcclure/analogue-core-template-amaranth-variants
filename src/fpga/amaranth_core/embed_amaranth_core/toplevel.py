@@ -34,7 +34,7 @@ class PixelClockDiv(wiring.Component):
         # and rgb skew. So we give ourselves an extra frame to finish getting RGB ready...
 
         # Generate bitmap with ratio/2 0s (low order) followed by ratio/2 1s (high order)
-        clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2 - 1))
+        clk_reg = Signal(self.ratio, reset=((1 << (self.ratio // 2)) - 1) << (self.ratio // 2))
         m.d.sync += clk_reg.eq(clk_reg.rotate_left(1))
         m.d.comb += [
             self.clk.eq(clk_reg[0]),
